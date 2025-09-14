@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aviation‑Inspired Kraken Monitor</title>
+  <!--
+    This integration takes inspiration from Reinhardt Botha's aviation gauge
+    web integration and expands upon it.  The device view uses radial
+    gauges for CPU/GPU temperatures, horizontal bars for load and RAM
+    utilisation, and numeric readouts for frequencies and pump speed.  When
+    loaded inside NZXT CAM, it listens for monitoring data via
+    `onMonitoringDataUpdate`.  In a regular browser the page falls back to
+    a simulated demo mode.  The configuration view (shown outside of
+    `?kraken=1`) displays a shareable link for quickly loading the
+    integration on a Kraken device.
+  -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app"></div>
+  <script src="script.js"></script>
+</body>
+</html>
