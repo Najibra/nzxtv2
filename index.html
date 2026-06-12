@@ -3,22 +3,254 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aviation‑Inspired Kraken Monitor</title>
-  <!--
-    This integration takes inspiration from Reinhardt Botha's aviation gauge
-    web integration and expands upon it.  The device view uses radial
-    gauges for CPU/GPU temperatures, horizontal bars for load and RAM
-    utilisation, and numeric readouts for frequencies and pump speed.  When
-    loaded inside NZXT CAM, it listens for monitoring data via
-    `onMonitoringDataUpdate`.  In a regular browser the page falls back to
-    a simulated demo mode.  The configuration view (shown outside of
-    `?kraken=1`) displays a shareable link for quickly loading the
-    integration on a Kraken device.
-  -->
-  <link rel="stylesheet" href="styles.css" />
+  <title>WAQEF — Pause Life. Let Laughter Begin.</title>
+  <meta name="description" content="WAQEF is not just stand-up. It's a movement. Comedy, culture, connection — live, offline, unforgettable. Riyadh · Jeddah · Dubai · Cairo." />
+  <meta property="og:title" content="WAQEF — Pause Life. Let Laughter Begin." />
+  <meta property="og:description" content="If you're not in the room, you're outside the joke." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;400;500;600;700;800&family=Cairo:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/mic.svg" />
 </head>
 <body>
-  <div id="app"></div>
-  <script src="script.js"></script>
+
+  <!-- ====================== GRAIN OVERLAY ====================== -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ====================== CUSTOM CURSOR ====================== -->
+  <div class="cursor" aria-hidden="true">
+    <div class="cursor__dot"></div>
+    <div class="cursor__ring"></div>
+  </div>
+
+  <!-- ====================== PRELOADER ====================== -->
+  <div class="preloader" id="preloader">
+    <div class="preloader__glyphs" aria-hidden="true">
+      <span class="glyph glyph--pause">
+        <svg viewBox="0 0 100 100"><rect x="22" y="18" width="20" height="64" rx="4"/><rect x="58" y="18" width="20" height="64" rx="4"/></svg>
+      </span>
+      <span class="glyph glyph--laugh">
+        <svg viewBox="0 0 100 100"><path d="M14 38 Q50 96 86 38 Q50 62 14 38Z"/></svg>
+      </span>
+      <span class="glyph glyph--mic">
+        <svg viewBox="0 0 100 100"><rect x="38" y="12" width="24" height="42" rx="12"/><path d="M26 44 q0 24 24 24 q24 0 24-24" fill="none" stroke-width="7" class="stroke"/><line x1="50" y1="68" x2="50" y2="84" stroke-width="7" class="stroke"/><line x1="34" y1="86" x2="66" y2="86" stroke-width="7" class="stroke"/></svg>
+      </span>
+    </div>
+    <div class="preloader__count"><span id="loadCount">000</span><sup>%</sup></div>
+    <div class="preloader__tag">PAUSE LIFE — LOADING LAUGHTER</div>
+    <div class="preloader__bar"><span id="loadBar"></span></div>
+  </div>
+
+  <!-- ====================== NAV ====================== -->
+  <header class="nav" id="nav">
+    <a class="nav__logo hoverable" href="#top" data-scramble="WAQEF">WAQEF</a>
+    <div class="nav__center" aria-hidden="true">وقف</div>
+    <nav class="nav__links">
+      <a href="#movement" class="hoverable" data-scramble="MOVEMENT">MOVEMENT</a>
+      <a href="#cities" class="hoverable" data-scramble="CITIES">CITIES</a>
+      <a href="#rules" class="hoverable" data-scramble="RULES">RULES</a>
+      <a href="#tickets" class="nav__cta hoverable" data-scramble="TICKETS">TICKETS</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- ====================== HERO ====================== -->
+    <section class="hero" id="hero">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="hero__glyphline" aria-hidden="true">
+        <span class="glyph glyph--pause"><svg viewBox="0 0 100 100"><rect x="22" y="18" width="20" height="64" rx="4"/><rect x="58" y="18" width="20" height="64" rx="4"/></svg></span>
+        <i>/</i>
+        <span class="glyph glyph--laugh"><svg viewBox="0 0 100 100"><path d="M14 38 Q50 96 86 38 Q50 62 14 38Z"/></svg></span>
+        <i>/</i>
+        <span class="glyph glyph--mic"><svg viewBox="0 0 100 100"><rect x="38" y="12" width="24" height="42" rx="12"/><path d="M26 44 q0 24 24 24 q24 0 24-24" fill="none" stroke-width="7" class="stroke"/><line x1="50" y1="68" x2="50" y2="84" stroke-width="7" class="stroke"/><line x1="34" y1="86" x2="66" y2="86" stroke-width="7" class="stroke"/></svg></span>
+      </div>
+
+      <h1 class="hero__title glitch" data-text="WAQEF">WAQEF</h1>
+      <div class="hero__arabic" aria-hidden="true">وقف</div>
+
+      <p class="hero__tag" id="heroTag">PAUSE LIFE. LET LAUGHTER BEGIN.</p>
+
+      <div class="hero__meta">
+        <span>EST. 2025</span>
+        <span>RIYADH — JEDDAH — DUBAI — CAIRO</span>
+        <span>100% OFFLINE</span>
+      </div>
+
+      <div class="hero__scroll" aria-hidden="true">
+        <span>SCROLL</span>
+        <div class="hero__scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ====================== MARQUEE ====================== -->
+    <div class="marquee marquee--red" aria-hidden="true">
+      <div class="marquee__track" data-speed="1">
+        <span>COMEDY ✶ CULTURE ✶ CONNECTION ✶ </span><span>COMEDY ✶ CULTURE ✶ CONNECTION ✶ </span><span>COMEDY ✶ CULTURE ✶ CONNECTION ✶ </span><span>COMEDY ✶ CULTURE ✶ CONNECTION ✶ </span>
+      </div>
+    </div>
+
+    <!-- ====================== MANIFESTO ====================== -->
+    <section class="manifesto" id="manifesto">
+      <div class="section-label"><span>01</span> THE PAUSE</div>
+      <div class="manifesto__lines">
+        <p class="reveal-line">WAQEF <em>(n.)</em> — a pause.</p>
+        <p class="reveal-line">For breath. For joy. For expression.</p>
+        <p class="reveal-line muted">It isn't just stand-up.</p>
+        <p class="reveal-line">It's a movement that stops life's noise,</p>
+        <p class="reveal-line">puts people in the same room,</p>
+        <p class="reveal-line accent">and makes them laugh until they remember</p>
+        <p class="reveal-line accent">they're part of something bigger.</p>
+      </div>
+    </section>
+
+    <!-- ====================== PILLARS / MOVEMENT ====================== -->
+    <section class="movement" id="movement">
+      <div class="section-label"><span>02</span> THE MOVEMENT</div>
+      <h2 class="movement__title" data-scramble-onview="NOT A SHOW. A MOVEMENT.">NOT A SHOW. A MOVEMENT.</h2>
+
+      <ul class="pillars">
+        <li class="pillar hoverable" data-hue="red">
+          <span class="pillar__num">001</span>
+          <h3 class="pillar__name">LAUGHTER MOVEMENT</h3>
+          <p class="pillar__desc">Laughter heals, connects, and shakes up the norm. We don't whisper — we speak truth in stereo.</p>
+          <span class="pillar__arrow">→</span>
+        </li>
+        <li class="pillar hoverable" data-hue="gold">
+          <span class="pillar__num">002</span>
+          <h3 class="pillar__name">PREMIUM FEEL, STREET-LEVEL VOICE</h3>
+          <p class="pillar__desc">High-end visuals and refined stage design — with voices that speak for the people.</p>
+          <span class="pillar__arrow">→</span>
+        </li>
+        <li class="pillar hoverable" data-hue="red">
+          <span class="pillar__num">003</span>
+          <h3 class="pillar__name">AUDIENCE ENERGY</h3>
+          <p class="pillar__desc">The crowd drives the rhythm. Every night is rewritten live by the room itself.</p>
+          <span class="pillar__arrow">→</span>
+        </li>
+        <li class="pillar hoverable" data-hue="gold">
+          <span class="pillar__num">004</span>
+          <h3 class="pillar__name">SPOTLIGHT MOMENTS</h3>
+          <p class="pillar__desc">Spontaneous moments that travel beyond the stage — but only if you were there.</p>
+          <span class="pillar__arrow">→</span>
+        </li>
+      </ul>
+      <div class="pillar-preview" id="pillarPreview" aria-hidden="true">
+        <span class="glyph glyph--mic"><svg viewBox="0 0 100 100"><rect x="38" y="12" width="24" height="42" rx="12"/><path d="M26 44 q0 24 24 24 q24 0 24-24" fill="none" stroke-width="7" class="stroke"/><line x1="50" y1="68" x2="50" y2="84" stroke-width="7" class="stroke"/><line x1="34" y1="86" x2="66" y2="86" stroke-width="7" class="stroke"/></svg></span>
+      </div>
+    </section>
+
+    <!-- ====================== CITIES — HORIZONTAL SCROLL ====================== -->
+    <section class="cities" id="cities">
+      <div class="cities__pin">
+        <div class="section-label section-label--abs"><span>03</span> THE TOUR</div>
+        <div class="cities__track" id="citiesTrack">
+          <article class="city-card">
+            <div class="city-card__index">EP·01</div>
+            <h3 class="city-card__name">RIYADH</h3>
+            <div class="city-card__ar">الرياض</div>
+            <p>The first pause. One mic, one rooftop, one city that forgot how loud it can laugh.</p>
+            <span class="city-card__status">OPENING NIGHT</span>
+          </article>
+          <article class="city-card">
+            <div class="city-card__index">EP·02</div>
+            <h3 class="city-card__name">JEDDAH</h3>
+            <div class="city-card__ar">جدة</div>
+            <p>Sea breeze, sharp tongues. The bride of the Red Sea meets the punchline of the year.</p>
+            <span class="city-card__status">COMING SOON</span>
+          </article>
+          <article class="city-card">
+            <div class="city-card__index">EP·03</div>
+            <h3 class="city-card__name">DUBAI</h3>
+            <div class="city-card__ar">دبي</div>
+            <p>A city that never pauses — until WAQEF makes it. Premium stage, zero filters.</p>
+            <span class="city-card__status">COMING SOON</span>
+          </article>
+          <article class="city-card">
+            <div class="city-card__index">EP·04</div>
+            <h3 class="city-card__name">CAIRO</h3>
+            <div class="city-card__ar">القاهرة</div>
+            <p>Comedy's mother tongue. The city of a thousand jokes gets a stage worthy of them.</p>
+            <span class="city-card__status">COMING SOON</span>
+          </article>
+          <article class="city-card city-card--last">
+            <div class="city-card__index">EP·??</div>
+            <h3 class="city-card__name">YOUR CITY</h3>
+            <div class="city-card__ar">مدينتك</div>
+            <p>The movement spreads where the laughter is loudest. Make noise.</p>
+            <span class="city-card__status">VOTE NEXT STOP</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== MARQUEE 2 ====================== -->
+    <div class="marquee marquee--outline" aria-hidden="true">
+      <div class="marquee__track" data-speed="-1">
+        <span>HABIBI, LET'S LAUGH ✶ خلّي الضحك يبدأ ✶ </span><span>HABIBI, LET'S LAUGH ✶ خلّي الضحك يبدأ ✶ </span><span>HABIBI, LET'S LAUGH ✶ خلّي الضحك يبدأ ✶ </span>
+      </div>
+    </div>
+
+    <!-- ====================== RULES / FOMO ====================== -->
+    <section class="rules" id="rules">
+      <div class="rules__pin">
+        <div class="section-label section-label--abs"><span>04</span> HOUSE RULES</div>
+        <div class="rules__statements">
+          <h2 class="rule glitch" data-text="WHAT HAPPENS AT WAQEF STAYS OFFLINE.">WHAT HAPPENS AT WAQEF <b>STAYS OFFLINE.</b></h2>
+          <h2 class="rule glitch" data-text="THERE IS NO “WATCH LATER.”">THERE IS NO <b>“WATCH LATER.”</b></h2>
+          <h2 class="rule glitch" data-text="IF YOU'RE NOT IN THE ROOM, YOU'RE OUTSIDE THE JOKE.">IF YOU'RE NOT IN THE ROOM, <b>YOU'RE OUTSIDE THE JOKE.</b></h2>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== TICKETS CTA ====================== -->
+    <section class="tickets" id="tickets">
+      <div class="section-label"><span>05</span> THE ROOM</div>
+      <div class="ticket hoverable" id="ticketCta">
+        <div class="ticket__main">
+          <span class="ticket__small">WAQEF PRESENTS — LIVE &amp; UNRECORDED</span>
+          <span class="ticket__big">GET IN THE ROOM</span>
+          <span class="ticket__sub">ONE NIGHT · NO CAMERAS · NO RERUNS</span>
+        </div>
+        <div class="ticket__stub">
+          <span class="ticket__admit">ADMIT<br/>ONE</span>
+          <span class="glyph glyph--mic"><svg viewBox="0 0 100 100"><rect x="38" y="12" width="24" height="42" rx="12"/><path d="M26 44 q0 24 24 24 q24 0 24-24" fill="none" stroke-width="7" class="stroke"/><line x1="50" y1="68" x2="50" y2="84" stroke-width="7" class="stroke"/><line x1="34" y1="86" x2="66" y2="86" stroke-width="7" class="stroke"/></svg></span>
+        </div>
+      </div>
+      <p class="tickets__fomo">🔥 Be part of the night everyone will be talking about — or hear about it from your friends.</p>
+    </section>
+
+    <!-- ====================== FOOTER ====================== -->
+    <footer class="footer">
+      <div class="footer__word" aria-hidden="true">WAQEF</div>
+      <div class="footer__row">
+        <div class="footer__col">
+          <span class="footer__label">THE MOVEMENT</span>
+          <p>Comedy. Culture. Connection.<br/>Pause life. Let laughter begin.</p>
+        </div>
+        <div class="footer__col">
+          <span class="footer__label">CITIES</span>
+          <p>Riyadh · Jeddah · Dubai · Cairo</p>
+        </div>
+        <div class="footer__col">
+          <span class="footer__label">FOLLOW THE PAUSE</span>
+          <p><a class="hoverable" href="#">INSTAGRAM</a> / <a class="hoverable" href="#">TIKTOK</a> / <a class="hoverable" href="#">X</a></p>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 WAQEF — وقف</span>
+        <span>WHAT HAPPENS AT WAQEF STAYS OFFLINE</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
