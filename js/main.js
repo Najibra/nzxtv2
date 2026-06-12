@@ -184,17 +184,18 @@ function manifesto() {
    cursor over the pillars list (LD&R episode-list feel)
 ------------------------------------------------------------ */
 function movement() {
-  const title = document.querySelector("[data-scramble-onview]");
-  ScrollTrigger.create({
-    trigger: title,
-    start: "top 80%",
-    once: true,
-    onEnter() {
-      gsap.to(title, {
-        duration: 1.2,
-        scrambleText: { text: title.dataset.scrambleOnview, chars: SCRAMBLE_CHARS, speed: 0.5 },
-      });
-    },
+  document.querySelectorAll("[data-scramble-onview]").forEach((title) => {
+    ScrollTrigger.create({
+      trigger: title,
+      start: "top 80%",
+      once: true,
+      onEnter() {
+        gsap.to(title, {
+          duration: 1.2,
+          scrambleText: { text: title.dataset.scrambleOnview, chars: SCRAMBLE_CHARS, speed: 0.5 },
+        });
+      },
+    });
   });
 
   gsap.from(".pillar", {
@@ -291,6 +292,128 @@ function rules() {
 }
 
 /* ------------------------------------------------------------
+   Lineup: glitching headliner + teased acts scramble on hover
+------------------------------------------------------------ */
+function lineup() {
+  const name = document.querySelector(".lineup__name");
+  startGlitchLoop(name);
+
+  gsap.from(".lineup__pre, .lineup__name, .lineup__sub", {
+    opacity: 0,
+    y: 40,
+    stagger: 0.15,
+    duration: 0.8,
+    ease: "power3.out",
+    scrollTrigger: { trigger: ".lineup", start: "top 70%" },
+  });
+
+  document.querySelectorAll(".lineup__tba li").forEach((li) => {
+    const b = li.querySelector("b");
+    const hidden = b.textContent;
+    li.addEventListener("mouseenter", () => {
+      gsap.to(b, {
+        duration: 0.5,
+        scrambleText: { text: li.dataset.tba, chars: SCRAMBLE_CHARS, speed: 1 },
+      });
+    });
+    li.addEventListener("mouseleave", () => {
+      gsap.to(b, {
+        duration: 0.5,
+        scrambleText: { text: hidden, chars: SCRAMBLE_CHARS, speed: 1 },
+      });
+    });
+  });
+}
+
+/* ------------------------------------------------------------
+   The Sound of WAQEF: equalizer + Web Audio static-and-swell
+   signature (mic static -> crowd-like burst)
+------------------------------------------------------------ */
+function sound() {
+  const bars = gsap.utils.toArray("#soundEq span");
+  bars.forEach((bar, i) => {
+    gsap.to(bar, {
+      height: () => 15 + Math.random() * 75 + "%",
+      duration: 0.4 + Math.random() * 0.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay: i * 0.05,
+    });
+  });
+
+  let ctx;
+  document.getElementById("soundBtn").addEventListener("click", () => {
+    ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+    const dur = 2.2;
+    const buffer = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      const t = i / data.length;
+      // 0-0.5s: crackly mic static; 0.5s+: swelling "crowd" noise
+      const stat = t < 0.25 ? (Math.random() * 2 - 1) * 0.5 * (Math.random() > 0.97 ? 2 : 0.4) : 0;
+      const swell = t >= 0.25 ? (Math.random() * 2 - 1) * Math.sin((t - 0.25) * Math.PI / 0.75) * 0.6 : 0;
+      data[i] = stat + swell;
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = buffer;
+    const filter = ctx.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.setValueAtTime(2400, ctx.currentTime);
+    filter.frequency.exponentialRampToValueAtTime(500, ctx.currentTime + dur);
+    const gain = ctx.createGain();
+    gain.gain.value = 0.5;
+    src.connect(filter).connect(gain).connect(ctx.destination);
+    src.start();
+
+    // equalizer goes wild during playback
+    bars.forEach((bar) => {
+      gsap.to(bar, {
+        height: () => 40 + Math.random() * 60 + "%",
+        duration: 0.12,
+        repeat: Math.floor(dur / 0.12),
+        yoyo: true,
+        ease: "none",
+        overwrite: true,
+        onComplete() {
+          gsap.to(bar, {
+            height: () => 15 + Math.random() * 75 + "%",
+            duration: 0.5, repeat: -1, yoyo: true, ease: "sine.inOut",
+          });
+        },
+      });
+    });
+  });
+}
+
+/* ------------------------------------------------------------
+   The Game: cursor wipes the static to reveal the dream prize
+------------------------------------------------------------ */
+function game() {
+  const card = document.getElementById("gameCard");
+  const staticLayer = document.getElementById("gameStatic");
+  if (!card) return;
+
+  function wipe(x, y) {
+    const r = card.getBoundingClientRect();
+    const mx = ((x - r.left) / r.width) * 100;
+    const my = ((y - r.top) / r.height) * 100;
+    const mask = `radial-gradient(circle 130px at ${mx}% ${my}%, transparent 0 60%, black 100%)`;
+    staticLayer.style.webkitMaskImage = mask;
+    staticLayer.style.maskImage = mask;
+  }
+  card.addEventListener("mousemove", (e) => wipe(e.clientX, e.clientY));
+  card.addEventListener("touchmove", (e) => {
+    const t = e.touches[0];
+    wipe(t.clientX, t.clientY);
+  }, { passive: true });
+  card.addEventListener("mouseleave", () => {
+    staticLayer.style.webkitMaskImage = "";
+    staticLayer.style.maskImage = "";
+  });
+}
+
+/* ------------------------------------------------------------
    Tickets + footer reveals
 ------------------------------------------------------------ */
 function outro() {
@@ -343,6 +466,9 @@ window.addEventListener("load", () => {
     movement();
     cities();
     rules();
+    lineup();
+    sound();
+    game();
     outro();
     ScrollTrigger.refresh();
   });

@@ -417,6 +417,141 @@ ul { list-style: none; }
 .rule b { color: var(--red-hot); font-weight: inherit; display: block; }
 .rule:first-child { position: relative; left: auto; right: auto; }
 
+/* ---------- lineup ---------- */
+.lineup {
+  padding: 10rem 2.2rem;
+  max-width: 1300px; margin: 0 auto;
+  text-align: center;
+}
+.lineup__pre {
+  font-size: .7rem; font-weight: 700; letter-spacing: .5em;
+  color: var(--gold); margin-bottom: 1.5rem;
+}
+.lineup__name {
+  font-family: var(--display);
+  font-size: clamp(3.4rem, 13vw, 11rem);
+  line-height: .95; color: var(--paper);
+  display: inline-block;
+}
+.lineup__sub {
+  margin-top: 2rem;
+  font-size: .85rem; letter-spacing: .08em; color: var(--stone);
+}
+.lineup__tba {
+  margin-top: 5rem;
+  text-align: left;
+}
+.lineup__tba li {
+  display: flex; align-items: baseline; gap: 2rem;
+  padding: 1.6rem 1rem;
+  border-top: 1px solid var(--ink-2);
+  transition: background .3s;
+}
+.lineup__tba li:last-child { border-bottom: 1px solid var(--ink-2); }
+.lineup__tba li:hover { background: var(--ink-2); }
+.lineup__tba span {
+  font-size: .65rem; font-weight: 700; letter-spacing: .35em; color: var(--red-hot);
+}
+.lineup__tba b {
+  flex: 1;
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(1.4rem, 3.6vw, 2.6rem);
+  letter-spacing: .12em; color: var(--stone);
+}
+.lineup__tba i {
+  font-style: normal; font-size: .65rem; font-weight: 600;
+  letter-spacing: .3em; color: var(--gold);
+}
+
+/* ---------- sound ---------- */
+.sound {
+  padding: 8rem 2.2rem;
+  background: var(--red);
+}
+.sound__grid {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: center;
+}
+@media (max-width: 860px) { .sound__grid { grid-template-columns: 1fr; } }
+.sound__copy h2 {
+  font-family: var(--display);
+  font-size: clamp(2rem, 5.5vw, 4rem);
+  line-height: 1.05; color: var(--paper);
+  margin-bottom: 1.6rem;
+}
+.sound__copy h2 b { color: var(--gold); font-weight: inherit; }
+.sound__copy p {
+  font-size: .85rem; line-height: 1.8;
+  color: rgba(239,234,226,.75);
+  margin-bottom: 2.2rem; max-width: 460px;
+}
+.sound__btn {
+  font-family: var(--body); font-size: .7rem; font-weight: 700;
+  letter-spacing: .3em; color: var(--paper);
+  background: transparent; border: 1px solid var(--paper);
+  padding: 1em 2em; cursor: none;
+  transition: background .3s, color .3s;
+}
+.sound__btn:hover { background: var(--paper); color: var(--red); }
+.sound__eq {
+  display: flex; align-items: flex-end; gap: 6px;
+  height: 220px; justify-content: center;
+}
+.sound__eq span {
+  width: 10px; height: 8%;
+  background: var(--gold);
+  opacity: .85;
+}
+
+/* ---------- game ---------- */
+.game {
+  padding: 10rem 2.2rem;
+  max-width: 1100px; margin: 0 auto;
+}
+.game__title {
+  font-family: var(--display);
+  font-size: clamp(2.4rem, 7vw, 6rem);
+  color: var(--paper); margin-bottom: 1.2rem;
+}
+.game__hint {
+  font-size: .8rem; color: var(--stone); margin-bottom: 3rem;
+}
+.game__card {
+  position: relative; overflow: hidden;
+  min-height: 340px;
+  border: 1px solid rgba(204,179,140,.3);
+  display: flex; align-items: center; justify-content: center;
+}
+.game__prize {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 1rem; text-align: center; padding: 3rem 1.5rem;
+}
+.game__prize-label {
+  font-size: .65rem; font-weight: 700; letter-spacing: .5em; color: var(--gold);
+}
+.game__prize-big {
+  font-family: var(--display);
+  font-size: clamp(2.6rem, 8vw, 6rem);
+  line-height: .95; color: var(--red-hot);
+}
+.game__prize-sub {
+  font-size: .65rem; font-weight: 600; letter-spacing: .3em; color: var(--stone);
+}
+.game__static {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23s)'/%3E%3C/svg%3E"),
+    var(--ink-2);
+  animation: grain .4s steps(3) infinite;
+}
+.game__static span {
+  font-size: .65rem; font-weight: 700; letter-spacing: .4em;
+  color: var(--paper); background: rgba(12,11,10,.6);
+  padding: .8em 1.4em; text-align: center;
+}
+
 /* ---------- tickets ---------- */
 .tickets {
   padding: 10rem 2.2rem;
