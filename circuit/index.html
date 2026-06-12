@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZXT Circuit — Kraken Elite Monitor</title>
+  <!--
+    NZXT "Circuit" web integration for the Kraken Elite LCD.
+    Gold circuit-board theme: glass telemetry modules connected by golden
+    PCB traces with animated electric sparks travelling along the wires.
+    Loaded inside NZXT CAM (?kraken=1) it renders the dashboard fed by
+    window.nzxt.v1.onMonitoringDataUpdate; in a normal browser it shows a
+    configuration card plus a live simulated preview.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="config" class="config" hidden>
+    <h1>NZXT <span>Circuit</span></h1>
+    <p>
+      A gold circuit-board dashboard for the NZXT Kraken Elite LCD with animated
+      sparks running along the traces, showing liquid, CPU and GPU temperatures,
+      RAM usage and power draw. Requires NZXT CAM with Web Integrations enabled.
+    </p>
+    <label for="share-url"><strong>Shareable link</strong> — open it in a browser and choose “Open NZXT CAM”:</label>
+    <input id="share-url" type="text" readonly />
+    <p class="hint">
+      If the protocol link doesn't open, use
+      <code>https://cam-redirect.nzxt.com/action/load-web-integration?url=…</code>
+      with this page's URL.
+    </p>
+    <p class="hint">Live preview (simulated data):</p>
+  </div>
+
+  <div id="face-wrap" class="face-wrap">
+    <svg id="face" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" font-family="Inter, 'Segoe UI', sans-serif">
+      <defs>
+        <radialGradient id="bg-grad" cx="50%" cy="45%" r="65%">
+          <stop offset="0%" stop-color="#0d0b07" />
+          <stop offset="70%" stop-color="#080705" />
+          <stop offset="100%" stop-color="#040302" />
+        </radialGradient>
+        <linearGradient id="glass-rim" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#fde9b8" stop-opacity="0.9" />
+          <stop offset="45%" stop-color="#caa64a" stop-opacity="0.35" />
+          <stop offset="100%" stop-color="#f7d98c" stop-opacity="0.75" />
+        </linearGradient>
+        <filter id="soft-glow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="2.5" result="b" />
+          <feMerge>
+            <feMergeNode in="b" /><feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <filter id="spark-glow" x="-150%" y="-150%" width="400%" height="400%">
+          <feGaussianBlur stdDeviation="3.5" result="b" />
+          <feMerge>
+            <feMergeNode in="b" /><feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <filter id="rim-haze" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="6" />
+        </filter>
+        <clipPath id="face-clip">
+          <circle cx="320" cy="320" r="306" />
+        </clipPath>
+      </defs>
+
+      <!-- face background + bezel -->
+      <circle cx="320" cy="320" r="318" fill="url(#bg-grad)" />
+      <circle cx="320" cy="320" r="316" fill="none" stroke="#2a261d" stroke-width="3" />
+      <circle cx="320" cy="320" r="308" fill="none" stroke="#caa64a" stroke-width="2.5"
+              opacity="0.55" filter="url(#rim-haze)" />
+      <circle cx="320" cy="320" r="308" fill="none" stroke="#6b5520" stroke-width="1" opacity="0.6" />
+
+      <!-- procedural PCB layer: traces, vias, chips, sparks (built by script) -->
+      <g clip-path="url(#face-clip)">
+        <g id="pcb-decor"></g>
+        <g id="traces"></g>
+        <g id="pads"></g>
+        <g id="sparks" filter="url(#spark-glow)"></g>
+      </g>
+
+      <!-- glass modules (rims + screws built by script) -->
+      <g id="modules"></g>
+
+      <!-- LIQUID module text -->
+      <g id="g-liquid">
+        <circle cx="266" cy="74" r="3" fill="#fbbf24" />
+        <text x="282" y="79" class="mod-label">LIQUID</text>
+        <path id="icon-drop" transform="translate(268 122)" class="gold-icon"
+              d="M 0 -15 C 8 -4.5 11.5 1 11.5 7 A 11.5 11.5 0 0 1 -11.5 7 C -11.5 1 -8 -4.5 0 -15 Z"
+              fill="none" stroke-width="2.5" />
+        <text id="liquid-value" x="352" y="138" text-anchor="middle" class="mod-value">--°</text>
+        <text x="320" y="162" text-anchor="middle" class="mod-sub">COOLANT TEMP</text>
+      </g>
+
+      <!-- CPU module text -->
+      <g id="g-cpu" text-anchor="middle">
+        <circle cx="290" cy="236" r="4" fill="#fbbf24" />
+        <text x="328" y="242" class="cpu-label">C P U</text>
+        <text id="cpu-value" x="320" y="362" class="cpu-value">--°</text>
+        <text x="320" y="412" class="mod-sub">T E M P E R A T U R E</text>
+      </g>
+
+      <!-- GPU module text -->
+      <g id="g-gpu" text-anchor="middle">
+        <circle cx="98" cy="256" r="3" fill="#fbbf24" />
+        <text x="129" y="261" class="mod-label">GPU</text>
+        <text id="gpu-value" x="121" y="330" class="side-value">--°</text>
+        <text x="121" y="358" class="mod-sub">TEMPERATURE</text>
+        <g id="icon-gpu" transform="translate(121 392)" class="gold-icon" fill="none" stroke-width="2">
+          <rect x="-22" y="-11" width="44" height="22" rx="3" />
+          <circle cx="7" cy="0" r="6.5" />
+          <line x1="-15" y1="-5" x2="-15" y2="5" />
+        </g>
+      </g>
+
+      <!-- RAM module text -->
+      <g id="g-ram" text-anchor="middle">
+        <circle cx="491" cy="256" r="3" fill="#fbbf24" />
+        <text x="522" y="261" class="mod-label">RAM</text>
+        <text id="ram-value" x="519" y="330" class="side-value">--<tspan class="unit">%</tspan></text>
+        <text x="519" y="358" class="mod-sub">USAGE</text>
+        <g id="icon-ram" transform="translate(519 392)" class="gold-icon" fill="none" stroke-width="2">
+          <rect x="-24" y="-10" width="48" height="20" rx="3" />
+          <line x1="-14" y1="-4" x2="-14" y2="4" />
+          <line x1="-5" y1="-4" x2="-5" y2="4" />
+          <line x1="4" y1="-4" x2="4" y2="4" />
+          <line x1="13" y1="-4" x2="13" y2="4" />
+        </g>
+      </g>
+
+      <!-- POWER module text -->
+      <g id="g-power">
+        <circle cx="288" cy="490" r="3" fill="#fbbf24" />
+        <text x="304" y="495" class="mod-label">POWER</text>
+        <path id="icon-bolt" transform="translate(264 532)" class="gold-icon"
+              d="M 4 -17 L -10 3 L -1 3 L -4 17 L 10 -3 L 1 -3 Z" stroke-width="2" fill="none" />
+        <text id="power-value" x="352" y="546" text-anchor="middle" class="mod-value">--<tspan class="unit"> W</tspan></text>
+        <text x="320" y="570" text-anchor="middle" class="mod-sub">TOTAL DRAW</text>
+      </g>
+
+      <!-- bottom mark -->
+      <g text-anchor="middle">
+        <text x="320" y="606" class="logo">NZXT</text>
+        <rect x="308" y="613" width="24" height="3" rx="1.5" fill="#caa64a" />
+      </g>
+    </svg>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
