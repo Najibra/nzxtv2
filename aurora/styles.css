@@ -67,74 +67,74 @@ body:not(.kraken) .face-wrap {
 }
 
 .subtitle {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 4px;
   fill: #cbd5e1;
 }
 
 .arc-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 3.5px;
   fill: #d1d5db;
 }
 
 .small-label {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 2.5px;
   fill: #e2e8f0;
 }
 
 .tiny-label {
-  font-size: 9px;
+  font-size: 10.5px;
   font-weight: 600;
   letter-spacing: 1.8px;
   fill: var(--muted);
 }
 
 .mid-value {
-  font-size: 30px;
+  font-size: 40px;
   font-weight: 700;
   fill: #ffffff;
 }
 
 .mid-value .unit {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
   fill: #d1d5db;
 }
 
 .cpu-title {
-  font-size: 24px;
+  font-size: 27px;
   font-weight: 600;
   letter-spacing: 3px;
   fill: #e2e8f0;
 }
 
 .big-value {
-  font-size: 84px;
+  font-size: 98px;
   font-weight: 700;
   fill: #ffffff;
 }
 
 .cpu-sub {
-  font-size: 12px;
+  font-size: 13.5px;
   font-weight: 600;
   letter-spacing: 3px;
   fill: #94a3b8;
 }
 
 .clock {
-  font-size: 22px;
+  font-size: 27px;
   font-weight: 600;
   letter-spacing: 2px;
   fill: #e5e7eb;
 }
 
 .clock-date {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 2.5px;
   fill: var(--muted);

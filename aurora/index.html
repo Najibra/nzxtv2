@@ -129,9 +129,9 @@
         <circle class="ring-under ring-cyan" cx="320" cy="152" r="61" />
         <circle id="liquid-arc" class="arc arc-cyan" cx="320" cy="152" r="61" pathLength="100"
                 transform="rotate(-130 320 152)" filter="url(#soft-glow)" />
-        <text x="320" y="132" class="small-label">LIQUID</text>
-        <text id="liquid-value" x="320" y="168" class="mid-value">--°</text>
-        <text x="320" y="188" class="tiny-label">COOLANT TEMP</text>
+        <text x="320" y="128" class="small-label">LIQUID</text>
+        <text id="liquid-value" x="320" y="170" class="mid-value">--°</text>
+        <text x="320" y="192" class="tiny-label">COOLANT TEMP</text>
       </g>
 
       <!-- CPU circle (center) -->
@@ -142,80 +142,57 @@
         <circle class="ring-under ring-cpu" cx="320" cy="320" r="118" />
         <circle id="cpu-arc" class="arc arc-big arc-cpu" cx="320" cy="320" r="118" pathLength="100"
                 transform="rotate(110 320 320)" filter="url(#soft-glow)" />
-        <text x="320" y="270" class="cpu-title">CPU</text>
-        <text id="cpu-value" x="320" y="352" class="big-value">--°</text>
-        <text x="320" y="392" class="cpu-sub">T E M P E R A T U R E</text>
+        <text x="320" y="262" class="cpu-title">CPU</text>
+        <text id="cpu-value" x="320" y="358" class="big-value">--°</text>
+        <text x="320" y="396" class="cpu-sub">T E M P E R A T U R E</text>
       </g>
 
       <!-- GPU circle (left) -->
       <g id="g-gpu" text-anchor="middle">
-        <circle cx="128" cy="308" r="54" fill="#080b14" stroke="#1f2433" stroke-width="2" />
-        <circle class="ring-under ring-cyan" cx="128" cy="308" r="59" />
-        <circle id="gpu-arc" class="arc arc-cyan" cx="128" cy="308" r="59" pathLength="100"
-                transform="rotate(-150 128 308)" filter="url(#soft-glow)" />
-        <text x="128" y="290" class="small-label">GPU</text>
-        <text id="gpu-value" x="128" y="324" class="mid-value">--°</text>
-        <text x="128" y="344" class="tiny-label">TEMPERATURE</text>
+        <circle cx="126" cy="320" r="70" fill="#080b14" stroke="#1f2433" stroke-width="2" />
+        <circle class="ring-under ring-cyan" cx="126" cy="320" r="76" />
+        <circle id="gpu-arc" class="arc arc-cyan" cx="126" cy="320" r="76" pathLength="100"
+                transform="rotate(-150 126 320)" filter="url(#soft-glow)" />
+        <text x="126" y="294" class="small-label">GPU</text>
+        <text id="gpu-value" x="126" y="338" class="mid-value">--°</text>
+        <text x="126" y="362" class="tiny-label">TEMPERATURE</text>
       </g>
 
       <!-- RAM circle (right) -->
       <g id="g-ram" text-anchor="middle">
-        <circle cx="512" cy="308" r="54" fill="#080b14" stroke="#1f2433" stroke-width="2" />
-        <circle class="ring-under ring-magenta" cx="512" cy="308" r="59" />
-        <circle id="ram-arc" class="arc arc-magenta" cx="512" cy="308" r="59" pathLength="100"
-                transform="rotate(-30 512 308)" filter="url(#soft-glow)" />
-        <text x="512" y="290" class="small-label">RAM</text>
-        <text id="ram-value" x="512" y="324" class="mid-value">--%</text>
-        <text x="512" y="344" class="tiny-label">USAGE</text>
+        <circle cx="514" cy="320" r="70" fill="#080b14" stroke="#1f2433" stroke-width="2" />
+        <circle class="ring-under ring-magenta" cx="514" cy="320" r="76" />
+        <circle id="ram-arc" class="arc arc-magenta" cx="514" cy="320" r="76" pathLength="100"
+                transform="rotate(-30 514 320)" filter="url(#soft-glow)" />
+        <text x="514" y="294" class="small-label">RAM</text>
+        <text id="ram-value" x="514" y="338" class="mid-value">--%</text>
+        <text x="514" y="362" class="tiny-label">USAGE</text>
       </g>
 
       <!-- POWER circle (bottom) -->
       <g id="g-power" text-anchor="middle">
-        <circle cx="320" cy="470" r="52" fill="#080b14" stroke="#1f2433" stroke-width="2" />
-        <circle class="ring-under ring-orange" cx="320" cy="470" r="57" />
-        <circle id="power-arc" class="arc arc-orange" cx="320" cy="470" r="57" pathLength="100"
-                transform="rotate(60 320 470)" filter="url(#soft-glow)" />
-        <text x="320" y="452" class="small-label">POWER</text>
-        <text id="power-value" x="320" y="486" class="mid-value">--<tspan class="unit"> W</tspan></text>
-        <text x="320" y="506" class="tiny-label">TOTAL DRAW</text>
+        <circle cx="320" cy="478" r="58" fill="#080b14" stroke="#1f2433" stroke-width="2" />
+        <circle class="ring-under ring-orange" cx="320" cy="478" r="64" />
+        <circle id="power-arc" class="arc arc-orange" cx="320" cy="478" r="64" pathLength="100"
+                transform="rotate(60 320 478)" filter="url(#soft-glow)" />
+        <text x="320" y="454" class="small-label">POWER</text>
+        <text id="power-value" x="320" y="496" class="mid-value">--<tspan class="unit"> W</tspan></text>
+        <text x="320" y="518" class="tiny-label">TOTAL DRAW</text>
       </g>
-
-      <!-- stat pills (built by script) -->
-      <g id="pills-left"></g>
-      <g id="pills-right"></g>
 
       <!-- clock -->
       <g text-anchor="middle">
-        <text id="clock-time" x="320" y="546" class="clock">--:--:--</text>
-        <text id="clock-date" x="320" y="564" class="clock-date">—</text>
-      </g>
-
-      <!-- bottom control bar -->
-      <g id="controls">
-        <rect x="228" y="572" width="184" height="38" rx="19" fill="#0b0e18" stroke="#1f2433" stroke-width="1.5" />
-        <!-- sun -->
-        <g stroke="#9ca3af" stroke-width="1.6" fill="none" stroke-linecap="round">
-          <circle cx="268" cy="591" r="5.5" />
-          <g id="sun-rays"></g>
-        </g>
-        <!-- wave (active) -->
-        <path d="M306 591 q5 -9 10 0 t10 0 t10 0" fill="none" stroke="#e5e7eb" stroke-width="2"
-              stroke-linecap="round" filter="url(#soft-glow)" />
-        <rect x="304" y="606" width="36" height="2.5" rx="1.25" fill="#22d3ee" />
-        <!-- gear -->
-        <g stroke="#9ca3af" stroke-width="1.6" fill="none" stroke-linecap="round">
-          <circle cx="372" cy="591" r="4" />
-          <g id="gear-teeth"></g>
-        </g>
+        <text id="clock-time" x="320" y="572" class="clock">--:--:--</text>
+        <text id="clock-date" x="320" y="594" class="clock-date">—</text>
       </g>
 
       <!-- pagination dots -->
       <g id="dots">
-        <circle cx="288" cy="624" r="4" fill="#22d3ee" />
-        <circle cx="304" cy="624" r="3.2" fill="#28304a" />
-        <circle cx="320" cy="624" r="3.2" fill="#28304a" />
-        <circle cx="336" cy="624" r="3.2" fill="#28304a" />
-        <circle cx="352" cy="624" r="3.2" fill="#28304a" />
+        <circle cx="288" cy="616" r="4" fill="#22d3ee" />
+        <circle cx="304" cy="616" r="3.2" fill="#28304a" />
+        <circle cx="320" cy="616" r="3.2" fill="#28304a" />
+        <circle cx="336" cy="616" r="3.2" fill="#28304a" />
+        <circle cx="352" cy="616" r="3.2" fill="#28304a" />
       </g>
     </svg>
   </div>
