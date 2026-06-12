@@ -1,0 +1,274 @@
+/*
+  NZXT "Fluid Dynamics — Aurora" theme. Same circular face as the original
+  Fluid Dynamics layout but with a cyan/magenta colour scheme: cyan energy
+  on the left side, magenta on the right, orange for power. Designed for the
+  640×640 round Kraken Elite LCD.
+*/
+
+:root {
+  --bg: #03050c;
+  --cyan: #22d3ee;
+  --cyan-soft: #67e8f9;
+  --magenta: #d946ef;
+  --magenta-soft: #e879f9;
+  --orange: #f97316;
+  --text: #f3f4f6;
+  --muted: #94a3b8;
+  --panel: #0b0e18;
+  --border: #1f2433;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+body.kraken {
+  /* On the LCD: face fills the screen edge to edge */
+  gap: 0;
+}
+
+.face-wrap {
+  width: min(100vw, 100vh);
+  height: min(100vw, 100vh);
+  flex: none;
+}
+
+body:not(.kraken) .face-wrap {
+  width: min(90vw, 560px);
+  height: min(90vw, 560px);
+}
+
+#face {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---- SVG typography ---- */
+
+.logo {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  fill: #ffffff;
+}
+
+.subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  fill: #cbd5e1;
+}
+
+.arc-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3.5px;
+  fill: #d1d5db;
+}
+
+.small-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  fill: #e2e8f0;
+}
+
+.tiny-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  fill: var(--muted);
+}
+
+.mid-value {
+  font-size: 30px;
+  font-weight: 700;
+  fill: #ffffff;
+}
+
+.mid-value .unit {
+  font-size: 16px;
+  font-weight: 600;
+  fill: #d1d5db;
+}
+
+.cpu-title {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  fill: #e2e8f0;
+}
+
+.big-value {
+  font-size: 84px;
+  font-weight: 700;
+  fill: #ffffff;
+}
+
+.cpu-sub {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  fill: #94a3b8;
+}
+
+.clock {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  fill: #e5e7eb;
+}
+
+.clock-date {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  fill: var(--muted);
+}
+
+/* ---- gauge arcs ---- */
+
+.arc {
+  fill: none;
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  stroke-dasharray: 0 100;
+  transition: stroke-dasharray 0.6s ease;
+}
+
+.arc-big {
+  stroke-width: 6;
+}
+
+.arc-cyan { stroke: url(#grad-cyan); }
+.arc-magenta { stroke: url(#grad-magenta); }
+.arc-orange { stroke: url(#grad-orange); }
+.arc-cpu { stroke: url(#grad-cpu); }
+
+/* faint full ring under each value arc, in the gauge's accent colour */
+.ring-under {
+  fill: none;
+  stroke-width: 1.5;
+  opacity: 0.3;
+}
+
+.ring-cyan { stroke: #0e7490; }
+.ring-magenta { stroke: #86198f; }
+.ring-orange { stroke: #9a3412; }
+.ring-cpu { stroke: #155e75; }
+
+/* ---- stat pills (SVG, built by script) ---- */
+
+.pill-bg {
+  fill: var(--panel);
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+
+.pill-icon-bg {
+  fill: #121624;
+}
+
+.pill-label {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  fill: #cbd5e1;
+}
+
+.pill-value {
+  font-size: 17px;
+  font-weight: 700;
+  fill: #ffffff;
+}
+
+.pill-unit {
+  font-size: 10px;
+  font-weight: 600;
+  fill: var(--muted);
+}
+
+/* ---- aurora beams & particles ---- */
+
+#beams path,
+#beams-haze path {
+  fill: none;
+  stroke-linecap: round;
+}
+
+#particles circle {
+  fill: #7dd3fc;
+}
+
+/* ---- configuration card (browser only) ---- */
+
+.config {
+  width: 90%;
+  max-width: 540px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  margin-top: 1.5rem;
+}
+
+.config h1 {
+  margin: 0 0 0.6rem;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+}
+
+.config h1 span {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.config p,
+.config label {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0.4rem 0;
+  display: block;
+}
+
+.config .hint {
+  font-size: 0.8rem;
+}
+
+.config code {
+  color: var(--cyan-soft);
+  word-break: break-all;
+}
+
+.config input[type='text'] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.55rem 0.7rem;
+  margin: 0.3rem 0 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #121624;
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.config input[type='text']:focus {
+  outline: none;
+  border-color: var(--cyan);
+}
