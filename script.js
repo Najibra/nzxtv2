@@ -1,216 +1,344 @@
 /*
-  JavaScript to power the aviation‑inspired Kraken web integration.  It
-  dynamically builds either a configuration view (for desktop browsers) or
-  the device view (for NZXT Kraken displays) based on the presence of
-  `?kraken=1` in the URL.  When running on a Kraken, it registers
-  `onMonitoringDataUpdate` to receive telemetry from CAM and updates the
-  gauges accordingly.  Outside of CAM it runs a demo mode with simulated
-  values so the interface can be previewed.
+  NZXT "Fluid Dynamics" Kraken Elite web integration.
+
+  Inside NZXT CAM the page is loaded with ?kraken=1 and CAM calls
+  window.nzxt.v1.onMonitoringDataUpdate with live telemetry. In a normal
+  browser a configuration card is shown above the face and the dashboard
+  runs on simulated data so it can be previewed.
 */
 
-// Helper to create and append an element
-function createEl(tag, className, parent) {
-  const el = document.createElement(tag);
-  if (className) el.className = className;
-  if (parent) parent.appendChild(el);
-  return el;
-}
+(() => {
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const $ = (id) => document.getElementById(id);
+  const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
 
-// Build the configuration view.  Displays a shareable link that encodes the
-// current page URL and instructs the user how to load the integration.
-function buildConfigView() {
-  const container = createEl('div', 'container config', document.getElementById('app'));
-  const title = createEl('h1', null, container);
-  title.textContent = 'Aviation‑Inspired Kraken Monitor';
-  const desc1 = createEl('p', null, container);
-  desc1.innerHTML =
-    'This web integration displays CPU & GPU temperatures, loads and other stats on your NZXT Kraken Elite in an aviation‑style gauge panel.\n' +
-    'It works only when loaded through NZXT CAM on firmware 4.50 or newer.';
-  const url = location.origin + location.pathname; // remove query parameters
-  const encoded = encodeURIComponent(url);
-  const shareUrl = `nzxt-cam://action/load-web-integration?url=${encoded}`;
-  const desc2 = createEl('p', null, container);
-  desc2.innerHTML = '<strong>Shareable Link:</strong>';
-  const input = createEl('input', null, container);
-  input.type = 'text';
-  input.value = shareUrl;
-  input.readOnly = true;
-  input.onclick = () => input.select();
-  const desc3 = createEl('p', null, container);
-  desc3.innerHTML =
-    'Copy this link into a browser and click <em>Open NZXT CAM</em> to load the integration.\n' +
-    'If your browser doesn\'t support the protocol, use the redirect domain: ' +
-    '<code>https://cam-redirect.nzxt.com/action/load-web-integration?url=…</code>.';
-}
-
-// Build the device view.  Creates radial gauges, bars and stats elements
-// and returns an update function that can be called with fresh data.
-function buildDeviceView() {
-  const container = createEl('div', 'container device', document.getElementById('app'));
-
-  // Liquid temperature
-  const liquid = createEl('div', 'liquid', container);
-  const liqLabel = createEl('div', 'label', liquid);
-  liqLabel.textContent = 'LIQUID';
-  const liqValue = createEl('div', 'value', liquid);
-  liqValue.textContent = '-- °C';
-
-  // Gauges row
-  const gaugesRow = createEl('div', 'gauges', container);
-  // CPU gauge
-  const cpuGauge = createEl('div', 'gauge', gaugesRow);
-  const cpuDial = createEl('div', 'dial', cpuGauge);
-  const cpuVal = createEl('div', 'value', cpuGauge);
-  cpuVal.textContent = '-- °C';
-  const cpuLabel = createEl('div', 'label', cpuGauge);
-  cpuLabel.textContent = 'CPU';
-  // GPU gauge
-  const gpuGauge = createEl('div', 'gauge', gaugesRow);
-  const gpuDial = createEl('div', 'dial', gpuGauge);
-  const gpuVal = createEl('div', 'value', gpuGauge);
-  gpuVal.textContent = '-- °C';
-  const gpuLabel = createEl('div', 'label', gpuGauge);
-  gpuLabel.textContent = 'GPU';
-
-  // Bars row
-  const bars = createEl('div', 'bars', container);
-  function createBar(labelText) {
-    const barWrap = createEl('div', 'bar', bars);
-    const barLabel = createEl('div', 'bar-label', barWrap);
-    barLabel.textContent = labelText;
-    const track = createEl('div', 'bar-track', barWrap);
-    const fill = createEl('div', 'bar-fill', track);
-    return fill;
+  function svgEl(tag, attrs, parent) {
+    const el = document.createElementNS(SVG_NS, tag);
+    for (const [k, v] of Object.entries(attrs || {})) el.setAttribute(k, v);
+    if (parent) parent.appendChild(el);
+    return el;
   }
-  const cpuLoadFill = createBar('CPU Load');
-  const gpuLoadFill = createBar('GPU Load');
-  const ramLoadFill = createBar('RAM Load');
 
-  // Stats row
-  const stats = createEl('div', 'stats', container);
-  function createStat(labelText) {
-    const stat = createEl('div', 'stat', stats);
-    const sLabel = createEl('div', 'label', stat);
-    sLabel.textContent = labelText;
-    const sValue = createEl('div', 'value', stat);
-    sValue.textContent = '--';
-    return sValue;
+  /* ---------- geometry helpers (angles in degrees, y axis down, 0° = east) ---------- */
+
+  const CX = 320;
+  const CY = 320;
+
+  function pt(r, a) {
+    const rad = (a * Math.PI) / 180;
+    return [CX + r * Math.cos(rad), CY + r * Math.sin(rad)];
   }
-  const cpuFreqVal = createStat('CPU Freq');
-  const pumpSpeedVal = createStat('Pump RPM');
-  const gpuFreqVal = createStat('GPU Freq');
 
-  // Function to update the UI with monitoring data
-  function updateUI(data) {
-    // CPU and GPU objects
-    const cpu = data.cpus && data.cpus.length ? data.cpus[0] : {};
-    const gpu = data.gpus && data.gpus.length ? data.gpus[0] : {};
-    const ram = data.ram || {};
-    const kraken = data.kraken || {};
+  function arcPath(r, a0, a1) {
+    const [x0, y0] = pt(r, a0);
+    const [x1, y1] = pt(r, a1);
+    const large = Math.abs(a1 - a0) > 180 ? 1 : 0;
+    const sweep = a1 > a0 ? 1 : 0;
+    return `M ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 ${large} ${sweep} ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+  }
 
-    // Liquid temperature
-    const liqTemp = kraken.liquidTemperature ?? kraken.temperature; // support both names
-    if (typeof liqTemp === 'number') {
-      liqValue.textContent = `${Math.round(liqTemp)} °C`;
+  /* ---------- static decoration: outer arcs, curved labels, dots ---------- */
+
+  function buildOuter() {
+    // Purple accent arcs on the outer ring
+    $('arc-tl').setAttribute('d', arcPath(308, 198, 252));
+    $('arc-tr').setAttribute('d', arcPath(308, 288, 342));
+    $('arc-bl').setAttribute('d', arcPath(308, 158, 112));
+    $('arc-br').setAttribute('d', arcPath(308, 68, 22));
+
+    // Curved label baselines. Top labels run clockwise (glyphs point outward);
+    // bottom labels run counter-clockwise so they stay readable.
+    $('lbl-tl').setAttribute('d', arcPath(288, 192, 258));
+    $('lbl-tr').setAttribute('d', arcPath(288, 282, 348));
+    $('lbl-bl').setAttribute('d', arcPath(302, 160, 110));
+    $('lbl-br').setAttribute('d', arcPath(302, 70, 20));
+
+    const dots = { 'dot-tl': 193, 'dot-tr': 347, 'dot-bl': 163, 'dot-br': 17 };
+    for (const [id, a] of Object.entries(dots)) {
+      const [x, y] = pt(308, a);
+      $(id).setAttribute('cx', x.toFixed(2));
+      $(id).setAttribute('cy', y.toFixed(2));
     }
-
-    // CPU temp gauge
-    const cpuTemp = cpu.temperature ?? 0;
-    cpuVal.textContent = `${Math.round(cpuTemp)} °C`;
-    const cpuPct = Math.min(Math.max(cpuTemp / 100, 0), 1);
-    cpuDial.style.backgroundImage = `conic-gradient(var(--accent-cpu) 0% ${cpuPct * 100}%, var(--bar-bg) ${cpuPct * 100}% 100%)`;
-
-    // GPU temp gauge
-    const gpuTemp = gpu.temperature ?? 0;
-    gpuVal.textContent = `${Math.round(gpuTemp)} °C`;
-    const gpuPct = Math.min(Math.max(gpuTemp / 100, 0), 1);
-    gpuDial.style.backgroundImage = `conic-gradient(var(--accent-gpu) 0% ${gpuPct * 100}%, var(--bar-bg) ${gpuPct * 100}% 100%)`;
-
-    // CPU load bar
-    const cpuLoad = cpu.load ?? 0;
-    cpuLoadFill.style.width = `${Math.round(cpuLoad * 100)}%`;
-    // GPU load bar
-    const gpuLoad = gpu.load ?? 0;
-    gpuLoadFill.style.width = `${Math.round(gpuLoad * 100)}%`;
-    // RAM load bar (use percent of used memory)
-    let ramPct = 0;
-    if (typeof ram.totalSize === 'number' && typeof ram.inUse === 'number' && ram.totalSize > 0) {
-      ramPct = ram.inUse / ram.totalSize;
-    }
-    ramLoadFill.style.width = `${Math.round(ramPct * 100)}%`;
-
-    // Stats
-    cpuFreqVal.textContent = cpu.frequency ? `${Math.round(cpu.frequency)} MHz` : '--';
-    // Use CPU fanSpeed or GPU fanSpeed as pump speed; prefer cpu.fanSpeed
-    const pump = cpu.fanSpeed ?? gpu.fanSpeed;
-    pumpSpeedVal.textContent = typeof pump === 'number' ? `${Math.round(pump)} RPM` : '--';
-    gpuFreqVal.textContent = gpu.frequency ? `${Math.round(gpu.frequency)} MHz` : '--';
   }
 
-  return updateUI;
-}
+  /* ---------- bottom bar icon details ---------- */
 
-// Determine whether we are running on Kraken or a standard browser
-const searchParams = new URLSearchParams(window.location.search);
-const isKraken = searchParams.get('kraken') === '1';
+  function buildControlIcons() {
+    const rays = $('sun-rays');
+    for (let i = 0; i < 8; i++) {
+      const a = (i * 45 * Math.PI) / 180;
+      svgEl('line', {
+        x1: 268 + 8.5 * Math.cos(a), y1: 591 + 8.5 * Math.sin(a),
+        x2: 268 + 11 * Math.cos(a), y2: 591 + 11 * Math.sin(a),
+      }, rays);
+    }
+    const teeth = $('gear-teeth');
+    for (let i = 0; i < 8; i++) {
+      const a = ((i * 45 + 22.5) * Math.PI) / 180;
+      svgEl('line', {
+        x1: 372 + 6 * Math.cos(a), y1: 591 + 6 * Math.sin(a),
+        x2: 372 + 9 * Math.cos(a), y2: 591 + 9 * Math.sin(a),
+      }, teeth);
+    }
+  }
 
-if (isKraken && window.nzxt?.v1) {
-  // Device view with real data
-  const update = buildDeviceView();
-  window.nzxt.v1.onMonitoringDataUpdate = (data) => {
-    update(data);
+  /* ---------- glowing wave decorations ---------- */
+
+  function buildWaves() {
+    const g = $('waves');
+    // Deterministic pseudo-random so the pattern is stable between loads
+    let seed = 7;
+    const rnd = () => {
+      seed = (seed * 16807) % 2147483647;
+      return seed / 2147483647;
+    };
+
+    for (const side of [-1, 1]) {
+      const baseX = 320 + side * 238;
+      for (let i = 0; i < 9; i++) {
+        const amp = 10 + rnd() * 26;
+        const phase = rnd() * Math.PI * 2;
+        const freq = 0.012 + rnd() * 0.014;
+        const drift = (rnd() - 0.5) * 36;
+        let d = '';
+        for (let y = 115; y <= 525; y += 10) {
+          const t = (y - 115) / 410;
+          const x = baseX + drift * t + Math.sin(y * freq + phase) * amp * Math.sin(Math.PI * t);
+          d += (d ? ' L' : 'M') + ` ${x.toFixed(1)} ${y}`;
+        }
+        svgEl('path', {
+          d,
+          opacity: (0.25 + rnd() * 0.45).toFixed(2),
+          'stroke-width': i % 3 === 0 ? 1.6 : 1,
+        }, g);
+      }
+    }
+  }
+
+  /* ---------- stat pills ---------- */
+
+  const ICONS = {
+    pump: (g) => {
+      svgEl('circle', { r: 5, fill: 'none', stroke: '#a78bfa', 'stroke-width': 1.5 }, g);
+      svgEl('circle', { r: 1.6, fill: '#a78bfa' }, g);
+      svgEl('line', { x1: 0, y1: -5, x2: 0, y2: -7.5, stroke: '#a78bfa', 'stroke-width': 1.5, 'stroke-linecap': 'round' }, g);
+    },
+    fan: (g) => {
+      for (let i = 0; i < 6; i++) {
+        const a = (i * 60 * Math.PI) / 180;
+        svgEl('line', {
+          x1: 1.5 * Math.cos(a), y1: 1.5 * Math.sin(a),
+          x2: 6.5 * Math.cos(a), y2: 6.5 * Math.sin(a),
+          stroke: '#a78bfa', 'stroke-width': 1.8, 'stroke-linecap': 'round',
+        }, g);
+      }
+    },
+    drop: (g) => {
+      svgEl('path', {
+        d: 'M 0 -6.5 C 3.5 -2 5 0.5 5 3 A 5 5 0 0 1 -5 3 C -5 0.5 -3.5 -2 0 -6.5 Z',
+        fill: '#a78bfa',
+      }, g);
+    },
+    bolt: (g) => {
+      svgEl('path', { d: 'M 1.5 -7 L -4 1 L -0.5 1 L -1.5 7 L 4 -1 L 0.5 -1 Z', fill: '#a78bfa' }, g);
+    },
+    pulse: (g) => {
+      svgEl('path', {
+        d: 'M -7 0 H -3.5 L -1.5 -5 L 1.5 5 L 3.5 0 H 7',
+        fill: 'none', stroke: '#a78bfa', 'stroke-width': 1.6,
+        'stroke-linecap': 'round', 'stroke-linejoin': 'round',
+      }, g);
+    },
+    flower: (g) => {
+      for (let i = 0; i < 6; i++) {
+        const a = (i * 60 * Math.PI) / 180;
+        svgEl('circle', { cx: 3.8 * Math.cos(a), cy: 3.8 * Math.sin(a), r: 2.1, fill: '#a78bfa' }, g);
+      }
+      svgEl('circle', { r: 1.8, fill: '#0d0d16' }, g);
+    },
   };
-} else {
-  // Outside of Kraken or CAM; build a config view and a demo device view below it
-  buildConfigView();
-  // Insert a small separator and then the demo device view
-  const sep = document.createElement('hr');
-  sep.style.margin = '2rem 0';
-  sep.style.border = 'none';
-  sep.style.borderTop = '1px solid var(--border-colour)';
-  document.getElementById('app').appendChild(sep);
-  const demoUpdate = buildDeviceView();
 
-  // Simulate monitoring data every second
+  function buildPill(parent, x, y, icon, label, valueId, unit) {
+    const w = 120;
+    const h = 38;
+    svgEl('rect', { x, y, width: w, height: h, rx: h / 2, class: 'pill-bg' }, parent);
+    svgEl('circle', { cx: x + 21, cy: y + h / 2, r: 13, class: 'pill-icon-bg' }, parent);
+    const iconG = svgEl('g', { transform: `translate(${x + 21} ${y + h / 2})` }, parent);
+    ICONS[icon](iconG);
+    const tx = x + 41;
+    svgEl('text', { x: tx, y: y + 14, class: 'pill-label' }, parent).textContent = label;
+    const value = svgEl('text', { x: tx, y: y + 31, class: 'pill-value' }, parent);
+    const num = svgEl('tspan', { id: valueId }, value);
+    num.textContent = '--';
+    svgEl('tspan', { dx: 3, class: 'pill-unit' }, value).textContent = unit;
+  }
+
+  function buildPills() {
+    const left = $('pills-left');
+    buildPill(left, 86, 386, 'pump', 'PUMP', 'pump-value', 'RPM');
+    buildPill(left, 86, 430, 'fan', 'FAN SPEED', 'fan-value', 'RPM');
+    buildPill(left, 86, 474, 'drop', 'FLOW RATE', 'flow-value', 'L/M');
+
+    const right = $('pills-right');
+    buildPill(right, 434, 386, 'bolt', 'VOLTAGE', 'volt-value', 'V');
+    buildPill(right, 434, 430, 'pulse', 'CURRENT', 'curr-value', 'A');
+    buildPill(right, 434, 474, 'flower', 'EFFICIENCY', 'eff-value', '%');
+  }
+
+  /* ---------- gauge + value updates ---------- */
+
+  // Each gauge shows `fraction` of `span` percent of its ring
+  function setArc(id, fraction, span) {
+    const visible = clamp(fraction, 0, 1) * span;
+    $(id).setAttribute('stroke-dasharray', `${visible.toFixed(1)} ${(100 - visible).toFixed(1)}`);
+  }
+
+  function setText(id, text) {
+    const el = $(id);
+    if (el.firstChild && el.firstChild.nodeType === Node.TEXT_NODE) {
+      el.firstChild.nodeValue = text;
+    } else {
+      el.textContent = text;
+    }
+  }
+
+  function update(v) {
+    setText('liquid-value', `${Math.round(v.liquid)}°`);
+    setArc('liquid-arc', v.liquid / 60, 72);
+
+    setText('cpu-value', `${Math.round(v.cpuTemp)}°`);
+    setArc('cpu-arc', v.cpuTemp / 100, 78);
+
+    setText('gpu-value', `${Math.round(v.gpuTemp)}°`);
+    setArc('gpu-arc', v.gpuTemp / 100, 72);
+
+    setText('ram-value', `${Math.round(v.ramPct)}%`);
+    setArc('ram-arc', v.ramPct / 100, 72);
+
+    setText('power-value', `${Math.round(v.power)}`);
+    setArc('power-arc', v.power / 500, 72);
+
+    setText('pump-value', `${Math.round(v.pump)}`);
+    setText('fan-value', `${Math.round(v.fan)}`);
+    setText('flow-value', v.flow.toFixed(2));
+    setText('volt-value', v.voltage.toFixed(2));
+    setText('curr-value', v.current.toFixed(2));
+    setText('eff-value', `${Math.round(v.efficiency)}`);
+  }
+
+  /* ---------- monitoring data mapping ---------- */
+
+  // CAM reports load either as 0..1 or 0..100 depending on version
+  const normLoad = (l) => (typeof l === 'number' ? (l > 1 ? l / 100 : l) : 0);
+  const num = (...candidates) => candidates.find((c) => typeof c === 'number' && isFinite(c));
+
+  function mapMonitoring(data) {
+    const cpu = (data.cpus && data.cpus[0]) || {};
+    const gpu = (data.gpus && data.gpus[0]) || {};
+    const kraken = data.kraken || {};
+    const ram = data.ram || {};
+
+    const cpuTemp = num(cpu.temperature, 0);
+    const gpuTemp = num(gpu.temperature, 0);
+    const liquid = num(kraken.liquidTemperature, kraken.temperature, 0);
+    const pump = num(kraken.pumpRpm, kraken.pumpSpeed, cpu.fanSpeed, 0);
+    const fan = num(kraken.fanRpm, kraken.fanSpeed, gpu.fanSpeed, 0);
+
+    let ramPct = 0;
+    if (typeof ram.totalSize === 'number' && ram.totalSize > 0 && typeof ram.inUse === 'number') {
+      ramPct = (ram.inUse / ram.totalSize) * 100;
+    }
+
+    // CAM does not expose PSU telemetry or coolant flow, so these are
+    // estimates derived from the data that is available.
+    const power = num(cpu.power, undefined) !== undefined || num(gpu.power, undefined) !== undefined
+      ? (num(cpu.power, 0) + num(gpu.power, 0))
+      : 40 + normLoad(cpu.load) * 140 + normLoad(gpu.load) * 280;
+    const voltage = 12 + Math.min(power, 600) * 0.0004;
+    const current = voltage > 0 ? power / voltage : 0;
+    const flow = (pump / 2850) * 2.45;
+    const efficiency = clamp(95 - power * 0.012 - Math.max(0, liquid - 30) * 0.4, 60, 99);
+
+    return { liquid, cpuTemp, gpuTemp, ramPct, pump, fan, flow, voltage, current, power, efficiency };
+  }
+
+  /* ---------- clock ---------- */
+
+  function tickClock() {
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    setText('clock-time', `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`);
+    setText('clock-date', now
+      .toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+      .toUpperCase());
+  }
+
+  /* ---------- bootstrap ---------- */
+
+  buildOuter();
+  buildControlIcons();
+  buildWaves();
+  buildPills();
+  tickClock();
+  setInterval(tickClock, 1000);
+
+  const params = new URLSearchParams(window.location.search);
+  const isKraken = params.get('kraken') === '1';
+  let gotRealData = false;
+
+  // Register the CAM hook, preserving anything CAM may have injected
+  window.nzxt = {
+    v1: {
+      ...(window.nzxt && window.nzxt.v1),
+      onMonitoringDataUpdate: (data) => {
+        gotRealData = true;
+        update(mapMonitoring(data));
+      },
+    },
+  };
+
+  if (isKraken) {
+    document.body.classList.add('kraken');
+  } else {
+    // Browser mode: show the configuration card with the share link
+    const config = $('config');
+    config.hidden = false;
+    const input = $('share-url');
+    const url = window.location.origin + window.location.pathname;
+    input.value = `nzxt-cam://action/load-web-integration?url=${encodeURIComponent(url)}`;
+    input.addEventListener('click', () => input.select());
+  }
+
+  // Simulated telemetry, centred on the reference design's numbers. Runs
+  // until the first real CAM update arrives, then stops.
   let t = 0;
-  setInterval(() => {
+  const demo = setInterval(() => {
+    if (gotRealData) {
+      clearInterval(demo);
+      return;
+    }
     t += 1;
-    // Generate sine‑wave‑like variation for nicer animation
-    const cpuTemp = 45 + 10 * Math.sin(t / 5);
-    const gpuTemp = 40 + 8 * Math.cos(t / 4);
-    const cpuLoad = 0.3 + 0.2 * Math.sin(t / 3);
-    const gpuLoad = 0.35 + 0.25 * Math.cos(t / 3.5);
-    const ramTotal = 32 * 1024; // 32 GiB
-    const ramInUse = ramTotal * (0.4 + 0.2 * Math.sin(t / 6));
-    const cpuFreq = 4200 + 300 * Math.sin(t / 2);
-    const gpuFreq = 1800 + 250 * Math.cos(t / 2.5);
-    const fan = 1800 + 200 * Math.sin(t / 1.8);
-    const liq = 38 + 2 * Math.sin(t / 4);
-    demoUpdate({
-      cpus: [
-        {
-          temperature: cpuTemp,
-          load: cpuLoad,
-          frequency: cpuFreq,
-          fanSpeed: fan,
-        },
-      ],
-      gpus: [
-        {
-          temperature: gpuTemp,
-          load: gpuLoad,
-          frequency: gpuFreq,
-          fanSpeed: fan * 0.8,
-        },
-      ],
-      ram: {
-        totalSize: ramTotal,
-        inUse: ramInUse,
-        modules: [],
-      },
+    const cpuLoad = 0.35 + 0.25 * Math.sin(t / 4);
+    const gpuLoad = 0.3 + 0.25 * Math.cos(t / 5);
+    update(mapMonitoring({
+      cpus: [{
+        temperature: 55 + 6 * Math.sin(t / 5),
+        load: cpuLoad,
+        frequency: 4500,
+        fanSpeed: 2850 + 120 * Math.sin(t / 3),
+      }],
+      gpus: [{
+        temperature: 39 + 4 * Math.cos(t / 6),
+        load: gpuLoad,
+        frequency: 1900,
+        fanSpeed: 1200 + 90 * Math.cos(t / 4),
+      }],
+      ram: { totalSize: 32768, inUse: 32768 * (0.18 + 0.05 * Math.sin(t / 8)) },
       kraken: {
-        liquidTemperature: liq,
+        liquidTemperature: 32 + 1.5 * Math.sin(t / 7),
+        pumpRpm: 2850 + 120 * Math.sin(t / 3),
+        fanRpm: 1200 + 90 * Math.cos(t / 4),
       },
-    });
+    }));
   }, 1000);
-}
+})();
