@@ -66,27 +66,6 @@
     }
   }
 
-  /* ---------- bottom bar icon details ---------- */
-
-  function buildControlIcons() {
-    const rays = $('sun-rays');
-    for (let i = 0; i < 8; i++) {
-      const a = (i * 45 * Math.PI) / 180;
-      svgEl('line', {
-        x1: 268 + 8.5 * Math.cos(a), y1: 591 + 8.5 * Math.sin(a),
-        x2: 268 + 11 * Math.cos(a), y2: 591 + 11 * Math.sin(a),
-      }, rays);
-    }
-    const teeth = $('gear-teeth');
-    for (let i = 0; i < 8; i++) {
-      const a = ((i * 45 + 22.5) * Math.PI) / 180;
-      svgEl('line', {
-        x1: 372 + 6 * Math.cos(a), y1: 591 + 6 * Math.sin(a),
-        x2: 372 + 9 * Math.cos(a), y2: 591 + 9 * Math.sin(a),
-      }, teeth);
-    }
-  }
-
   /* ---------- ambient particles ---------- */
 
   function buildParticles(rnd) {
@@ -161,76 +140,6 @@
     requestAnimationFrame(animateBeams);
   }
 
-  /* ---------- stat pills ---------- */
-
-  const ICONS = {
-    pump: (g, c) => {
-      svgEl('circle', { r: 5, fill: 'none', stroke: c, 'stroke-width': 1.5 }, g);
-      svgEl('circle', { r: 1.6, fill: c }, g);
-      svgEl('line', { x1: 0, y1: -5, x2: 0, y2: -7.5, stroke: c, 'stroke-width': 1.5, 'stroke-linecap': 'round' }, g);
-    },
-    fan: (g, c) => {
-      for (let i = 0; i < 6; i++) {
-        const a = (i * 60 * Math.PI) / 180;
-        svgEl('line', {
-          x1: 1.5 * Math.cos(a), y1: 1.5 * Math.sin(a),
-          x2: 6.5 * Math.cos(a), y2: 6.5 * Math.sin(a),
-          stroke: c, 'stroke-width': 1.8, 'stroke-linecap': 'round',
-        }, g);
-      }
-    },
-    drop: (g, c) => {
-      svgEl('path', {
-        d: 'M 0 -6.5 C 3.5 -2 5 0.5 5 3 A 5 5 0 0 1 -5 3 C -5 0.5 -3.5 -2 0 -6.5 Z',
-        fill: c,
-      }, g);
-    },
-    bolt: (g, c) => {
-      svgEl('path', { d: 'M 1.5 -7 L -4 1 L -0.5 1 L -1.5 7 L 4 -1 L 0.5 -1 Z', fill: c }, g);
-    },
-    pulse: (g, c) => {
-      svgEl('path', {
-        d: 'M -7 0 H -3.5 L -1.5 -5 L 1.5 5 L 3.5 0 H 7',
-        fill: 'none', stroke: c, 'stroke-width': 1.6,
-        'stroke-linecap': 'round', 'stroke-linejoin': 'round',
-      }, g);
-    },
-    flower: (g, c) => {
-      for (let i = 0; i < 6; i++) {
-        const a = (i * 60 * Math.PI) / 180;
-        svgEl('circle', { cx: 3.8 * Math.cos(a), cy: 3.8 * Math.sin(a), r: 2.1, fill: c }, g);
-      }
-      svgEl('circle', { r: 1.8, fill: '#0b0e18' }, g);
-    },
-  };
-
-  function buildPill(parent, x, y, icon, label, valueId, unit, accent) {
-    const w = 120;
-    const h = 38;
-    svgEl('rect', { x, y, width: w, height: h, rx: h / 2, class: 'pill-bg' }, parent);
-    svgEl('circle', { cx: x + 21, cy: y + h / 2, r: 13, class: 'pill-icon-bg' }, parent);
-    const iconG = svgEl('g', { transform: `translate(${x + 21} ${y + h / 2})` }, parent);
-    ICONS[icon](iconG, accent);
-    const tx = x + 41;
-    svgEl('text', { x: tx, y: y + 14, class: 'pill-label' }, parent).textContent = label;
-    const value = svgEl('text', { x: tx, y: y + 31, class: 'pill-value' }, parent);
-    const num = svgEl('tspan', { id: valueId }, value);
-    num.textContent = '--';
-    svgEl('tspan', { dx: 3, class: 'pill-unit' }, value).textContent = unit;
-  }
-
-  function buildPills() {
-    const left = $('pills-left');
-    buildPill(left, 86, 386, 'pump', 'PUMP', 'pump-value', 'RPM', CYAN);
-    buildPill(left, 86, 430, 'fan', 'FAN SPEED', 'fan-value', 'RPM', CYAN);
-    buildPill(left, 86, 474, 'drop', 'FLOW RATE', 'flow-value', 'L/M', CYAN);
-
-    const right = $('pills-right');
-    buildPill(right, 434, 386, 'bolt', 'VOLTAGE', 'volt-value', 'V', MAGENTA);
-    buildPill(right, 434, 430, 'pulse', 'CURRENT', 'curr-value', 'A', MAGENTA);
-    buildPill(right, 434, 474, 'flower', 'EFFICIENCY', 'eff-value', '%', MAGENTA);
-  }
-
   /* ---------- gauge + value updates ---------- */
 
   // Each gauge shows `fraction` of `span` percent of its ring
@@ -263,13 +172,6 @@
 
     setText('power-value', `${Math.round(v.power)}`);
     setArc('power-arc', v.power / 500, 72);
-
-    setText('pump-value', `${Math.round(v.pump)}`);
-    setText('fan-value', `${Math.round(v.fan)}`);
-    setText('flow-value', v.flow.toFixed(2));
-    setText('volt-value', v.voltage.toFixed(2));
-    setText('curr-value', v.current.toFixed(2));
-    setText('eff-value', `${Math.round(v.efficiency)}`);
   }
 
   /* ---------- monitoring data mapping ---------- */
@@ -287,25 +189,19 @@
     const cpuTemp = num(cpu.temperature, 0);
     const gpuTemp = num(gpu.temperature, 0);
     const liquid = num(kraken.liquidTemperature, kraken.temperature, 0);
-    const pump = num(kraken.pumpRpm, kraken.pumpSpeed, cpu.fanSpeed, 0);
-    const fan = num(kraken.fanRpm, kraken.fanSpeed, gpu.fanSpeed, 0);
 
     let ramPct = 0;
     if (typeof ram.totalSize === 'number' && ram.totalSize > 0 && typeof ram.inUse === 'number') {
       ramPct = (ram.inUse / ram.totalSize) * 100;
     }
 
-    // CAM does not expose PSU telemetry or coolant flow, so these are
-    // estimates derived from the data that is available.
+    // CAM does not expose total system power, so estimate it from CPU/GPU
+    // package power when reported, otherwise from their loads.
     const power = num(cpu.power, undefined) !== undefined || num(gpu.power, undefined) !== undefined
       ? (num(cpu.power, 0) + num(gpu.power, 0))
       : 40 + normLoad(cpu.load) * 140 + normLoad(gpu.load) * 280;
-    const voltage = 12 + Math.min(power, 600) * 0.0004;
-    const current = voltage > 0 ? power / voltage : 0;
-    const flow = (pump / 2850) * 2.45;
-    const efficiency = clamp(95 - power * 0.012 - Math.max(0, liquid - 30) * 0.4, 60, 99);
 
-    return { liquid, cpuTemp, gpuTemp, ramPct, pump, fan, flow, voltage, current, power, efficiency };
+    return { liquid, cpuTemp, gpuTemp, ramPct, power };
   }
 
   /* ---------- clock ---------- */
@@ -329,10 +225,8 @@
   };
 
   buildOuter();
-  buildControlIcons();
   buildParticles(rnd);
   buildBeams(rnd);
-  buildPills();
   tickClock();
   setInterval(tickClock, 1000);
   requestAnimationFrame(animateBeams);
