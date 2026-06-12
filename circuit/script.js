@@ -8,6 +8,8 @@
 
   The PCB traces are generated procedurally and electric sparks travel along
   them continuously, animated with requestAnimationFrame via dash offsets.
+  Value readouts animate smoothly to their new targets with a glow-pulse on
+  each update. Module rims breathe with a slow gold shimmer.
 */
 
 (() => {
@@ -34,19 +36,24 @@
 
   const PANELS = {
     liquid: { x: 222, y: 50, w: 196, h: 120, rx: 24 },
-    cpu: { x: 210, y: 200, w: 220, h: 236, rx: 28 },
-    gpu: { x: 56, y: 230, w: 130, h: 186, rx: 22 },
-    ram: { x: 454, y: 230, w: 130, h: 186, rx: 22 },
-    power: { x: 222, y: 466, w: 196, h: 118, rx: 22 },
+    cpu:    { x: 210, y: 200, w: 220, h: 236, rx: 28 },
+    gpu:    { x: 56,  y: 230, w: 130, h: 186, rx: 22 },
+    ram:    { x: 454, y: 230, w: 130, h: 186, rx: 22 },
+    power:  { x: 222, y: 466, w: 196, h: 118, rx: 22 },
   };
+
+  // Each outer rim gets a reference stored for the breathing animation
+  const rimEls = [];
 
   function buildModules() {
     const g = $('modules');
-    for (const p of Object.values(PANELS)) {
-      svgEl('rect', {
+    for (const [key, p] of Object.entries(PANELS)) {
+      const outer = svgEl('rect', {
         x: p.x - 6, y: p.y - 6, width: p.w + 12, height: p.h + 12,
         rx: p.rx + 7, class: 'glass-outer',
       }, g);
+      rimEls.push({ el: outer, phase: rnd() * Math.PI * 2, rate: 0.4 + rnd() * 0.5 });
+
       svgEl('rect', { x: p.x, y: p.y, width: p.w, height: p.h, rx: p.rx, class: 'glass-inner' }, g);
       // corner screws
       for (const [cx, cy] of [
@@ -68,6 +75,7 @@
 
   const DIRS = { N: [0, -1], S: [0, 1], E: [1, 0], W: [-1, 0] };
   const traceData = []; // { d, len } for spark routing
+  const traceEls  = []; // live path elements for pulse animation
 
   // Manhattan-routed trace from a start point heading `dir`, 2-4 segments
   function routeTrace(x, y, dir) {
@@ -114,21 +122,24 @@
       const t = routeTrace(x, y, dir);
       const style = rnd();
       const attrs = { d: t.d };
+      let baseOpacity;
       if (style < 0.18) {
         attrs.stroke = '#fbbf24';
         attrs['stroke-width'] = 1.7;
-        attrs.opacity = 0.85;
+        baseOpacity = 0.85;
         attrs.filter = 'url(#soft-glow)';
       } else if (style < 0.5) {
         attrs.stroke = '#caa64a';
         attrs['stroke-width'] = 1.4;
-        attrs.opacity = 0.6;
+        baseOpacity = 0.6;
       } else {
         attrs.stroke = '#7a5a1a';
         attrs['stroke-width'] = 1.1;
-        attrs.opacity = 0.5;
+        baseOpacity = 0.5;
       }
-      svgEl('path', attrs, traces);
+      attrs.opacity = baseOpacity;
+      const el = svgEl('path', attrs, traces);
+      traceEls.push({ el, baseOpacity, phase: rnd() * Math.PI * 2, rate: 0.2 + rnd() * 0.6 });
       svgEl('circle', {
         cx: t.endX.toFixed(1), cy: t.endY.toFixed(1), r: 2.4,
         fill: '#caa64a', opacity: 0.7,
@@ -175,47 +186,98 @@
   /* ---------- electric spark animation ---------- */
 
   // Each spark is a bright dash sliding along a trace: dasharray = one short
-  // dash + a gap the length of the wire, with the offset advanced every frame
-  // (stroke-dashoffset is periodic, so the spark loops along its wire).
+  // dash + a gap the length of the wire, with the offset advanced every frame.
   const sparks = [];
 
   function buildSparks() {
     const g = $('sparks');
     const candidates = traceData.filter((t) => t.len > 90);
-    for (let i = 0; i < 16 && candidates.length; i++) {
+    for (let i = 0; i < 20 && candidates.length; i++) {
       const t = candidates.splice(Math.floor(rnd() * candidates.length), 1)[0];
       const dash = 12 + rnd() * 12;
+      // sparks cycle through white-gold and bright amber
+      const sparkColors = ['#fff7e0', '#fde68a', '#ffd700', '#fffde0'];
       const el = svgEl('path', {
         d: t.d,
-        'stroke-width': 2.2,
+        stroke: pick(sparkColors),
+        'stroke-width': 1.8 + rnd() * 1.2,
         'stroke-dasharray': `${dash.toFixed(1)} ${t.len.toFixed(1)}`,
       }, g);
       sparks.push({
         el,
-        speed: 60 + rnd() * 130,
+        speed: 60 + rnd() * 160,
         offset: rnd() * (t.len + dash),
-        flicker: 1 + rnd() * 5,
+        flicker: 0.8 + rnd() * 4,
       });
     }
   }
 
+  /* ---------- main rAF loop: sparks + rim breathing + trace shimmer ---------- */
+
   let lastT = 0;
-  function animateSparks(timeMs) {
+  function animate(timeMs) {
     const t = timeMs / 1000;
     const dt = Math.min(t - lastT, 0.1);
     lastT = t;
+
+    // sparks
     for (const s of sparks) {
       s.offset -= s.speed * dt;
       s.el.setAttribute('stroke-dashoffset', s.offset.toFixed(1));
-      s.el.setAttribute('opacity', (0.65 + 0.35 * Math.sin(t * s.flicker)).toFixed(2));
+      s.el.setAttribute('opacity', (0.7 + 0.3 * Math.sin(t * s.flicker)).toFixed(2));
     }
-    requestAnimationFrame(animateSparks);
+
+    // rim breathing — gentle golden pulse at different phases per module
+    for (const r of rimEls) {
+      const v = 0.75 + 0.25 * Math.sin(t * r.rate + r.phase);
+      r.el.setAttribute('opacity', v.toFixed(3));
+    }
+
+    // trace shimmer — subtle brightness oscillation on a subset of traces
+    for (let i = 0; i < traceEls.length; i += 3) {
+      const tr = traceEls[i];
+      const v = tr.baseOpacity * (0.8 + 0.2 * Math.sin(t * tr.rate + tr.phase));
+      tr.el.setAttribute('opacity', v.toFixed(3));
+    }
+
+    // value counter interpolation + glow pulses
+    tickCounters(t);
+    tickGlows(t);
+
+    requestAnimationFrame(animate);
   }
 
-  /* ---------- value updates ---------- */
+  /* ---------- animated value counters ---------- */
 
-  function setText(id, text) {
+  // Each metric: current displayed value, target value, last-update time
+  const counters = {
+    'liquid-value': { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}°` },
+    'cpu-value':    { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}°` },
+    'gpu-value':    { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}°` },
+    'ram-value':    { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}` },
+    'power-value':  { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}` },
+  };
+
+  const COUNTER_SPEED = 6; // units per second scaling factor (reaches target in ~0.4 s for ±20°)
+
+  function tickCounters(t) {
+    for (const [id, c] of Object.entries(counters)) {
+      if (c.cur === null || c.tgt === null) continue;
+      const diff = c.tgt - c.cur;
+      if (Math.abs(diff) < 0.5) {
+        c.cur = c.tgt;
+      } else {
+        // ease toward target: move 30% of remaining gap per frame scaled by 60 fps
+        c.cur += diff * Math.min(1, COUNTER_SPEED * (1 / 60));
+      }
+      setRawText(id, c.fmt(c.cur));
+    }
+  }
+
+  function setRawText(id, text) {
     const el = $(id);
+    if (!el) return;
+    // preserve <tspan> children (unit suffixes); replace only first text node
     if (el.firstChild && el.firstChild.nodeType === Node.TEXT_NODE) {
       el.firstChild.nodeValue = text;
     } else {
@@ -223,12 +285,59 @@
     }
   }
 
+  // Drive glow pulse directly on the SVG element via filter + opacity in rAF
+  const activeGlows = new Map(); // id -> { startT, el }
+
+  function pulseGlow(id) {
+    const el = $(id);
+    if (!el) return;
+    activeGlows.set(id, { el, startT: lastT });
+  }
+
+  function tickGlows(t) {
+    for (const [id, g] of activeGlows) {
+      const age = t - g.startT;
+      if (age > 0.7) {
+        g.el.removeAttribute('filter');
+        activeGlows.delete(id);
+        continue;
+      }
+      // sharp flash then fade: peaks at age≈0.1 s
+      const intensity = Math.max(0, Math.sin(Math.PI * age / 0.35) * (1 - age / 0.7));
+      if (intensity > 0.05) {
+        g.el.setAttribute('filter', 'url(#val-glow)');
+      } else {
+        g.el.removeAttribute('filter');
+      }
+    }
+  }
+
+  function setTarget(id, value) {
+    const c = counters[id];
+    if (!c) return;
+    const rounded = Math.round(value);
+    const curRounded = c.cur !== null ? Math.round(c.cur) : null;
+    if (c.cur === null) {
+      // first value: snap directly, no animation
+      c.cur = value;
+      c.tgt = value;
+      setRawText(id, c.fmt(value));
+    } else if (rounded !== curRounded) {
+      c.tgt = value;
+      pulseGlow(id);
+    } else {
+      c.tgt = value;
+    }
+  }
+
+  /* ---------- value updates ---------- */
+
   function update(v) {
-    setText('liquid-value', `${Math.round(v.liquid)}°`);
-    setText('cpu-value', `${Math.round(v.cpuTemp)}°`);
-    setText('gpu-value', `${Math.round(v.gpuTemp)}°`);
-    setText('ram-value', `${Math.round(v.ramPct)}`);
-    setText('power-value', `${Math.round(v.power)}`);
+    setTarget('liquid-value', v.liquid);
+    setTarget('cpu-value',    v.cpuTemp);
+    setTarget('gpu-value',    v.gpuTemp);
+    setTarget('ram-value',    v.ramPct);
+    setTarget('power-value',  v.power);
   }
 
   /* ---------- monitoring data mapping ---------- */
@@ -267,7 +376,7 @@
   buildTraces();
   buildModules();
   buildSparks();
-  requestAnimationFrame(animateSparks);
+  requestAnimationFrame(animate);
 
   const params = new URLSearchParams(window.location.search);
   const isKraken = params.get('kraken') === '1';
