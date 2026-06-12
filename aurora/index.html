@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZXT Fluid Dynamics Aurora — Kraken Elite Monitor</title>
+  <!--
+    NZXT "Fluid Dynamics — Aurora" web integration for the Kraken Elite LCD.
+    Clone of the Fluid Dynamics layout with a cyan/magenta colour scheme and
+    animated energy beams flowing along the left and right edges.
+    Loaded inside NZXT CAM (?kraken=1) it renders the dashboard fed by
+    window.nzxt.v1.onMonitoringDataUpdate; in a normal browser it shows a
+    configuration card plus a live simulated preview.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="config" class="config" hidden>
+    <h1>NZXT <span>Fluid Dynamics — Aurora</span></h1>
+    <p>
+      A circular dashboard for the NZXT Kraken Elite LCD with animated aurora
+      beams, showing liquid, CPU and GPU temperatures, RAM usage, pump &amp; fan
+      speeds, power draw and more. Requires NZXT CAM with Web Integrations enabled.
+    </p>
+    <label for="share-url"><strong>Shareable link</strong> — open it in a browser and choose “Open NZXT CAM”:</label>
+    <input id="share-url" type="text" readonly />
+    <p class="hint">
+      If the protocol link doesn't open, use
+      <code>https://cam-redirect.nzxt.com/action/load-web-integration?url=…</code>
+      with this page's URL.
+    </p>
+    <p class="hint">Live preview (simulated data):</p>
+  </div>
+
+  <div id="face-wrap" class="face-wrap">
+    <svg id="face" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" font-family="Inter, 'Segoe UI', sans-serif">
+      <defs>
+        <radialGradient id="bg-grad" cx="50%" cy="42%" r="65%">
+          <stop offset="0%" stop-color="#0a0e1a" />
+          <stop offset="70%" stop-color="#060912" />
+          <stop offset="100%" stop-color="#03050c" />
+        </radialGradient>
+        <linearGradient id="grad-cyan" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#67e8f9" />
+          <stop offset="100%" stop-color="#0ea5e9" />
+        </linearGradient>
+        <linearGradient id="grad-magenta" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#e879f9" />
+          <stop offset="100%" stop-color="#a855f7" />
+        </linearGradient>
+        <linearGradient id="grad-orange" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#fbbf24" />
+          <stop offset="100%" stop-color="#f97316" />
+        </linearGradient>
+        <linearGradient id="grad-cpu" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#22d3ee" />
+          <stop offset="100%" stop-color="#c026d3" />
+        </linearGradient>
+        <linearGradient id="beam-cyan" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.1" />
+          <stop offset="35%" stop-color="#38bdf8" />
+          <stop offset="60%" stop-color="#a5f3fc" />
+          <stop offset="100%" stop-color="#2563eb" stop-opacity="0.15" />
+        </linearGradient>
+        <linearGradient id="beam-magenta" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#a855f7" stop-opacity="0.1" />
+          <stop offset="35%" stop-color="#d946ef" />
+          <stop offset="60%" stop-color="#f5d0fe" />
+          <stop offset="100%" stop-color="#ec4899" stop-opacity="0.15" />
+        </linearGradient>
+        <filter id="beam-blur" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="2.2" />
+        </filter>
+        <filter id="beam-haze" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="9" />
+        </filter>
+        <filter id="soft-glow" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="3" result="b" />
+          <feMerge>
+            <feMergeNode in="b" /><feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      <!-- face background -->
+      <circle cx="320" cy="320" r="318" fill="url(#bg-grad)" />
+      <circle cx="320" cy="320" r="316" fill="none" stroke="#1f2433" stroke-width="2" />
+      <circle cx="320" cy="320" r="282" fill="none" stroke="#121624" stroke-width="1.5" />
+
+      <!-- ambient particles (built by script) -->
+      <g id="particles"></g>
+
+      <!-- animated aurora beams (paths generated + animated by script) -->
+      <g id="beams-haze" filter="url(#beam-haze)"></g>
+      <g id="beams" filter="url(#beam-blur)"></g>
+
+      <!-- outer mode arcs + curved labels (paths set by script) -->
+      <g id="outer">
+        <path id="arc-tl" fill="none" stroke="url(#grad-cyan)" stroke-width="4" stroke-linecap="round" />
+        <path id="arc-tr" fill="none" stroke="url(#grad-magenta)" stroke-width="4" stroke-linecap="round" />
+        <path id="arc-bl" fill="none" stroke="url(#grad-cyan)" stroke-width="4" stroke-linecap="round" />
+        <path id="arc-br" fill="none" stroke="url(#grad-magenta)" stroke-width="4" stroke-linecap="round" />
+        <path id="lbl-tl" fill="none" />
+        <path id="lbl-tr" fill="none" />
+        <path id="lbl-bl" fill="none" />
+        <path id="lbl-br" fill="none" />
+        <text class="arc-label"><textPath href="#lbl-tl" startOffset="50%" text-anchor="middle">SYSTEM STATUS</textPath></text>
+        <text class="arc-label"><textPath href="#lbl-tr" startOffset="50%" text-anchor="middle">PERFORMANCE MODE</textPath></text>
+        <text class="arc-label"><textPath href="#lbl-bl" startOffset="50%" text-anchor="middle">QUIET</textPath></text>
+        <text class="arc-label"><textPath href="#lbl-br" startOffset="50%" text-anchor="middle">CUSTOM</textPath></text>
+        <circle id="dot-tl" r="3" fill="#22d3ee" />
+        <circle id="dot-tr" r="3" fill="#e879f9" />
+        <circle id="dot-bl" r="3" fill="#22d3ee" />
+        <circle id="dot-br" r="3" fill="#e879f9" />
+      </g>
+
+      <!-- header -->
+      <g id="header" text-anchor="middle">
+        <text x="320" y="62" class="logo">NZXT</text>
+        <text x="320" y="84" class="subtitle">FLUID DYNAMICS</text>
+      </g>
+
+      <!-- LIQUID circle (top) -->
+      <g id="g-liquid" text-anchor="middle">
+        <circle cx="320" cy="152" r="56" fill="#080b14" stroke="#1f2433" stroke-width="2" />
+        <circle class="ring-under ring-cyan" cx="320" cy="152" r="61" />
+        <circle id="liquid-arc" class="arc arc-cyan" cx="320" cy="152" r="61" pathLength="100"
+                transform="rotate(-130 320 152)" filter="url(#soft-glow)" />
+        <text x="320" y="132" class="small-label">LIQUID</text>
+        <text id="liquid-value" x="320" y="168" class="mid-value">--°</text>
+        <text x="320" y="188" class="tiny-label">COOLANT TEMP</text>
+      </g>
+
+      <!-- CPU circle (center) -->
+      <g id="g-cpu" text-anchor="middle">
+        <circle cx="320" cy="320" r="112" fill="#080b14" stroke="#1f2433" stroke-width="2.5" />
+        <circle cx="320" cy="320" r="100" fill="none" stroke="#222838" stroke-width="6"
+                stroke-dasharray="1.5 5.2" />
+        <circle class="ring-under ring-cpu" cx="320" cy="320" r="118" />
+        <circle id="cpu-arc" class="arc arc-big arc-cpu" cx="320" cy="320" r="118" pathLength="100"
+                transform="rotate(110 320 320)" filter="url(#soft-glow)" />
+        <text x="320" y="270" class="cpu-title">CPU</text>
+        <text id="cpu-value" x="320" y="352" class="big-value">--°</text>
+        <text x="320" y="392" class="cpu-sub">T E M P E R A T U R E</text>
+      </g>
+
+      <!-- GPU circle (left) -->
+      <g id="g-gpu" text-anchor="middle">
+        <circle cx="128" cy="308" r="54" fill="#080b14" stroke="#1f2433" stroke-width="2" />
+        <circle class="ring-under ring-cyan" cx="128" cy="308" r="59" />
+        <circle id="gpu-arc" class="arc arc-cyan" cx="128" cy="308" r="59" pathLength="100"
+                transform="rotate(-150 128 308)" filter="url(#soft-glow)" />
+        <text x="128" y="290" class="small-label">GPU</text>
+        <text id="gpu-value" x="128" y="324" class="mid-value">--°</text>
+        <text x="128" y="344" class="tiny-label">TEMPERATURE</text>
+      </g>
+
+      <!-- RAM circle (right) -->
+      <g id="g-ram" text-anchor="middle">
+        <circle cx="512" cy="308" r="54" fill="#080b14" stroke="#1f2433" stroke-width="2" />
+        <circle class="ring-under ring-magenta" cx="512" cy="308" r="59" />
+        <circle id="ram-arc" class="arc arc-magenta" cx="512" cy="308" r="59" pathLength="100"
+                transform="rotate(-30 512 308)" filter="url(#soft-glow)" />
+        <text x="512" y="290" class="small-label">RAM</text>
+        <text id="ram-value" x="512" y="324" class="mid-value">--%</text>
+        <text x="512" y="344" class="tiny-label">USAGE</text>
+      </g>
+
+      <!-- POWER circle (bottom) -->
+      <g id="g-power" text-anchor="middle">
+        <circle cx="320" cy="470" r="52" fill="#080b14" stroke="#1f2433" stroke-width="2" />
+        <circle class="ring-under ring-orange" cx="320" cy="470" r="57" />
+        <circle id="power-arc" class="arc arc-orange" cx="320" cy="470" r="57" pathLength="100"
+                transform="rotate(60 320 470)" filter="url(#soft-glow)" />
+        <text x="320" y="452" class="small-label">POWER</text>
+        <text id="power-value" x="320" y="486" class="mid-value">--<tspan class="unit"> W</tspan></text>
+        <text x="320" y="506" class="tiny-label">TOTAL DRAW</text>
+      </g>
+
+      <!-- stat pills (built by script) -->
+      <g id="pills-left"></g>
+      <g id="pills-right"></g>
+
+      <!-- clock -->
+      <g text-anchor="middle">
+        <text id="clock-time" x="320" y="546" class="clock">--:--:--</text>
+        <text id="clock-date" x="320" y="564" class="clock-date">—</text>
+      </g>
+
+      <!-- bottom control bar -->
+      <g id="controls">
+        <rect x="228" y="572" width="184" height="38" rx="19" fill="#0b0e18" stroke="#1f2433" stroke-width="1.5" />
+        <!-- sun -->
+        <g stroke="#9ca3af" stroke-width="1.6" fill="none" stroke-linecap="round">
+          <circle cx="268" cy="591" r="5.5" />
+          <g id="sun-rays"></g>
+        </g>
+        <!-- wave (active) -->
+        <path d="M306 591 q5 -9 10 0 t10 0 t10 0" fill="none" stroke="#e5e7eb" stroke-width="2"
+              stroke-linecap="round" filter="url(#soft-glow)" />
+        <rect x="304" y="606" width="36" height="2.5" rx="1.25" fill="#22d3ee" />
+        <!-- gear -->
+        <g stroke="#9ca3af" stroke-width="1.6" fill="none" stroke-linecap="round">
+          <circle cx="372" cy="591" r="4" />
+          <g id="gear-teeth"></g>
+        </g>
+      </g>
+
+      <!-- pagination dots -->
+      <g id="dots">
+        <circle cx="288" cy="624" r="4" fill="#22d3ee" />
+        <circle cx="304" cy="624" r="3.2" fill="#28304a" />
+        <circle cx="320" cy="624" r="3.2" fill="#28304a" />
+        <circle cx="336" cy="624" r="3.2" fill="#28304a" />
+        <circle cx="352" cy="624" r="3.2" fill="#28304a" />
+      </g>
+    </svg>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
