@@ -128,8 +128,8 @@ body:not(.kraken) .face-wrap {
 /* glass module rims */
 .glass-outer {
   fill: rgba(20, 17, 11, 0.55);
-  stroke: url(#glass-rim);
-  stroke-width: 2.5;
+  stroke: url(#glass-rim-shimmer);
+  stroke-width: 3;
 }
 
 .glass-inner {
