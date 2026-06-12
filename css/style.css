@@ -275,6 +275,157 @@ ul { list-style: none; }
 .manifesto__lines p.muted { color: var(--stone); }
 .manifesto__lines p.accent { color: var(--red-hot); }
 
+/* ---------- names / the name ---------- */
+.names {
+  padding: 9rem 2.2rem;
+  max-width: 1100px; margin: 0 auto;
+  text-align: center;
+}
+.names__intro {
+  font-size: .8rem; letter-spacing: .15em; color: var(--stone);
+  margin-bottom: 3.5rem;
+}
+.names__list {
+  display: flex; flex-direction: column; gap: .4rem;
+  margin-bottom: 3rem;
+}
+.dead-name {
+  position: relative; display: inline-block; align-self: center;
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 4.6vw, 3.4rem);
+  letter-spacing: .04em;
+  color: var(--stone);
+  padding: .1em .3em;
+}
+.dead-name.names__ar { font-family: var(--arabic); font-weight: 800; }
+.dead-name::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%;
+  height: .09em; background: var(--red-hot);
+  transform: scaleX(0); transform-origin: left;
+}
+.dead-name.is-dead { color: var(--ink-2); -webkit-text-stroke: 1px var(--stone); }
+.dead-name.is-dead::after { transform: scaleX(1); transition: transform .35s cubic-bezier(.7,0,.2,1); }
+.names__winner {
+  display: inline-block;
+  font-family: var(--display);
+  font-size: clamp(4rem, 14vw, 11rem);
+  line-height: 1; color: var(--paper);
+}
+.names__winner span { color: var(--red-hot); }
+.voice {
+  margin-top: 5rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+  text-align: left;
+  border-top: 1px solid var(--ink-2);
+  padding-top: 3rem;
+}
+@media (max-width: 760px) { .voice { grid-template-columns: 1fr; } }
+.voice__label {
+  display: block;
+  font-size: .6rem; font-weight: 700; letter-spacing: .4em;
+  color: var(--gold); margin-bottom: 1.2rem;
+}
+.voice__col p {
+  font-size: 1rem; font-weight: 400; line-height: 1.9; color: var(--stone);
+}
+.voice__col p b { color: var(--paper); font-weight: 600; }
+.voice__col--ar p { font-family: var(--arabic); font-weight: 600; font-size: 1.1rem; }
+
+/* ---------- brand pattern texture ---------- */
+.lineup, .tickets {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23ccb38c' stroke-opacity='0.05' stroke-width='3'%3E%3Crect x='52' y='14' width='16' height='28' rx='8'/%3E%3Cpath d='M44 36 q0 16 16 16 q16 0 16-16'/%3E%3Cline x1='60' y1='52' x2='60' y2='62'/%3E%3C/g%3E%3Cg fill='%23ccb38c' fill-opacity='0.04'%3E%3Crect x='18' y='78' width='8' height='26' rx='2'/%3E%3Crect x='32' y='78' width='8' height='26' rx='2'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---------- the film ---------- */
+.film { position: relative; }
+.film__pin {
+  position: relative; height: 100svh; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(204,179,140,.06), transparent 70%),
+    #060505;
+}
+.film__letterbox {
+  position: absolute; left: 0; right: 0; height: 9svh;
+  background: var(--ink); z-index: 2;
+}
+.film__letterbox--top { top: 0; border-bottom: 1px solid var(--ink-2); }
+.film__letterbox--bottom { bottom: 0; border-top: 1px solid var(--ink-2); }
+.film__frames { position: relative; width: 100%; max-width: 1000px; padding: 0 2.2rem; }
+.film__frame {
+  position: absolute; top: 50%; left: 2.2rem; right: 2.2rem;
+  transform: translateY(-50%);
+  text-align: center;
+  opacity: 0; visibility: hidden;
+}
+.film__frame:first-child { position: relative; left: auto; right: auto; }
+.film__slate {
+  display: inline-block;
+  font-size: .62rem; font-weight: 700; letter-spacing: .5em;
+  color: var(--stone);
+  border: 1px solid var(--ink-2);
+  padding: .7em 1.4em; margin-bottom: 2.2rem;
+}
+.film__frame p {
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 5.5vw, 4.4rem);
+  line-height: 1.15; color: var(--stone);
+  text-transform: uppercase;
+}
+.film__frame p b { color: var(--paper); font-weight: inherit; display: block; }
+.film__frame--turn .film__slate { border-color: var(--red-hot); color: var(--red-hot); }
+.film__frame--turn p b { color: var(--red-hot); }
+.film__endword {
+  font-family: var(--display);
+  font-size: clamp(4rem, 16vw, 12rem) !important;
+  color: var(--paper) !important; line-height: .95 !important;
+}
+.film__endtag {
+  font-family: var(--body) !important;
+  font-size: clamp(.8rem, 1.8vw, 1.1rem) !important;
+  font-weight: 600 !important; letter-spacing: .3em;
+  color: var(--gold) !important;
+  text-transform: none !important;
+  margin-top: 1.4rem;
+}
+
+/* ---------- the road ---------- */
+.road {
+  padding: 9rem 2.2rem 10rem;
+  max-width: 1300px; margin: 0 auto;
+}
+.road__track { position: relative; }
+.road__line {
+  position: absolute; top: 0; bottom: 0; left: 7px;
+  width: 1px; background: var(--ink-2);
+}
+.road__line span {
+  display: block; width: 100%; height: 0;
+  background: var(--red-hot);
+}
+.road__steps {
+  display: flex; flex-direction: column; gap: 4rem;
+  padding-left: 3.2rem;
+  counter-reset: step;
+}
+.road__step { position: relative; max-width: 640px; }
+.road__step::before {
+  content: ""; position: absolute; left: -3.2rem; top: .35rem;
+  width: 15px; height: 15px; border-radius: 50%;
+  background: var(--ink); border: 1px solid var(--stone);
+}
+.road__step--milestone::before { background: var(--red-hot); border-color: var(--red-hot); }
+.road__phase {
+  font-size: .6rem; font-weight: 700; letter-spacing: .45em; color: var(--gold);
+}
+.road__step h3 {
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 4.6vw, 3.4rem);
+  color: var(--paper); margin: .5rem 0 .8rem;
+}
+.road__step--milestone h3 { color: var(--red-hot); }
+.road__step p { font-size: .82rem; line-height: 1.7; color: var(--stone); }
+
 /* ---------- movement / pillars ---------- */
 .movement {
   position: relative;

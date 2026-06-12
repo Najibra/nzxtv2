@@ -292,6 +292,89 @@ function rules() {
 }
 
 /* ------------------------------------------------------------
+   The Name: contenders get struck through one by one,
+   then WAQEF lands with a glitch
+------------------------------------------------------------ */
+function names() {
+  const dead = gsap.utils.toArray(".dead-name");
+  const winner = document.querySelector(".names__winner");
+  startGlitchLoop(winner);
+
+  const tl = gsap.timeline({
+    scrollTrigger: { trigger: ".names__list", start: "top 75%", once: true },
+  });
+  dead.forEach((el) => {
+    tl.add(() => el.classList.add("is-dead"), "+=0.28");
+  });
+  tl.from(winner, {
+    scale: 1.6,
+    opacity: 0,
+    duration: 0.5,
+    ease: "power4.out",
+  }, "+=0.4");
+
+  gsap.from(".voice__col", {
+    opacity: 0,
+    y: 40,
+    stagger: 0.15,
+    duration: 0.7,
+    scrollTrigger: { trigger: ".voice", start: "top 85%" },
+  });
+}
+
+/* ------------------------------------------------------------
+   The Film: pinned storyboard, scenes fade through like cuts
+------------------------------------------------------------ */
+function film() {
+  const frames = gsap.utils.toArray(".film__frame");
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".film",
+      start: "top top",
+      end: "+=" + frames.length * 80 + "%",
+      pin: ".film__pin",
+      scrub: 0.6,
+    },
+  });
+
+  frames.forEach((frame, i) => {
+    tl.fromTo(frame,
+      { autoAlpha: 0, y: 40 },
+      { autoAlpha: 1, y: 0, duration: 1 }
+    );
+    if (i < frames.length - 1) {
+      tl.to(frame, { autoAlpha: 0, y: -40, duration: 1 }, "+=0.5");
+    }
+  });
+}
+
+/* ------------------------------------------------------------
+   The Road: progress line fills, steps light up on scroll
+------------------------------------------------------------ */
+function road() {
+  gsap.to("#roadProgress", {
+    height: "100%",
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".road__track",
+      start: "top 70%",
+      end: "bottom 60%",
+      scrub: true,
+    },
+  });
+  gsap.utils.toArray(".road__step").forEach((step) => {
+    gsap.from(step, {
+      opacity: 0,
+      x: -40,
+      duration: 0.7,
+      ease: "power3.out",
+      scrollTrigger: { trigger: step, start: "top 80%" },
+    });
+  });
+}
+
+/* ------------------------------------------------------------
    Lineup: glitching headliner + teased acts scramble on hover
 ------------------------------------------------------------ */
 function lineup() {
@@ -464,11 +547,14 @@ window.addEventListener("load", () => {
     marquees();
     manifesto();
     movement();
+    names();
     cities();
     rules();
     lineup();
+    film();
     sound();
     game();
+    road();
     outro();
     ScrollTrigger.refresh();
   });
