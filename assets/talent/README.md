@@ -12,7 +12,7 @@ the illustration if it doesn't — no code changes needed.
 | `mo-amer.jpg`                 | Mo Amer           |
 | `nemr.jpg`                    | Nemr              |
 | `ramy-youssef.jpg`            | Ramy Youssef      |
-| `maysoon-zayid.jpg`           | Maysoon Zayid     |
+| `joe-achkar.jpg`              | Joe Achkar        |
 
 ## Specs
 
