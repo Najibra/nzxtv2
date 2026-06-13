@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZXT Lumen — Kraken Elite Monitor</title>
+  <!--
+    NZXT "Lumen" web integration for the Kraken Elite LCD.
+
+    A minimal-luxury face: near-black canvas, one enormous CPU temperature in a
+    light, elegant weight, a single champagne hairline ring tracing load, and
+    three quiet readouts along the bottom. Restraint over effects — confident
+    typography and generous negative space. Loaded inside NZXT CAM (?kraken=1)
+    it renders live data via window.nzxt.v1.onMonitoringDataUpdate; in a normal
+    browser it shows a configuration card plus a simulated preview.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="config" class="config" hidden>
+    <h1>NZXT <span>Lumen</span></h1>
+    <p>
+      A minimal-luxury dashboard for the NZXT Kraken Elite LCD: one large CPU
+      temperature, a hairline load ring, and quiet readouts for liquid, GPU,
+      memory and power. Requires NZXT CAM with Web Integrations enabled.
+    </p>
+    <label for="share-url"><strong>Shareable link</strong> — open it in a browser and choose “Open NZXT CAM”:</label>
+    <input id="share-url" type="text" readonly />
+    <p class="hint">
+      If the protocol link doesn't open, use
+      <code>https://cam-redirect.nzxt.com/action/load-web-integration?url=…</code>
+      with this page's URL.
+    </p>
+    <p class="hint">Live preview (simulated data):</p>
+  </div>
+
+  <div id="face-wrap" class="face-wrap">
+    <svg id="face" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" font-family="Inter, 'Segoe UI', sans-serif">
+      <defs>
+        <radialGradient id="bg-grad" cx="50%" cy="44%" r="72%">
+          <stop offset="0%" stop-color="#0c0c0e" />
+          <stop offset="70%" stop-color="#060607" />
+          <stop offset="100%" stop-color="#020203" />
+        </radialGradient>
+        <!-- champagne accent gradient for the ring -->
+        <linearGradient id="ring-grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#e8d9b5" />
+          <stop offset="100%" stop-color="#b89f6e" />
+        </linearGradient>
+      </defs>
+
+      <!-- background -->
+      <circle cx="320" cy="320" r="320" fill="url(#bg-grad)" />
+      <circle cx="320" cy="320" r="313" fill="none" stroke="#15151a" stroke-width="1" />
+
+      <!-- hairline load ring (pathLength trick = 100 units) -->
+      <g>
+        <circle cx="320" cy="320" r="300" fill="none" stroke="#ffffff" stroke-width="1"
+                opacity="0.08" />
+        <!-- slow rotating sheen, very subtle -->
+        <path id="sheen" fill="none" stroke="#ffffff" stroke-width="1.5"
+              stroke-linecap="round" opacity="0.10" />
+        <circle id="load-arc" cx="320" cy="320" r="300" fill="none" stroke="url(#ring-grad)"
+                stroke-width="2" stroke-linecap="round" pathLength="100"
+                stroke-dasharray="0 100" transform="rotate(-90 320 320)" />
+        <!-- leading dot -->
+        <circle id="load-dot" cx="320" cy="20" r="3.2" fill="#f0e6cc" />
+      </g>
+
+      <!-- top: liquid coolant -->
+      <g text-anchor="middle">
+        <text x="320" y="122" class="micro-label">LIQUID</text>
+        <text id="liquid-value" x="320" y="156" class="top-value">--<tspan class="top-unit">°</tspan></text>
+      </g>
+
+      <!-- center: CPU hero -->
+      <g text-anchor="middle">
+        <text x="320" y="232" class="hero-label">CPU</text>
+        <text id="cpu-value" x="326" y="372" class="hero-value">--<tspan class="hero-unit">°</tspan></text>
+        <text x="320" y="408" class="hero-sub">CORE TEMPERATURE</text>
+      </g>
+
+      <!-- bottom: three quiet readouts -->
+      <g text-anchor="middle">
+        <line x1="232" y1="470" x2="232" y2="516" stroke="#ffffff" stroke-width="1" opacity="0.08" />
+        <line x1="408" y1="470" x2="408" y2="516" stroke="#ffffff" stroke-width="1" opacity="0.08" />
+
+        <text x="156" y="480" class="micro-label">GPU</text>
+        <text id="gpu-value" x="156" y="512" class="stat-value">--<tspan class="stat-unit">°</tspan></text>
+
+        <text x="320" y="480" class="micro-label">MEMORY</text>
+        <text id="ram-value" x="320" y="512" class="stat-value">--<tspan class="stat-unit">%</tspan></text>
+
+        <text x="484" y="480" class="micro-label">POWER</text>
+        <text id="power-value" x="484" y="512" class="stat-value">--<tspan class="stat-unit">W</tspan></text>
+      </g>
+    </svg>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
