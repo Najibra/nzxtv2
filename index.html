@@ -4,376 +4,400 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WAQEF — Pause Life. Let Laughter Begin.</title>
-  <meta name="description" content="WAQEF is not just stand-up. It's a movement. Comedy, culture, connection — live, offline, unforgettable. Riyadh · Jeddah · Dubai · Cairo." />
-  <meta property="og:title" content="WAQEF — Pause Life. Let Laughter Begin." />
+  <meta name="description" content="WAQEF is not just stand-up. It's a movement. Comedy, culture, connection — bold, raw, unforgettable. Riyadh · Cairo · Dubai · Jeddah." />
+  <meta property="og:title" content="WAQEF — The Comedy Movement" />
   <meta property="og:description" content="If you're not in the room, you're outside the joke." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;400;500;600;700;800&family=Cairo:wght@600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,600&family=Cairo:wght@600;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/svg+xml" href="assets/mic.svg" />
 </head>
 <body>
 
-  <!-- ====================== GRAIN OVERLAY ====================== -->
+  <!-- ====================== GRAIN ====================== -->
   <div class="grain" aria-hidden="true"></div>
 
-  <!-- ====================== CUSTOM CURSOR ====================== -->
-  <div class="cursor" aria-hidden="true">
-    <div class="cursor__dot"></div>
-    <div class="cursor__ring"></div>
-  </div>
+  <!-- ====================== CURSOR ====================== -->
+  <div class="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
 
   <!-- ====================== PRELOADER ====================== -->
   <div class="preloader" id="preloader">
-    <div class="preloader__glyphs" aria-hidden="true">
-      <span class="glyph glyph--pause">
-        <svg viewBox="0 0 100 100"><rect x="22" y="18" width="20" height="64" rx="4"/><rect x="58" y="18" width="20" height="64" rx="4"/></svg>
-      </span>
-      <span class="glyph glyph--laugh">
-        <svg viewBox="0 0 100 100"><path d="M14 38 Q50 96 86 38 Q50 62 14 38Z"/></svg>
-      </span>
-      <span class="glyph glyph--mic">
-        <svg viewBox="0 0 100 100"><rect x="38" y="12" width="24" height="42" rx="12"/><path d="M26 44 q0 24 24 24 q24 0 24-24" fill="none" stroke-width="7" class="stroke"/><line x1="50" y1="68" x2="50" y2="84" stroke-width="7" class="stroke"/><line x1="34" y1="86" x2="66" y2="86" stroke-width="7" class="stroke"/></svg>
-      </span>
+    <div class="preloader__mark">
+      <span class="wordmark">WAQEF</span>
+      <svg class="smile" viewBox="0 0 200 40" aria-hidden="true"><path d="M8 8 Q100 54 192 14" fill="none" stroke-width="9" stroke-linecap="round"/></svg>
     </div>
-    <div class="preloader__count"><span id="loadCount">000</span><sup>%</sup></div>
-    <div class="preloader__tag">PAUSE LIFE — LOADING LAUGHTER</div>
     <div class="preloader__bar"><span id="loadBar"></span></div>
+    <div class="preloader__count"><span id="loadCount">00</span><i>/ 37</i></div>
+  </div>
+
+  <!-- ====================== TOP UTILITY STRIP ====================== -->
+  <div class="util" id="util" aria-hidden="true">
+    <span class="util__brand">WAQEF — THE COMEDY MOVEMENT</span>
+    <span class="util__bars"></span>
+    <span class="util__cities">RIYADH · CAIRO · DUBAI · JEDDAH</span>
   </div>
 
   <!-- ====================== NAV ====================== -->
   <header class="nav" id="nav">
-    <a class="nav__logo hoverable" href="#top" data-scramble="WAQEF">WAQEF</a>
-    <div class="nav__center" aria-hidden="true">وقف</div>
+    <a class="nav__logo" href="#top">
+      <span class="wordmark">WAQEF</span>
+      <svg class="smile smile--sm" viewBox="0 0 200 40" aria-hidden="true"><path d="M8 8 Q100 54 192 14" fill="none" stroke-width="11" stroke-linecap="round"/></svg>
+    </a>
     <nav class="nav__links">
-      <a href="#movement" class="hoverable" data-scramble="MOVEMENT">MOVEMENT</a>
-      <a href="#cities" class="hoverable" data-scramble="CITIES">CITIES</a>
-      <a href="#lineup" class="hoverable" data-scramble="LINEUP">LINEUP</a>
-      <a href="#rules" class="hoverable" data-scramble="RULES">RULES</a>
-      <a href="#tickets" class="nav__cta hoverable" data-scramble="TICKETS">TICKETS</a>
+      <a href="#stand" class="hoverable">Stand for</a>
+      <a href="#movement" class="hoverable">Movement</a>
+      <a href="#cities" class="hoverable">Tour</a>
+      <a href="#film" class="hoverable">The Film</a>
+      <a href="#road" class="hoverable">Roadmap</a>
     </nav>
+    <a href="#tickets" class="btn btn--red nav__cta hoverable">Get tickets</a>
+    <button class="nav__burger hoverable" id="burger" aria-label="Menu"><span></span><span></span></button>
   </header>
 
   <main id="top">
 
     <!-- ====================== HERO ====================== -->
     <section class="hero" id="hero">
-      <div class="hero__bg" aria-hidden="true"></div>
-      <div class="hero__glyphline" aria-hidden="true">
-        <span class="glyph glyph--pause"><svg viewBox="0 0 100 100"><rect x="22" y="18" width="20" height="64" rx="4"/><rect x="58" y="18" width="20" height="64" rx="4"/></svg></span>
-        <i>/</i>
-        <span class="glyph glyph--laugh"><svg viewBox="0 0 100 100"><path d="M14 38 Q50 96 86 38 Q50 62 14 38Z"/></svg></span>
-        <i>/</i>
-        <span class="glyph glyph--mic"><svg viewBox="0 0 100 100"><rect x="38" y="12" width="24" height="42" rx="12"/><path d="M26 44 q0 24 24 24 q24 0 24-24" fill="none" stroke-width="7" class="stroke"/><line x1="50" y1="68" x2="50" y2="84" stroke-width="7" class="stroke"/><line x1="34" y1="86" x2="66" y2="86" stroke-width="7" class="stroke"/></svg></span>
-      </div>
-
-      <h1 class="hero__title glitch" data-text="WAQEF">WAQEF</h1>
+      <div class="hero__spot" aria-hidden="true"></div>
       <div class="hero__arabic" aria-hidden="true">وقف</div>
 
-      <p class="hero__tag" id="heroTag">PAUSE LIFE. LET LAUGHTER BEGIN.</p>
-
-      <div class="hero__meta">
-        <span>EST. 2025</span>
-        <span>RIYADH — JEDDAH — DUBAI — CAIRO</span>
-        <span>100% OFFLINE</span>
+      <div class="hero__inner">
+        <span class="hero__eyebrow">Branding · Visual Identity · 22 May 2025</span>
+        <h1 class="hero__mark">
+          <span class="wordmark hero__word" data-text="WAQEF">WAQEF</span>
+          <svg class="smile smile--hero" viewBox="0 0 200 40" aria-hidden="true"><path d="M8 8 Q100 54 192 14" fill="none" stroke-width="8" stroke-linecap="round"/></svg>
+        </h1>
+        <p class="hero__tagline" id="heroTag">Pause life. Let laughter begin.</p>
+        <p class="hero__sub">Not just stand-up — a movement that stops life's noise, puts people in the same room, and reminds them they're part of something bigger.</p>
+        <div class="hero__cta">
+          <a href="#tickets" class="btn btn--red hoverable">Get in the room</a>
+          <a href="#cities" class="btn btn--ghost hoverable">Explore the tour →</a>
+        </div>
       </div>
 
-      <div class="hero__scroll" aria-hidden="true">
-        <span>SCROLL</span>
-        <div class="hero__scroll-line"></div>
+      <div class="hero__stats">
+        <div class="stat"><b data-count="4">0</b><span>cities on tour</span></div>
+        <div class="stat"><b data-count="100" data-suffix="%">0</b><span>offline, always</span></div>
+        <div class="stat"><b data-count="1">0</b><span>mic that matters</span></div>
+        <div class="stat"><b data-count="0" data-text="∞">0</b><span>reruns. ever.</span></div>
       </div>
+
+      <div class="hero__scroll" aria-hidden="true"><span>SCROLL</span><i></i></div>
     </section>
 
     <!-- ====================== MARQUEE ====================== -->
-    <div class="marquee marquee--red" aria-hidden="true">
+    <div class="marquee" aria-hidden="true">
       <div class="marquee__track" data-speed="1">
-        <span>COMEDY ✶ CULTURE ✶ CONNECTION ✶ </span><span>COMEDY ✶ CULTURE ✶ CONNECTION ✶ </span><span>COMEDY ✶ CULTURE ✶ CONNECTION ✶ </span><span>COMEDY ✶ CULTURE ✶ CONNECTION ✶ </span>
+        <span>COMEDY <em>✦</em> CULTURE <em>✦</em> CONNECTION <em>✦</em> خلّي الضحك يبدأ <em>✦</em> </span>
+        <span>COMEDY <em>✦</em> CULTURE <em>✦</em> CONNECTION <em>✦</em> خلّي الضحك يبدأ <em>✦</em> </span>
+        <span>COMEDY <em>✦</em> CULTURE <em>✦</em> CONNECTION <em>✦</em> خلّي الضحك يبدأ <em>✦</em> </span>
       </div>
     </div>
 
-    <!-- ====================== MANIFESTO ====================== -->
-    <section class="manifesto" id="manifesto">
-      <div class="section-label"><span>01</span> THE PAUSE</div>
-      <div class="manifesto__lines">
-        <p class="reveal-line">WAQEF <em>(n.)</em> — a pause.</p>
-        <p class="reveal-line">For breath. For joy. For expression.</p>
-        <p class="reveal-line muted">It isn't just stand-up.</p>
-        <p class="reveal-line">It's a movement that stops life's noise,</p>
-        <p class="reveal-line">puts people in the same room,</p>
-        <p class="reveal-line accent">and makes them laugh until they remember</p>
-        <p class="reveal-line accent">they're part of something bigger.</p>
+    <!-- ====================== WHAT WE STAND FOR ====================== -->
+    <section class="stand" id="stand">
+      <div class="stand__head">
+        <span class="eyebrow">01 — What we stand for</span>
+        <h2 class="display reveal-up">We champion <span class="red">bold</span> voices.<br/>We make people laugh <span class="gold">— together.</span></h2>
       </div>
+      <ul class="values">
+        <li class="value hoverable">
+          <span class="value__ico" aria-hidden="true">
+            <svg viewBox="0 0 100 100"><rect x="38" y="14" width="24" height="40" rx="12"/><path class="s" d="M28 46q0 22 22 22 22 0 22-22" fill="none"/><line class="s" x1="50" y1="68" x2="50" y2="84"/><line class="s" x1="34" y1="86" x2="66" y2="86"/></svg>
+          </span>
+          <h3>Bold voices</h3>
+          <p>We amplify fresh, fearless talent.</p>
+        </li>
+        <li class="value hoverable">
+          <span class="value__ico" aria-hidden="true">
+            <svg viewBox="0 0 100 100"><circle class="s" cx="50" cy="50" r="34" fill="none"/><ellipse class="s" cx="50" cy="50" rx="14" ry="34" fill="none"/><line class="s" x1="16" y1="50" x2="84" y2="50"/></svg>
+          </span>
+          <h3>Cultural pride</h3>
+          <p>Rooted in local culture, made for the world.</p>
+        </li>
+        <li class="value hoverable">
+          <span class="value__ico" aria-hidden="true">
+            <svg viewBox="0 0 100 100"><circle class="s" cx="35" cy="40" r="13" fill="none"/><circle class="s" cx="65" cy="40" r="13" fill="none"/><path class="s" d="M18 78q0-18 17-18 11 0 15 9 4-9 15-9 17 0 17 18" fill="none"/></svg>
+          </span>
+          <h3>Real connection</h3>
+          <p>We bring people together through laughter.</p>
+        </li>
+        <li class="value hoverable">
+          <span class="value__ico" aria-hidden="true">
+            <svg viewBox="0 0 100 100"><path class="s" d="M50 14l11 22 24 3-17 17 4 24-22-12-22 12 4-24-17-17 24-3z" fill="none"/></svg>
+          </span>
+          <h3>Lasting impact</h3>
+          <p>We create moments that stay with you.</p>
+        </li>
+      </ul>
     </section>
 
     <!-- ====================== THE NAME ====================== -->
     <section class="names" id="names">
-      <div class="section-label"><span>02</span> THE NAME</div>
-      <p class="names__intro">Before WAQEF, there were contenders. None of them survived.</p>
-      <ul class="names__list">
-        <li class="dead-name">LAUGH LOUNGE</li>
-        <li class="dead-name">LAUGH BREAK</li>
-        <li class="dead-name">THE BIG LAUGH SHOW</li>
-        <li class="dead-name">COMEDYBEAST</li>
-        <li class="dead-name names__ar">اللمّة</li>
-        <li class="dead-name">COMEDY NOW</li>
-      </ul>
-      <h2 class="names__winner glitch" data-text="WAQEF.">WAQEF<span>.</span></h2>
-      <div class="voice">
-        <div class="voice__col">
-          <span class="voice__label">HOW WAQEF SPEAKS</span>
-          <p>Bold and razor-sharp. WAQEF doesn't whisper — <b>it speaks truth in stereo.</b> Confident but relatable. Street-smart with a theatrical twist.</p>
+      <span class="eyebrow">02 — The name</span>
+      <h2 class="display reveal-up">Before WAQEF,<br/>there were <span class="red">contenders.</span></h2>
+      <p class="lede reveal-up">None of them survived.</p>
+      <div class="names__chips">
+        <span class="dchip dead">Laugh Lounge</span>
+        <span class="dchip dead">Laugh Break</span>
+        <span class="dchip dead">The Big Laugh Show</span>
+        <span class="dchip dead">ComedyBeast</span>
+        <span class="dchip dead dchip--ar">اللمّة</span>
+        <span class="dchip dead">Comedy Now</span>
+        <span class="dchip winner">
+          <span class="wordmark">WAQEF</span>
+          <svg class="smile smile--chip" viewBox="0 0 200 40"><path d="M8 8 Q100 54 192 14" fill="none" stroke-width="13" stroke-linecap="round"/></svg>
+        </span>
+      </div>
+    </section>
+
+    <!-- ====================== PERSONALITY + TONE ====================== -->
+    <section class="personality" id="personality">
+      <div class="personality__grid">
+        <div class="personality__copy">
+          <span class="eyebrow">03 — Our personality</span>
+          <h2 class="display reveal-up"><span class="red">Confident.</span> Witty.<br/>Relatable. Always real.</h2>
+          <ul class="traits">
+            <li class="trait reveal-up"><b>Confident</b><span>We own the room.</span></li>
+            <li class="trait reveal-up"><b>Witty</b><span>Smart humor, sharp timing.</span></li>
+            <li class="trait reveal-up"><b>Relatable</b><span>Real people. Real stories.</span></li>
+            <li class="trait reveal-up"><b>Culturally rooted</b><span>Proud of where we come from.</span></li>
+            <li class="trait reveal-up"><b>Unapologetically real</b><span>No pretense. Just truth.</span></li>
+            <li class="trait reveal-up"><b>Energetic</b><span>High vibes. Good energy.</span></li>
+          </ul>
         </div>
-        <div class="voice__col voice__col--ar" dir="rtl">
-          <span class="voice__label">بالعربي وبالإنجليزي</span>
-          <p>صوت واحد، لغتان. نضحك بالعربي، ونوصل للعالم بالإنجليزي — <b>ومن غير فلاتر.</b></p>
+        <div class="bubble" aria-hidden="true">
+          <div class="bubble__cloud">
+            <span class="w1">BOLD</span><span class="w2">WITTY</span><span class="w3">RELATABLE</span>
+            <span class="w4">SHARP</span><span class="w5 red">REAL</span><span class="w6">CULTURAL</span>
+            <span class="w7">CLEVER</span><span class="w8">SMART</span><span class="w9 gold">FUN</span>
+            <span class="w10">ENERGETIC</span><span class="w11">VIBRANT</span><span class="w12">CONFIDENT</span>
+          </div>
+          <span class="bubble__tail"></span>
+          <span class="bubble__label">How we speak. How we connect. How we're remembered.</span>
         </div>
       </div>
     </section>
 
-    <!-- ====================== PILLARS / MOVEMENT ====================== -->
+    <!-- ====================== MOVEMENT / PILLARS ====================== -->
     <section class="movement" id="movement">
-      <div class="section-label"><span>03</span> THE MOVEMENT</div>
-      <h2 class="movement__title" data-scramble-onview="NOT A SHOW. A MOVEMENT.">NOT A SHOW. A MOVEMENT.</h2>
-
+      <span class="eyebrow">04 — The movement</span>
+      <h2 class="display reveal-up">Not a show.<br/>A <span class="red">movement.</span></h2>
       <ul class="pillars">
-        <li class="pillar hoverable" data-hue="red">
-          <span class="pillar__num">001</span>
-          <h3 class="pillar__name">LAUGHTER MOVEMENT</h3>
+        <li class="pillar hoverable" data-img="1">
+          <span class="pillar__num">01</span>
+          <h3 class="pillar__name">Laughter movement</h3>
           <p class="pillar__desc">Laughter heals, connects, and shakes up the norm. We don't whisper — we speak truth in stereo.</p>
           <span class="pillar__arrow">→</span>
         </li>
-        <li class="pillar hoverable" data-hue="gold">
-          <span class="pillar__num">002</span>
-          <h3 class="pillar__name">PREMIUM FEEL, STREET-LEVEL VOICE</h3>
+        <li class="pillar hoverable" data-img="2">
+          <span class="pillar__num">02</span>
+          <h3 class="pillar__name">Premium feel, street-level voice</h3>
           <p class="pillar__desc">High-end visuals and refined stage design — with voices that speak for the people.</p>
           <span class="pillar__arrow">→</span>
         </li>
-        <li class="pillar hoverable" data-hue="red">
-          <span class="pillar__num">003</span>
-          <h3 class="pillar__name">AUDIENCE ENERGY</h3>
+        <li class="pillar hoverable" data-img="3">
+          <span class="pillar__num">03</span>
+          <h3 class="pillar__name">Audience energy</h3>
           <p class="pillar__desc">The crowd drives the rhythm. Every night is rewritten live by the room itself.</p>
           <span class="pillar__arrow">→</span>
         </li>
-        <li class="pillar hoverable" data-hue="gold">
-          <span class="pillar__num">004</span>
-          <h3 class="pillar__name">SPOTLIGHT MOMENTS</h3>
+        <li class="pillar hoverable" data-img="4">
+          <span class="pillar__num">04</span>
+          <h3 class="pillar__name">Spotlight moments</h3>
           <p class="pillar__desc">Spontaneous moments that travel beyond the stage — but only if you were there.</p>
           <span class="pillar__arrow">→</span>
         </li>
       </ul>
-      <div class="pillar-preview" id="pillarPreview" aria-hidden="true">
-        <span class="glyph glyph--mic"><svg viewBox="0 0 100 100"><rect x="38" y="12" width="24" height="42" rx="12"/><path d="M26 44 q0 24 24 24 q24 0 24-24" fill="none" stroke-width="7" class="stroke"/><line x1="50" y1="68" x2="50" y2="84" stroke-width="7" class="stroke"/><line x1="34" y1="86" x2="66" y2="86" stroke-width="7" class="stroke"/></svg></span>
+      <div class="pillar-preview" id="pillarPreview" aria-hidden="true"></div>
+    </section>
+
+    <!-- ====================== VISUAL ESSENCE ====================== -->
+    <section class="essence" id="essence">
+      <span class="eyebrow eyebrow--light">05 — Our visual essence</span>
+      <div class="essence__row">
+        <article class="ess hoverable"><span class="ess__k">Bold</span><p>High contrast. Strong presence.</p></article>
+        <article class="ess hoverable"><span class="ess__k">Raw</span><p>Real moments. No filters.</p></article>
+        <article class="ess hoverable"><span class="ess__k">Cultural</span><p>Rooted in our heritage.</p></article>
+        <article class="ess hoverable"><span class="ess__k">Unforgettable</span><p>Designed to be remembered.</p></article>
       </div>
     </section>
 
-    <!-- ====================== CITIES — HORIZONTAL SCROLL ====================== -->
+    <!-- ====================== CITIES / TOUR ====================== -->
     <section class="cities" id="cities">
       <div class="cities__pin">
-        <div class="section-label section-label--abs"><span>04</span> THE TOUR</div>
+        <div class="cities__head">
+          <span class="eyebrow">06 — The tour</span>
+          <h2 class="display">Four cities.<br/>One pause.</h2>
+        </div>
         <div class="cities__track" id="citiesTrack">
           <article class="city-card">
-            <div class="city-card__index">EP·01</div>
-            <h3 class="city-card__name">RIYADH</h3>
-            <div class="city-card__ar">الرياض</div>
-            <p>The first pause. One mic, one rooftop, one city that forgot how loud it can laugh.</p>
-            <span class="city-card__status">OPENING NIGHT</span>
+            <div class="city-card__media m1"><span class="city-card__ar">الرياض</span></div>
+            <div class="city-card__body">
+              <span class="city-card__tag live">Opening night</span>
+              <h3>Riyadh</h3>
+              <p>The first pause. One mic, one rooftop, one city that forgot how loud it can laugh.</p>
+            </div>
           </article>
           <article class="city-card">
-            <div class="city-card__index">EP·02</div>
-            <h3 class="city-card__name">JEDDAH</h3>
-            <div class="city-card__ar">جدة</div>
-            <p>Sea breeze, sharp tongues. The bride of the Red Sea meets the punchline of the year.</p>
-            <span class="city-card__status">COMING SOON</span>
+            <div class="city-card__media m2"><span class="city-card__ar">جدة</span></div>
+            <div class="city-card__body">
+              <span class="city-card__tag">Coming soon</span>
+              <h3>Jeddah</h3>
+              <p>Sea breeze, sharp tongues. The bride of the Red Sea meets the punchline of the year.</p>
+            </div>
           </article>
           <article class="city-card">
-            <div class="city-card__index">EP·03</div>
-            <h3 class="city-card__name">DUBAI</h3>
-            <div class="city-card__ar">دبي</div>
-            <p>A city that never pauses — until WAQEF makes it. Premium stage, zero filters.</p>
-            <span class="city-card__status">COMING SOON</span>
+            <div class="city-card__media m3"><span class="city-card__ar">دبي</span></div>
+            <div class="city-card__body">
+              <span class="city-card__tag">Coming soon</span>
+              <h3>Dubai</h3>
+              <p>A city that never pauses — until WAQEF makes it. Premium stage, zero filters.</p>
+            </div>
           </article>
           <article class="city-card">
-            <div class="city-card__index">EP·04</div>
-            <h3 class="city-card__name">CAIRO</h3>
-            <div class="city-card__ar">القاهرة</div>
-            <p>Comedy's mother tongue. The city of a thousand jokes gets a stage worthy of them.</p>
-            <span class="city-card__status">COMING SOON</span>
+            <div class="city-card__media m4"><span class="city-card__ar">القاهرة</span></div>
+            <div class="city-card__body">
+              <span class="city-card__tag">Coming soon</span>
+              <h3>Cairo</h3>
+              <p>Comedy's mother tongue. The city of a thousand jokes gets a stage worthy of them.</p>
+            </div>
           </article>
-          <article class="city-card city-card--last">
-            <div class="city-card__index">EP·??</div>
-            <h3 class="city-card__name">YOUR CITY</h3>
-            <div class="city-card__ar">مدينتك</div>
-            <p>The movement spreads where the laughter is loudest. Make noise.</p>
-            <span class="city-card__status">VOTE NEXT STOP</span>
+          <article class="city-card city-card--cta">
+            <div class="city-card__body">
+              <h3>Your city next?</h3>
+              <p>The movement spreads where the laughter is loudest. Make noise.</p>
+              <a href="#tickets" class="btn btn--light hoverable">Vote the next stop</a>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- ====================== MARQUEE 2 ====================== -->
-    <div class="marquee marquee--outline" aria-hidden="true">
-      <div class="marquee__track" data-speed="-1">
-        <span>HABIBI, LET'S LAUGH ✶ خلّي الضحك يبدأ ✶ </span><span>HABIBI, LET'S LAUGH ✶ خلّي الضحك يبدأ ✶ </span><span>HABIBI, LET'S LAUGH ✶ خلّي الضحك يبدأ ✶ </span>
-      </div>
-    </div>
-
-    <!-- ====================== RULES / FOMO ====================== -->
+    <!-- ====================== HOUSE RULES ====================== -->
     <section class="rules" id="rules">
       <div class="rules__pin">
-        <div class="section-label section-label--abs"><span>05</span> HOUSE RULES</div>
+        <span class="eyebrow eyebrow--light rules__eb">07 — House rules</span>
         <div class="rules__statements">
-          <h2 class="rule glitch" data-text="WHAT HAPPENS AT WAQEF STAYS OFFLINE.">WHAT HAPPENS AT WAQEF <b>STAYS OFFLINE.</b></h2>
-          <h2 class="rule glitch" data-text="THERE IS NO “WATCH LATER.”">THERE IS NO <b>“WATCH LATER.”</b></h2>
-          <h2 class="rule glitch" data-text="IF YOU'RE NOT IN THE ROOM, YOU'RE OUTSIDE THE JOKE.">IF YOU'RE NOT IN THE ROOM, <b>YOU'RE OUTSIDE THE JOKE.</b></h2>
+          <h2 class="rule">What happens at WAQEF<br/><b>stays offline.</b></h2>
+          <h2 class="rule">There is no<br/><b>“watch later.”</b></h2>
+          <h2 class="rule">If you're not in the room,<br/><b>you're outside the joke.</b></h2>
         </div>
       </div>
     </section>
 
-    <!-- ====================== LINEUP / ON THE MIC ====================== -->
+    <!-- ====================== LINEUP ====================== -->
     <section class="lineup" id="lineup">
-      <div class="section-label"><span>06</span> ON THE MIC</div>
-      <p class="lineup__pre">OPENING NIGHT — RIYADH</p>
-      <h2 class="lineup__name glitch" data-text="JOHN ACHKAR">JOHN ACHKAR</h2>
-      <p class="lineup__sub">🔥 Be part of the night everyone will be talking about.</p>
-      <ul class="lineup__tba">
-        <li class="hoverable" data-tba="ANNOUNCING SOON"><span>EP·02</span><b>??? ?????</b><i>JEDDAH</i></li>
-        <li class="hoverable" data-tba="ANNOUNCING SOON"><span>EP·03</span><b>???? ??????</b><i>DUBAI</i></li>
-        <li class="hoverable" data-tba="ANNOUNCING SOON"><span>EP·04</span><b>?? ???????</b><i>CAIRO</i></li>
-      </ul>
+      <span class="eyebrow">08 — On the mic</span>
+      <div class="lineup__hero reveal-up">
+        <span class="lineup__pre">Opening night — Riyadh</span>
+        <h2 class="lineup__name" data-text="JOHN ACHKAR">JOHN ACHKAR</h2>
+        <p>🔥 Be part of the night everyone will be talking about.</p>
+        <a class="btn btn--light hoverable" href="#tickets">Reserve your seat</a>
+      </div>
+      <div class="lineup__tba">
+        <div class="tba hoverable" data-tba="ANNOUNCING SOON"><span>EP·02 — Jeddah</span><b>??? ?????</b></div>
+        <div class="tba hoverable" data-tba="ANNOUNCING SOON"><span>EP·03 — Dubai</span><b>???? ??????</b></div>
+        <div class="tba hoverable" data-tba="ANNOUNCING SOON"><span>EP·04 — Cairo</span><b>?? ???????</b></div>
+      </div>
     </section>
 
     <!-- ====================== THE FILM ====================== -->
     <section class="film" id="film">
       <div class="film__pin">
-        <div class="section-label section-label--abs"><span>07</span> THE FILM — “THE SMILE WE FORGOT”</div>
-        <div class="film__letterbox film__letterbox--top" aria-hidden="true"></div>
+        <span class="eyebrow eyebrow--light film__eb">09 — The film · “The Smile We Forgot”</span>
+        <div class="film__bar film__bar--top" aria-hidden="true"></div>
         <div class="film__frames">
-          <div class="film__frame">
-            <span class="film__slate">SC·01</span>
-            <p>A girl sings karaoke in neon light.<br/><b>Dead eyes.</b></p>
-          </div>
-          <div class="film__frame">
-            <span class="film__slate">SC·02</span>
-            <p>A gamer smashes buttons.<br/><b>Zero emotion.</b></p>
-          </div>
-          <div class="film__frame">
-            <span class="film__slate">SC·03</span>
-            <p>A robot does card tricks. Polite claps.<br/><b>Blank faces.</b></p>
-          </div>
-          <div class="film__frame film__frame--turn">
-            <span class="film__slate">SC·04 — THE TURN</span>
-            <p>Then: a lone vintage mic. A soft buzz.<br/><b>Everyone looks up.</b></p>
-          </div>
+          <div class="film__frame"><span class="film__slate">SC·01</span><p>A girl sings karaoke in neon light. <b>Dead eyes.</b></p></div>
+          <div class="film__frame"><span class="film__slate">SC·02</span><p>A gamer smashes buttons. <b>Zero emotion.</b></p></div>
+          <div class="film__frame"><span class="film__slate">SC·03</span><p>A robot does card tricks. Polite claps. <b>Blank faces.</b></p></div>
+          <div class="film__frame film__frame--turn"><span class="film__slate">SC·04 — The turn</span><p>Then: a lone vintage mic. A soft buzz. <b>Everyone looks up.</b></p></div>
           <div class="film__frame film__frame--end">
-            <span class="film__slate">END CARD</span>
-            <p class="film__endword">WAQEF</p>
+            <span class="film__slate">End card</span>
+            <p class="film__endword wordmark">WAQEF</p>
             <p class="film__endtag">Pause Life. خلّي الضحك يبدأ.</p>
           </div>
         </div>
-        <div class="film__letterbox film__letterbox--bottom" aria-hidden="true"></div>
+        <div class="film__bar film__bar--bottom" aria-hidden="true"></div>
       </div>
     </section>
 
-    <!-- ====================== THE SOUND OF WAQEF ====================== -->
+    <!-- ====================== THE SOUND ====================== -->
     <section class="sound" id="sound">
-      <div class="section-label"><span>08</span> THE SOUND</div>
-      <div class="sound__grid">
+      <div class="sound__card">
         <div class="sound__copy">
-          <h2>EVERY MOVEMENT<br/><b>HAS A SIGNATURE.</b></h2>
-          <p>Mic static. Then a burst of crowd laughter. That's the sound of WAQEF — played before every show, every ad, every reveal. Hear it once, and you'll never un-hear it.</p>
-          <button class="sound__btn hoverable" id="soundBtn">▶&nbsp;&nbsp;PLAY THE SIGNATURE</button>
+          <span class="eyebrow eyebrow--light">10 — The sound</span>
+          <h2 class="display">Every movement<br/>has a <span class="gold">signature.</span></h2>
+          <p>Mic static. Then a burst of crowd laughter. That's the sound of WAQEF — played before every show, every ad, every reveal. Hear it once, you'll never un-hear it.</p>
+          <button class="btn btn--light hoverable" id="soundBtn">▶&nbsp;&nbsp;Play the signature</button>
         </div>
         <div class="sound__eq" id="soundEq" aria-hidden="true">
-          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
       </div>
     </section>
 
     <!-- ====================== THE GAME ====================== -->
     <section class="game" id="game">
-      <div class="section-label"><span>09</span> THE GAME</div>
-      <h2 class="game__title" data-scramble-onview="PLAY. WIN. BE THERE.">PLAY. WIN. BE THERE.</h2>
-      <p class="game__hint">Every ticket hides a chance. Wipe the static to see what's behind tonight's seal. →</p>
+      <span class="eyebrow">11 — The game</span>
+      <h2 class="display reveal-up">Play. Win. <span class="red">Be there.</span></h2>
+      <p class="lede reveal-up">Every ticket hides a chance. Wipe the card to reveal tonight's seal.</p>
       <div class="game__card hoverable" id="gameCard">
         <div class="game__prize">
-          <span class="game__prize-label">DREAM PRIZE</span>
-          <span class="game__prize-big">FRONT ROW<br/>FOR A YEAR</span>
-          <span class="game__prize-sub">+ MEET EVERY HEADLINER BACKSTAGE</span>
+          <span class="game__prize-label">Dream prize</span>
+          <span class="game__prize-big wordmark">Front row<br/>for a year</span>
+          <span class="game__prize-sub">+ meet every headliner backstage</span>
         </div>
-        <div class="game__static" id="gameStatic"><span>HOVER / TOUCH TO WIPE THE STATIC</span></div>
+        <div class="game__static" id="gameStatic"><span>Hover / touch to wipe ✨</span></div>
       </div>
     </section>
 
     <!-- ====================== THE ROAD ====================== -->
     <section class="road" id="road">
-      <div class="section-label"><span>10</span> THE ROAD TO THE FIRST PAUSE</div>
+      <span class="eyebrow">12 — The road to the first pause</span>
+      <h2 class="display reveal-up">From idea to <span class="gold">opening night.</span></h2>
       <div class="road__track">
         <div class="road__line" aria-hidden="true"><span id="roadProgress"></span></div>
         <ol class="road__steps">
-          <li class="road__step">
-            <span class="road__phase">PHASE 1</span>
-            <h3>FOUNDATION</h3>
-            <p>Brand guidelines locked. Visual & illustration toolkit built.</p>
-          </li>
-          <li class="road__step">
-            <span class="road__phase">PHASE 2</span>
-            <h3>PRE-LAUNCH</h3>
-            <p>Sonic stinger. Social plan. Brand film in production.</p>
-          </li>
-          <li class="road__step road__step--milestone">
-            <span class="road__phase">MILESTONE</span>
-            <h3>LOGO + SONIC REVEAL</h3>
-            <p>The mark drops. The sound drops. The countdown starts.</p>
-          </li>
-          <li class="road__step">
-            <span class="road__phase">PHASE 3</span>
-            <h3>PUBLIC LAUNCH</h3>
-            <p>Influencer activation. Tickets on sale. First night in Riyadh.</p>
-          </li>
+          <li class="road__step"><span class="road__phase">Phase 1</span><h3>Foundation</h3><p>Brand guidelines locked. Visual & illustration toolkit built.</p></li>
+          <li class="road__step"><span class="road__phase">Phase 2</span><h3>Pre-launch</h3><p>Sonic stinger. Social plan. Brand film in production.</p></li>
+          <li class="road__step road__step--milestone"><span class="road__phase">Milestone</span><h3>Logo + sonic reveal</h3><p>The mark drops. The sound drops. The countdown starts.</p></li>
+          <li class="road__step"><span class="road__phase">Phase 3</span><h3>Public launch</h3><p>Influencer activation. Tickets on sale. First night in Riyadh.</p></li>
         </ol>
       </div>
     </section>
 
-    <!-- ====================== TICKETS CTA ====================== -->
+    <!-- ====================== TICKETS ====================== -->
     <section class="tickets" id="tickets">
-      <div class="section-label"><span>11</span> THE ROOM</div>
+      <span class="eyebrow">13 — The room</span>
       <div class="ticket hoverable" id="ticketCta">
         <div class="ticket__main">
-          <span class="ticket__small">WAQEF PRESENTS — LIVE &amp; UNRECORDED</span>
-          <span class="ticket__big">GET IN THE ROOM</span>
-          <span class="ticket__sub">ONE NIGHT · NO CAMERAS · NO RERUNS</span>
+          <span class="ticket__small">WAQEF presents — live &amp; unrecorded</span>
+          <span class="ticket__big wordmark">Get in the room</span>
+          <span class="ticket__sub">One night · no cameras · no reruns</span>
         </div>
         <div class="ticket__stub">
           <span class="ticket__admit">ADMIT<br/>ONE</span>
           <span class="glyph glyph--mic"><svg viewBox="0 0 100 100"><rect x="38" y="12" width="24" height="42" rx="12"/><path d="M26 44 q0 24 24 24 q24 0 24-24" fill="none" stroke-width="7" class="stroke"/><line x1="50" y1="68" x2="50" y2="84" stroke-width="7" class="stroke"/><line x1="34" y1="86" x2="66" y2="86" stroke-width="7" class="stroke"/></svg></span>
         </div>
       </div>
-      <p class="tickets__fomo">🔥 Be part of the night everyone will be talking about — or hear about it from your friends.</p>
+      <p class="tickets__fomo reveal-up">🔥 Be part of the night everyone will be talking about — or hear about it from your friends.</p>
     </section>
 
     <!-- ====================== FOOTER ====================== -->
     <footer class="footer">
-      <div class="footer__word" aria-hidden="true">WAQEF</div>
+      <div class="footer__mark">
+        <span class="footer__word wordmark" aria-hidden="true">WAQEF</span>
+        <svg class="smile smile--footer" viewBox="0 0 200 40" aria-hidden="true"><path d="M8 8 Q100 54 192 14" fill="none" stroke-width="6" stroke-linecap="round"/></svg>
+      </div>
       <div class="footer__row">
-        <div class="footer__col">
-          <span class="footer__label">THE MOVEMENT</span>
-          <p>Comedy. Culture. Connection.<br/>Pause life. Let laughter begin.</p>
-        </div>
-        <div class="footer__col">
-          <span class="footer__label">CITIES</span>
-          <p>Riyadh · Jeddah · Dubai · Cairo</p>
-        </div>
-        <div class="footer__col">
-          <span class="footer__label">FOLLOW THE PAUSE</span>
-          <p><a class="hoverable" href="#">INSTAGRAM</a> / <a class="hoverable" href="#">TIKTOK</a> / <a class="hoverable" href="#">X</a></p>
-        </div>
+        <div class="footer__col"><span class="footer__label">The movement</span><p>Comedy. Culture. Connection.<br/>Pause life. Let laughter begin.</p></div>
+        <div class="footer__col"><span class="footer__label">Cities</span><p>Riyadh · Cairo · Dubai · Jeddah</p></div>
+        <div class="footer__col"><span class="footer__label">Follow the pause</span><p><a class="hoverable" href="#">Instagram</a> / <a class="hoverable" href="#">TikTok</a> / <a class="hoverable" href="#">X</a></p></div>
       </div>
-      <div class="footer__bottom">
-        <span>© 2026 WAQEF — وقف</span>
-        <span>WHAT HAPPENS AT WAQEF STAYS OFFLINE</span>
-      </div>
+      <div class="footer__bottom"><span>© 2026 WAQEF — وقف</span><span>What happens at WAQEF stays offline</span></div>
     </footer>
 
   </main>
