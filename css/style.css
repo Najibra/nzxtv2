@@ -533,9 +533,10 @@ section { padding: clamp(5rem, 11vw, 10rem) var(--gutter); }
 .artist { background: var(--black-2); border: 1px solid var(--gray); overflow: hidden; transition: border-color .35s, transform .35s; }
 .artist:hover { border-color: var(--gold); transform: translateY(-8px); }
 .artist__photo { position: relative; aspect-ratio: 3/4; background-size: cover; background-position: center; background-color: #0a0808; }
-.artist__photo::after { content:""; position:absolute; inset:0; background: linear-gradient(180deg, transparent 55%, var(--black-2)); }
+.artist__photo::after { content:""; position:absolute; inset:0; z-index:2; background: linear-gradient(180deg, transparent 55%, #0d0909); }
+.artist__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top center; z-index:1; }
 .artist:hover .artist__photo { filter: saturate(1.1); }
-.artist__badge { position: absolute; top: .7rem; left: .7rem; z-index: 1; font-size: .5rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #fff; background: var(--red); padding: .4em .7em; }
+.artist__badge { position: absolute; top: .7rem; left: .7rem; z-index: 4; font-size: .5rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #fff; background: var(--red); padding: .4em .7em; }
 .artist__body { padding: 1.1rem 1.1rem 1.4rem; }
 .artist__body h3 { font-family: var(--display); font-size: 1.5rem; letter-spacing: .02em; line-height: 1; color: var(--paper); }
 .artist__flag { display: block; font-size: .62rem; font-weight: 700; letter-spacing: .06em; color: var(--gold); margin: .4rem 0 .7rem; }
@@ -601,6 +602,7 @@ section { padding: clamp(5rem, 11vw, 10rem) var(--gutter); }
     radial-gradient(circle, var(--b) 0 30%, transparent 34%) right center/17px 17px repeat-y;
   filter: drop-shadow(0 0 3px rgba(212,175,136,.65));
   animation: bulbTwinkle 1.5s ease-in-out infinite alternate;
+  z-index: 3;
 }
 @keyframes bulbTwinkle {
   from { opacity: .8; filter: drop-shadow(0 0 2px rgba(212,175,136,.4)); }
