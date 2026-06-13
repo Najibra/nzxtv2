@@ -43,8 +43,8 @@ function preloader(done) {
   const count = document.getElementById("loadCount");
   const s = { v: 0 };
   gsap.to(s, {
-    v: 37, duration: 2, ease: "power2.inOut",
-    onUpdate() { count.textContent = String(Math.round(s.v)).padStart(2, "0"); bar.style.width = (s.v / 37 * 100) + "%"; },
+    v: 100, duration: 2, ease: "power2.inOut",
+    onUpdate() { count.textContent = String(Math.round(s.v)).padStart(2, "0"); bar.style.width = s.v + "%"; },
     onComplete() {
       gsap.timeline({ onComplete: () => { pre.remove(); done(); } })
         .to(".preloader__mark, .preloader__bar, .preloader__count", { y: -30, opacity: 0, stagger: .06, duration: .4, ease: "power2.in" })
@@ -80,9 +80,8 @@ function hero() {
 
   glitchName(word);
 
-  // counters
-  document.querySelectorAll(".stat b").forEach((b) => {
-    if (b.dataset.text) { ScrollTrigger.create({ trigger: b, start: "top 90%", once: true, onEnter: () => b.textContent = b.dataset.text }); return; }
+  // counters (any element with data-count)
+  document.querySelectorAll("[data-count]").forEach((b) => {
     const target = +b.dataset.count, suf = b.dataset.suffix || "";
     const o = { v: 0 };
     ScrollTrigger.create({ trigger: b, start: "top 92%", once: true, onEnter() {
@@ -248,10 +247,39 @@ function tickets() {
   });
 }
 
+/* ---------- countdown to showtime ---------- */
+function countdown() {
+  const target = new Date("2026-03-14T20:00:00+03:00").getTime();
+  const elD = document.getElementById("cdD"), elH = document.getElementById("cdH"), elM = document.getElementById("cdM"), elS = document.getElementById("cdS");
+  if (!elD) return;
+  const pad = (n) => String(Math.max(0, n)).padStart(2, "0");
+  function tick() {
+    const diff = target - Date.now();
+    if (diff <= 0) { elD.textContent = elH.textContent = elM.textContent = elS.textContent = "00"; return; }
+    const d = Math.floor(diff / 864e5), h = Math.floor(diff % 864e5 / 36e5), m = Math.floor(diff % 36e5 / 6e4), s = Math.floor(diff % 6e4 / 1e3);
+    elD.textContent = pad(d); elH.textContent = pad(h); elM.textContent = pad(m); elS.textContent = pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+/* ---------- faq accordion ---------- */
+function faq() {
+  document.querySelectorAll(".faq__item").forEach((item) => {
+    const q = item.querySelector(".faq__q"), a = item.querySelector(".faq__a");
+    q.addEventListener("click", () => {
+      const open = item.classList.contains("open");
+      document.querySelectorAll(".faq__item.open").forEach((o) => { if (o !== item) { o.classList.remove("open"); gsap.to(o.querySelector(".faq__a"), { height: 0, duration: .4, ease: "power2.inOut" }); } });
+      if (open) { item.classList.remove("open"); gsap.to(a, { height: 0, duration: .4, ease: "power2.inOut" }); }
+      else { item.classList.add("open"); gsap.set(a, { height: "auto" }); gsap.from(a, { height: 0, duration: .45, ease: "power2.out" }); }
+    });
+  });
+}
+
 /* ---------- boot ---------- */
 addEventListener("load", () => {
   preloader(() => {
-    nav(); hero(); marquee(); reveals(); names(); movement(); cities(); rules(); lineup(); film(); sound(); game(); road(); tickets();
+    nav(); hero(); countdown(); marquee(); reveals(); movement(); cities(); rules(); lineup(); game(); faq(); tickets();
     ScrollTrigger.refresh();
   });
 });
