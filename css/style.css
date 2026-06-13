@@ -613,3 +613,10 @@ section { padding: clamp(5rem, 11vw, 10rem) var(--gutter); }
 .artist__body h3 { font-size: 1.55rem; }
 .artist__flag { color: var(--gold); }
 @media (prefers-reduced-motion: reduce){ .lineup__marquee::before,.lineup__marquee::after,.artist__photo::before { animation: none; } }
+
+/* ---------- per-headliner photo framing ---------- */
+.face--1 .artist__img { object-position: center 22%; }   /* Fahad — headshot */
+.face--2 .artist__img { object-position: center 12%; }   /* Mo Amer — full body */
+.face--3 .artist__img { object-position: 62% 20%; }      /* Nemr */
+.face--4 .artist__img { object-position: 70% 26%; }      /* Ramy — beanie */
+.face--5 .artist__img { object-position: center 18%; }   /* John Achkar */

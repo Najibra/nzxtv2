@@ -9,10 +9,10 @@ the illustration if it doesn't — no code changes needed.
 | File                          | Talent            |
 |-------------------------------|-------------------|
 | `fahad-al-butairi.jpg`        | Fahad Al Butairi  |
-| `mo-amer.jpg`                 | Mo Amer           |
-| `nemr.jpg`                    | Nemr              |
+| `mo-amer.webp`                | Mo Amer           |
+| `nemr.png`                    | Nemr              |
 | `ramy-youssef.jpg`            | Ramy Youssef      |
-| `joe-achkar.jpg`              | Joe Achkar        |
+| `john-achkar.webp`            | John Achkar       |
 
 ## Specs
 
