@@ -61,7 +61,7 @@ function hero() {
     .from(split.chars, { yPercent: 115, skewX: -10, opacity: 0, stagger: .08, duration: .9, ease: "power4.out" })
     .from(".hero__eyebrow", { opacity: 0, y: 16, duration: .5 }, "-=.6")
     .from(".smile--hero path", { drawSVG: "0%", opacity: 0, duration: .8 }, "-=.5") // graceful no-op without DrawSVG
-    .to("#heroTag", { duration: 1.2, scrambleText: { text: "Pause life. Let laughter begin.", chars: CH, speed: .6 } }, "-=.4")
+    .to("#heroTag", { duration: 1.2, scrambleText: { text: "Five headliners. Five cities.", chars: CH, speed: .6 } }, "-=.4")
     .from(".hero__sub", { opacity: 0, y: 16, duration: .5 }, "-=.6")
     .from(".hero__cta .btn", { opacity: 0, y: 16, stagger: .1, duration: .4 }, "-=.4")
     .from(".stat", { opacity: 0, y: 20, stagger: .08, duration: .5 }, "-=.3")
@@ -133,7 +133,8 @@ function reveals() {
   gsap.from(".trait", { opacity: 0, x: -20, stagger: .08, duration: .5, scrollTrigger: { trigger: ".traits", start: "top 85%" } });
   gsap.from(".bubble", { opacity: 0, scale: .9, duration: .7, ease: "back.out(1.3)", scrollTrigger: { trigger: ".bubble", start: "top 85%" } });
   gsap.from(".ess", { opacity: 0, y: 40, stagger: .1, duration: .6, scrollTrigger: { trigger: ".essence__row", start: "top 85%" } });
-  gsap.from(".tba", { opacity: 0, y: 30, stagger: .1, duration: .5, scrollTrigger: { trigger: ".lineup__tba", start: "top 85%" } });
+  gsap.from(".artist", { opacity: 0, y: 50, stagger: .09, duration: .6, ease: "power3.out", scrollTrigger: { trigger: ".lineup-grid", start: "top 82%" } });
+  gsap.from(".sched__row", { opacity: 0, x: -24, stagger: .06, duration: .5, ease: "power2.out", scrollTrigger: { trigger: ".sched", start: "top 82%" } });
 }
 
 /* ---------- names: strike-out then winner ---------- */
