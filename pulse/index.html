@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZXT Pulse — Kraken Elite Monitor</title>
+  <!--
+    NZXT "Pulse" web integration for the Kraken Elite LCD.
+
+    An original thermal-reactive design: the whole accent colour shifts from
+    cool cyan to hot orange as the CPU heats up, a radial spectrum ring
+    breathes around a heartbeat core (its pulse rate rises with temperature),
+    and four frosted "orbital pods" at the cardinal points keep every reading
+    large and instantly legible. Loaded inside NZXT CAM (?kraken=1) it renders
+    live data via window.nzxt.v1.onMonitoringDataUpdate; in a normal browser it
+    shows a configuration card plus a simulated preview.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="config" class="config" hidden>
+    <h1>NZXT <span>Pulse</span></h1>
+    <p>
+      A thermal-reactive dashboard for the NZXT Kraken Elite LCD. The colour
+      scheme warms from cyan to orange as the CPU heats up, a heartbeat core
+      pulses faster under load, and four orbital pods show liquid, GPU, RAM and
+      power. Requires NZXT CAM with Web Integrations enabled.
+    </p>
+    <label for="share-url"><strong>Shareable link</strong> — open it in a browser and choose “Open NZXT CAM”:</label>
+    <input id="share-url" type="text" readonly />
+    <p class="hint">
+      If the protocol link doesn't open, use
+      <code>https://cam-redirect.nzxt.com/action/load-web-integration?url=…</code>
+      with this page's URL.
+    </p>
+    <p class="hint">Live preview (simulated data):</p>
+  </div>
+
+  <div id="face-wrap" class="face-wrap">
+    <svg id="face" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" font-family="Inter, 'Segoe UI', sans-serif">
+      <defs>
+        <radialGradient id="bg-grad" cx="50%" cy="42%" r="75%">
+          <stop offset="0%" stop-color="#10162b" />
+          <stop offset="55%" stop-color="#0a0e1d" />
+          <stop offset="100%" stop-color="#05070f" />
+        </radialGradient>
+
+        <!-- core heartbeat glow -->
+        <radialGradient id="core-grad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"  stop-color="var(--accent)" stop-opacity="0.55" />
+          <stop offset="45%" stop-color="var(--accent)" stop-opacity="0.22" />
+          <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+        </radialGradient>
+
+        <!-- soft glow for numbers / rings -->
+        <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="3.5" result="b" />
+          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="glow-strong" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="6" result="b" />
+          <feMerge><feMergeNode in="b" /><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="nebula-blur" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="55" />
+        </filter>
+
+        <clipPath id="face-clip"><circle cx="320" cy="320" r="318" /></clipPath>
+      </defs>
+
+      <!-- background -->
+      <circle cx="320" cy="320" r="320" fill="url(#bg-grad)" />
+
+      <g clip-path="url(#face-clip)">
+        <!-- drifting nebula blobs (animated by script) -->
+        <g id="nebula" filter="url(#nebula-blur)" opacity="0.9"></g>
+        <!-- ambient particles + decorative rotating orbit rings (built by script) -->
+        <g id="orbits"></g>
+        <g id="particles"></g>
+      </g>
+
+      <!-- perimeter scanner sweep -->
+      <g clip-path="url(#face-clip)">
+        <path id="sweep" fill="none" stroke="var(--accent)" stroke-width="2.5" opacity="0.5" stroke-linecap="round" />
+      </g>
+      <circle cx="320" cy="320" r="312" fill="none" stroke="#1c2540" stroke-width="2" />
+
+      <!-- ===== central CPU hero ===== -->
+      <g id="g-core" text-anchor="middle">
+        <!-- heartbeat halo (scaled/faded by script) -->
+        <circle id="core-halo" cx="320" cy="320" r="150" fill="url(#core-grad)" />
+        <!-- radial spectrum ring (bars built by script) -->
+        <g id="spectrum"></g>
+        <!-- CPU progress arc; pathLength trick = 100 units -->
+        <circle id="cpu-track" cx="320" cy="320" r="158" fill="none" stroke="#1b2440"
+                stroke-width="3" opacity="0.7" />
+        <circle id="cpu-arc" cx="320" cy="320" r="158" fill="none" stroke="var(--accent)"
+                stroke-width="4" stroke-linecap="round" pathLength="100"
+                stroke-dasharray="0 100" transform="rotate(-90 320 320)" filter="url(#glow)" />
+        <!-- glass core -->
+        <circle cx="320" cy="320" r="118" class="core-glass" />
+        <text x="320" y="256" class="hero-label">CPU</text>
+        <text id="cpu-value" x="320" y="368" class="hero-value">--<tspan class="hero-unit">°</tspan></text>
+        <text x="320" y="404" class="hero-sub">CORE TEMP</text>
+      </g>
+
+      <!-- ===== orbital pods ===== -->
+      <!-- LIQUID (top) -->
+      <g id="g-liquid" text-anchor="middle">
+        <circle cx="320" cy="86" r="60" class="pod-glass" />
+        <circle cx="320" cy="86" r="50" fill="none" stroke="#1b2440" stroke-width="3" opacity="0.7" />
+        <circle id="liquid-arc" cx="320" cy="86" r="50" fill="none" stroke="var(--cool)"
+                stroke-width="4" stroke-linecap="round" pathLength="100"
+                stroke-dasharray="0 100" transform="rotate(-90 320 86)" filter="url(#glow)" />
+        <text x="320" y="64" class="pod-label">LIQUID</text>
+        <text id="liquid-value" x="320" y="98" class="pod-value">--<tspan class="pod-unit">°</tspan></text>
+        <text x="320" y="120" class="pod-sub">COOLANT</text>
+      </g>
+
+      <!-- GPU (left) -->
+      <g id="g-gpu" text-anchor="middle">
+        <circle cx="92" cy="320" r="60" class="pod-glass" />
+        <circle cx="92" cy="320" r="50" fill="none" stroke="#1b2440" stroke-width="3" opacity="0.7" />
+        <circle id="gpu-arc" cx="92" cy="320" r="50" fill="none" stroke="var(--accent)"
+                stroke-width="4" stroke-linecap="round" pathLength="100"
+                stroke-dasharray="0 100" transform="rotate(-90 92 320)" filter="url(#glow)" />
+        <text x="92" y="298" class="pod-label">GPU</text>
+        <text id="gpu-value" x="92" y="332" class="pod-value">--<tspan class="pod-unit">°</tspan></text>
+        <text x="92" y="354" class="pod-sub">TEMP</text>
+      </g>
+
+      <!-- RAM (right) -->
+      <g id="g-ram" text-anchor="middle">
+        <circle cx="548" cy="320" r="60" class="pod-glass" />
+        <circle cx="548" cy="320" r="50" fill="none" stroke="#1b2440" stroke-width="3" opacity="0.7" />
+        <circle id="ram-arc" cx="548" cy="320" r="50" fill="none" stroke="var(--mem)"
+                stroke-width="4" stroke-linecap="round" pathLength="100"
+                stroke-dasharray="0 100" transform="rotate(-90 548 320)" filter="url(#glow)" />
+        <text x="548" y="298" class="pod-label">RAM</text>
+        <text id="ram-value" x="548" y="332" class="pod-value">--<tspan class="pod-unit">%</tspan></text>
+        <text x="548" y="354" class="pod-sub">USAGE</text>
+      </g>
+
+      <!-- POWER (bottom) -->
+      <g id="g-power" text-anchor="middle">
+        <circle cx="320" cy="554" r="60" class="pod-glass" />
+        <circle cx="320" cy="554" r="50" fill="none" stroke="#1b2440" stroke-width="3" opacity="0.7" />
+        <circle id="power-arc" cx="320" cy="554" r="50" fill="none" stroke="var(--pwr)"
+                stroke-width="4" stroke-linecap="round" pathLength="100"
+                stroke-dasharray="0 100" transform="rotate(-90 320 554)" filter="url(#glow)" />
+        <text x="320" y="532" class="pod-label">POWER</text>
+        <text id="power-value" x="320" y="566" class="pod-value">--<tspan class="pod-unit">w</tspan></text>
+        <text x="320" y="588" class="pod-sub">DRAW</text>
+      </g>
+    </svg>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
