@@ -1,502 +1,1605 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WAQEF LIVE — The 2026 Arabic Comedy Tour | Tickets On Sale</title>
-  <meta name="description" content="WAQEF LIVE — the 2026 Arabic stand-up comedy tour. Five headliners across five cities, live & unrecorded. Tickets from SAR 149 — selling fast." />
-  <meta property="og:title" content="WAQEF LIVE — The 2026 Arabic Comedy Tour" />
-  <meta property="og:description" content="One night. One mic. Zero reruns. Tickets from SAR 149 — book before they're gone." />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WAQEF LIVE — The 2026 Arabic Comedy Tour | Tickets On Sale</title>
+    <meta name="description" content="WAQEF LIVE — the 2026 Arabic stand-up comedy tour. Five headliners across five cities, live & unrecorded. Tickets from SAR 149 — selling fast." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;500;600;700&amp;family=Caveat:wght@600;700&amp;family=Cairo:wght@700;900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --violet: #e11822;
+        --gold: #d4af88;
+        --red: #b3121a;
+        --black: #0b0b0b;
+        --white: #ffffff;
+        --paper: #f2e9d6;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        background: var(--black);
+        color: var(--black);
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: geometricPrecision;
+      }
+      .display { font-family: 'Anton', sans-serif; }
+      .hand { font-family: 'Caveat', cursive; }
+      .arabic { font-family: 'Cairo', sans-serif; }
+      ::selection { background: #000; color: var(--gold); }
+      .poster-section {
+        position: relative;
+        min-height: 100svh;
+        width: 100%;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .divider-grid::before,
+      .divider-grid::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .divider-grid::before {
+        background-image:
+          linear-gradient(to right, rgba(255,255,255,0.18) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255,255,255,0.18) 1px, transparent 1px);
+        background-size: 20vw 100%, 100% 25vh;
+      }
+      .divider-grid.dark-lines::before {
+        background-image:
+          linear-gradient(to right, rgba(0,0,0,0.16) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0,0,0,0.16) 1px, transparent 1px);
+      }
+      .huge-word {
+        font-family: 'Anton', sans-serif;
+        font-size: clamp(8rem, 28vw, 30rem);
+        line-height: 0.78;
+        letter-spacing: -0.055em;
+        white-space: nowrap;
+        user-select: none;
+      }
+      .profile-card,
+      .editorial-card {
+        background: #0b0b0b;
+        color: white;
+        border: 1px solid rgba(255,255,255,0.16);
+        box-shadow: 32px 48px 80px rgba(0,0,0,0.45);
+      }
+      .soft-sheen::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(115deg, rgba(245,180,0,0.18), transparent 34%, rgba(0,0,0,0.32));
+        mix-blend-mode: screen;
+      }
+      .section-label {
+        position: absolute;
+        left: 1.25rem;
+        bottom: 1.25rem;
+        z-index: 10;
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      .manifesto-sentence {
+        max-width: min(1180px, 92vw);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 0.18em 0.28em;
+        text-align: center;
+      }
+      .manifesto-word {
+        display: inline-block;
+        will-change: transform, opacity;
+        font-family: 'Anton', sans-serif;
+        font-size: clamp(2.4rem, 7.8vw, 7.4rem);
+        line-height: 0.9;
+        letter-spacing: -0.045em;
+        text-transform: uppercase;
+      }
+      .archive-grid {
+        position: relative;
+        z-index: 5;
+        width: min(88vw, 1120px);
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+        will-change: transform;
+      }
+      .archive-img {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+        filter: grayscale(1) contrast(1.12) saturate(0.4);
+        transform-origin: center center;
+        will-change: transform, opacity;
+      }
+      .builder-shell {
+        width: min(470px, 88vw);
+        min-height: 570px;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: #0b0b0b;
+        color: white;
+        box-shadow: -32px 44px 90px rgba(0,0,0,0.42);
+      }
+      .builder-module {
+        position: relative;
+        border-top: 1px solid rgba(255,255,255,0.16);
+        will-change: transform, opacity;
+      }
+      .builder-module:first-child { border-top: 0; }
+      .builder-module::before {
+        content: attr(data-number);
+        position: absolute;
+        top: 0.9rem;
+        right: 1rem;
+        font-size: 0.64rem;
+        letter-spacing: 0.16em;
+        color: rgba(255,255,255,0.45);
+      }
+      .op-card {
+        min-height: 158px;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: #0b0b0b;
+        color: white;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 18px 22px 42px rgba(0,0,0,0.28);
+        will-change: transform, opacity;
+      }
+      .support-panel {
+        border: 1px solid rgba(255,255,255,0.28);
+        background: #0b0b0b;
+        color: white;
+        min-height: 310px;
+        padding: 1.25rem;
+        will-change: transform, opacity;
+      }
+      .sweep-word {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Anton', sans-serif;
+        font-size: clamp(6.8rem, 26vw, 25rem);
+        line-height: 0.78;
+        letter-spacing: -0.055em;
+        white-space: nowrap;
+        opacity: 0;
+        will-change: transform, opacity;
+      }
+      /* ======================= ON LOAD INTRO ======================= */
+      body.is-loading {
+        height: 100svh;
+        overflow: hidden;
+      }
+      .noema-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        overflow: hidden;
+        background: #0b0b0b;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        isolation: isolate;
+      }
+      .loader-grid {
+        position: absolute;
+        inset: 0;
+        opacity: 0.28;
+        background-image:
+          linear-gradient(to right, rgba(255,255,255,0.16) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255,255,255,0.16) 1px, transparent 1px);
+        background-size: 20vw 100%, 100% 25vh;
+        pointer-events: none;
+      }
+      .loader-mark {
+        position: absolute;
+        top: 1.25rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 4;
+        width: 34px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        opacity: 0.9;
+      }
+      .loader-mark svg {
+        width: 34px;
+        height: 18px;
+        overflow: visible;
+      }
+      .loader-brand {
+        position: relative;
+        z-index: 5;
+        text-align: center;
+        overflow: hidden;
+        padding: 0.4rem 0.6rem;
+      }
+      .loader-brand-main {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        gap: 0.04em;
+        font-family: 'Anton', sans-serif;
+        font-size: clamp(2.6rem, 10vw, 10rem);
+        line-height: 0.78;
+        letter-spacing: -0.04em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .loader-letter {
+        display: inline-block;
+        will-change: transform, opacity;
+      }
+      .loader-dot {
+        color: var(--gold);
+        margin-left: 0.06em;
+      }
+      .loader-tag {
+        margin-top: 0.75rem;
+        font-size: clamp(0.72rem, 1.1vw, 0.9rem);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.62);
+        will-change: transform, opacity;
+      }
+      .loader-meta {
+        position: absolute;
+        left: 1.25rem;
+        right: 1.25rem;
+        bottom: 1.25rem;
+        z-index: 5;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 1rem;
+        font-size: 0.68rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.62);
+        will-change: transform, opacity;
+      }
+      .loader-strips {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        align-items: end;
+        pointer-events: none;
+      }
+      .loader-strip {
+        height: 100%;
+        transform: scaleY(0);
+        transform-origin: bottom;
+        border-right: 1px solid rgba(0,0,0,0.12);
+        will-change: transform;
+      }
+      .loader-strip:nth-child(1) { background: var(--paper); }
+      .loader-strip:nth-child(2) { background: var(--violet); }
+      .loader-strip:nth-child(3) { background: #ffffff; }
+      .loader-strip:nth-child(4) { background: var(--gold); }
+      .loader-strip:nth-child(5) { background: var(--red); }
+      .loader-strip:nth-child(6) { background: #ffffff; }
+      .loader-strip:nth-child(7) { background: var(--paper); }
+      .loader-scanline {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 6;
+        height: 1px;
+        background: rgba(255,255,255,0.8);
+        transform-origin: left;
+        transform: scaleX(0);
+        will-change: transform;
+      }
+      @media (max-width: 768px) {
+        .huge-word {
+          font-size: clamp(5.5rem, 37vw, 14rem);
+          letter-spacing: -0.065em;
+        }
+        .archive-grid {
+          width: 92vw;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 6px;
+        }
+        .builder-shell { min-height: auto; }
+        .section-label { left: 1rem; bottom: 1rem; }
+        .poster-section { min-height: 100svh; }
+      }
+      @media (min-width: 768px) {
+        .poster-section {
+          min-height: auto !important;
+          height: 100svh !important;
+          max-height: 1080px !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-black antialiased overflow-x-hidden is-loading">
+    <!-- ======================= ON LOAD INTRO ======================= -->
+    <div id="noemaLoader" class="noema-loader" aria-hidden="true">
+      <div class="loader-grid"></div>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,600&family=Cairo:wght@600;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" type="image/svg+xml" href="assets/mic.svg" />
-</head>
-<body>
+      <div class="loader-mark">
+        <svg viewBox="0 0 42 18" fill="none" aria-hidden="true">
+          <path
+            d="M3 9C8 1.8 14 1.8 21 9C28 16.2 34 16.2 39 9"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+          ></path>
+          <path
+            d="M3 9C8 16.2 14 16.2 21 9C28 1.8 34 1.8 39 9"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            opacity="0.55"
+          ></path>
+        </svg>
+      </div>
 
-  <!-- ====================== GRAIN ====================== -->
-  <div class="grain" aria-hidden="true"></div>
+      <div class="loader-brand">
+        <div class="loader-brand-main" aria-label="WAQEF">
+          <span class="loader-letter">W</span>
+          <span class="loader-letter">A</span>
+          <span class="loader-letter">Q</span>
+          <span class="loader-letter">E</span>
+          <span class="loader-letter">F</span>
+          <span class="loader-letter loader-dot">✦</span>
+        </div>
+        <div class="loader-tag">Stand-up comedy · The 2026 tour</div>
+      </div>
 
-  <!-- ====================== CURSOR ====================== -->
-  <div class="cursor" aria-hidden="true"><div class="cursor__dot"></div><div class="cursor__ring"></div></div>
+      <div class="loader-meta">
+        <span>001 / The night</span>
+        <span>Loading the room</span>
+      </div>
 
-  <!-- ====================== PRELOADER ====================== -->
-  <div class="preloader" id="preloader">
-    <div class="preloader__mark">
-      <span class="wordmark">WAQEF</span>
-      <svg class="smile" viewBox="0 0 200 40" aria-hidden="true"><path d="M8 8 Q100 54 192 14" fill="none" stroke-width="9" stroke-linecap="round"/></svg>
+      <div class="loader-strips">
+        <span class="loader-strip"></span>
+        <span class="loader-strip"></span>
+        <span class="loader-strip"></span>
+        <span class="loader-strip"></span>
+        <span class="loader-strip"></span>
+        <span class="loader-strip"></span>
+        <span class="loader-strip"></span>
+      </div>
+      <div class="loader-scanline"></div>
     </div>
-    <div class="preloader__bar"><span id="loadBar"></span></div>
-    <div class="preloader__count"><span id="loadCount">00</span><i>% — loading the night</i></div>
-  </div>
 
-  <!-- ====================== TOP UTILITY STRIP ====================== -->
-  <div class="util" id="util" aria-hidden="true">
-    <span class="util__brand">🎙️ TICKETS ON SALE NOW</span>
-    <span class="util__bars"></span>
-    <span class="util__cities">RIYADH · JEDDAH · DUBAI · CAIRO</span>
-  </div>
-
-  <!-- ====================== NAV ====================== -->
-  <header class="nav" id="nav">
-    <a class="nav__logo" href="#top">
-      <span class="wordmark">WAQEF</span>
-      <svg class="smile smile--sm" viewBox="0 0 200 40" aria-hidden="true"><path d="M8 8 Q100 54 192 14" fill="none" stroke-width="11" stroke-linecap="round"/></svg>
-    </a>
-    <nav class="nav__links">
-      <a href="#lineup" class="hoverable">Headliners</a>
-      <a href="#schedule" class="hoverable">Schedule</a>
-      <a href="#tickets" class="hoverable">Tickets</a>
-      <a href="#faq" class="hoverable">FAQ</a>
+    <!-- ======================= FIXED NAV ======================= -->
+    <nav
+      class="fixed top-0 left-0 right-0 z-[60] flex items-start justify-between px-5 md:px-8 pt-5 text-white mix-blend-difference pointer-events-none"
+    >
+      <div class="leading-tight pointer-events-auto">
+        <a href="#hero" class="display text-base tracking-tight uppercase">
+          WAQEF LIVE
+        </a>
+        <p class="text-xs opacity-75 mt-0.5">The 2026 Arabic Comedy Tour</p>
+      </div>
+      <div
+        class="hidden lg:flex items-center gap-7 text-sm font-medium pt-1 pointer-events-auto"
+      >
+        <a href="#interlude" class="hover:opacity-60 transition-opacity">
+          The night
+        </a>
+        <a href="#headliners" class="hover:opacity-60 transition-opacity">
+          Headliners
+        </a>
+        <a href="#schedule" class="hover:opacity-60 transition-opacity">
+          Schedule
+        </a>
+        <a href="#tickets" class="hover:opacity-60 transition-opacity">Tickets</a>
+        <a href="#dates" class="hover:opacity-60 transition-opacity">
+          Dates
+        </a>
+        <a href="#faq" class="hover:opacity-60 transition-opacity">FAQ</a>
+      </div>
+      <div
+        class="flex items-center gap-5 text-sm font-medium pt-1 pointer-events-auto"
+      >
+        <a href="#" class="hover:opacity-60 transition-opacity">Presale</a>
+        <a
+          href="#join"
+          class="hover:opacity-60 transition-opacity hidden sm:block"
+        >
+          Buy tickets
+        </a>
+        <button class="lg:hidden" aria-label="Open menu">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
     </nav>
-    <a href="#tickets" class="btn btn--red nav__cta hoverable">Buy tickets</a>
-    <button class="nav__burger hoverable" id="burger" aria-label="Menu"><span></span><span></span></button>
-  </header>
 
-  <main id="top">
+    <!-- ======================= FIXED BUY CTA ======================= -->
+    <a
+      href="#join"
+      id="createcta"
+      class="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-[65] group flex items-center gap-8 bg-black text-white border border-white/25 pl-6 pr-2 py-2 hover:bg-neutral-800 transition-colors"
+    >
+      <span class="text-sm font-medium">Buy tickets</span>
+      <span
+        class="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center group-hover:rotate-45 transition-transform duration-300"
+      >
+        <i data-lucide="arrow-up-right" class="w-4 h-4" stroke-width="1.5"></i>
+      </span>
+    </a>
 
-    <!-- ====================== HERO ====================== -->
-    <section class="hero" id="hero">
-      <div class="hero__spot" aria-hidden="true"></div>
-      <div class="hero__arabic" aria-hidden="true">وقف</div>
-
-      <div class="hero__inner">
-        <span class="hero__eyebrow">Stand-up comedy · The 2026 tour</span>
-        <h1 class="hero__mark">
-          <span class="wordmark hero__word" data-text="WAQEF">WAQEF</span>
-          <svg class="smile smile--hero" viewBox="0 0 200 40" aria-hidden="true"><path d="M8 8 Q100 54 192 14" fill="none" stroke-width="8" stroke-linecap="round"/></svg>
+    <!-- ======================= 1 · HERO ======================= -->
+    <section
+      id="hero"
+      class="poster-section h-screen bg-[#e11822] divider-grid"
+    >
+      <div
+        id="heroWord"
+        class="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
+      >
+        <h1
+          class="display text-white text-[34vw] md:text-[26vw] leading-none tracking-[-0.055em] whitespace-nowrap select-none"
+        >
+          WAQEF
         </h1>
-        <p class="hero__tagline" id="heroTag">Five headliners. Five cities.</p>
-        <p class="hero__sub">The Arab world's sharpest stand-ups, one unmissable tour. Five cities, twelve nights — live and unrecorded. If you're not in the room, you're outside the joke.</p>
-
-        <div class="hero__cta">
-          <a href="#tickets" class="btn btn--red hoverable">Buy tickets — from SAR 149</a>
-          <a href="#dates" class="btn btn--ghost hoverable">View all dates →</a>
-        </div>
-        <span class="hero__urgency">🔥 On sale now · new cities just added</span>
-
-        <div class="countdown" id="countdown" aria-label="Time until showtime">
-          <div class="cd"><b id="cdD">00</b><span>days</span></div>
-          <div class="cd"><b id="cdH">00</b><span>hrs</span></div>
-          <div class="cd"><b id="cdM">00</b><span>min</span></div>
-          <div class="cd"><b id="cdS">00</b><span>sec</span></div>
-        </div>
       </div>
 
-      <div class="hero__stats">
-        <div class="stat"><b data-count="5">0</b><span>headliners</span></div>
-        <div class="stat"><b data-count="5">0</b><span>cities</span></div>
-        <div class="stat"><b data-count="12">0</b><span>shows</span></div>
-        <div class="stat"><b>Mar–May</b><span>2026</span></div>
-      </div>
-
-      <div class="hero__scroll" aria-hidden="true"><span>SCROLL</span><i></i></div>
-    </section>
-
-    <!-- ====================== MARQUEE ====================== -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee__track" data-speed="1">
-        <span>TICKETS ON SALE NOW <em>✦</em> SELLING FAST <em>✦</em> ONE NIGHT ONLY <em>✦</em> NO RERUNS <em>✦</em> </span>
-        <span>TICKETS ON SALE NOW <em>✦</em> SELLING FAST <em>✦</em> ONE NIGHT ONLY <em>✦</em> NO RERUNS <em>✦</em> </span>
-        <span>TICKETS ON SALE NOW <em>✦</em> SELLING FAST <em>✦</em> ONE NIGHT ONLY <em>✦</em> NO RERUNS <em>✦</em> </span>
-      </div>
-    </div>
-
-    <!-- ====================== THE NIGHT (selling points) ====================== -->
-    <section class="stand" id="night">
-      <div class="stand__head">
-        <span class="eyebrow">01 — The night</span>
-        <h2 class="display reveal-up">One unforgettable night of <span class="red">live comedy</span> — and you had to be <span class="gold">there.</span></h2>
-      </div>
-      <ul class="values">
-        <li class="value hoverable">
-          <span class="value__ico" aria-hidden="true">
-            <svg viewBox="0 0 100 100"><rect x="38" y="14" width="24" height="40" rx="12"/><path class="s" d="M28 46q0 22 22 22 22 0 22-22" fill="none"/><line class="s" x1="50" y1="68" x2="50" y2="84"/><line class="s" x1="34" y1="86" x2="66" y2="86"/></svg>
-          </span>
-          <h3>World-class headliners</h3>
-          <p>The Arab world's sharpest stand-ups — live on one stage.</p>
-        </li>
-        <li class="value hoverable">
-          <span class="value__ico" aria-hidden="true">
-            <svg viewBox="0 0 100 100"><circle class="s" cx="35" cy="40" r="13" fill="none"/><circle class="s" cx="65" cy="40" r="13" fill="none"/><path class="s" d="M18 78q0-18 17-18 11 0 15 9 4-9 15-9 17 0 17 18" fill="none"/></svg>
-          </span>
-          <h3>An intimate room</h3>
-          <p>Up close and personal. Every seat is inside the joke.</p>
-        </li>
-        <li class="value hoverable">
-          <span class="value__ico" aria-hidden="true">
-            <svg viewBox="0 0 100 100"><circle class="s" cx="50" cy="50" r="36" fill="none"/><line class="s" x1="50" y1="50" x2="50" y2="28"/><line class="s" x1="50" y1="50" x2="66" y2="58"/></svg>
-          </span>
-          <h3>Live &amp; unrecorded</h3>
-          <p>No phones on stage. No reruns. What happens here stays offline.</p>
-        </li>
-        <li class="value hoverable">
-          <span class="value__ico" aria-hidden="true">
-            <svg viewBox="0 0 100 100"><path class="s" d="M50 14l11 22 24 3-17 17 4 24-22-12-22 12 4-24-17-17 24-3z" fill="none"/></svg>
-          </span>
-          <h3>The talk of the town</h3>
-          <p>The night your whole feed will wish they'd been at.</p>
-        </li>
-      </ul>
-    </section>
-
-    <!-- ====================== SOCIAL PROOF ====================== -->
-    <section class="proof" id="proof">
-      <div class="proof__stat reveal-up">
-        <b data-count="48">0</b><span>hours — how fast the last show sold out</span>
-      </div>
-      <ul class="proof__quotes">
-        <li class="quote reveal-up"><p>“The funniest night I've had in years. I lost my voice laughing.”</p><span>— Sold-out crowd, Riyadh</span></li>
-        <li class="quote reveal-up"><p>“Sharp, fearless and unapologetically real. Worth every riyal.”</p><span>— The Scene Review</span></li>
-        <li class="quote reveal-up"><p>“No phones, no filters, all heart. This is how comedy should feel.”</p><span>— Live audience</span></li>
-      </ul>
-      <div class="proof__badges reveal-up">
-        <span>★★★★★ 4.9/5</span><span>Last 3 shows: SOLD OUT</span><span>10,000+ tickets sold</span>
-      </div>
-    </section>
-
-    <!-- ====================== WHY UNMISSABLE (pillars) ====================== -->
-    <section class="movement" id="why">
-      <span class="eyebrow">02 — Why you can't miss it</span>
-      <h2 class="display reveal-up">Not a show.<br/>A <span class="red">night out.</span></h2>
-      <ul class="pillars">
-        <li class="pillar hoverable" data-img="1">
-          <span class="pillar__num">01</span>
-          <h3 class="pillar__name">Headline talent, no filler</h3>
-          <p class="pillar__desc">Handpicked comedians at the top of their game — every minute earns its laugh.</p>
-          <span class="pillar__arrow">→</span>
-        </li>
-        <li class="pillar hoverable" data-img="2">
-          <span class="pillar__num">02</span>
-          <h3 class="pillar__name">Premium production</h3>
-          <p class="pillar__desc">A refined stage, crisp sound and real production value. Comedy that feels like an event.</p>
-          <span class="pillar__arrow">→</span>
-        </li>
-        <li class="pillar hoverable" data-img="3">
-          <span class="pillar__num">03</span>
-          <h3 class="pillar__name">One night only</h3>
-          <p class="pillar__desc">No tour reruns in your city. When the doors close, the moment is gone for good.</p>
-          <span class="pillar__arrow">→</span>
-        </li>
-        <li class="pillar hoverable" data-img="4">
-          <span class="pillar__num">04</span>
-          <h3 class="pillar__name">The room makes it</h3>
-          <p class="pillar__desc">The crowd is half the show. Energy you can only feel from inside the room.</p>
-          <span class="pillar__arrow">→</span>
-        </li>
-      </ul>
-      <div class="pillar-preview" id="pillarPreview" aria-hidden="true"></div>
-    </section>
-
-    <!-- ====================== EXPERIENCE GALLERY ====================== -->
-    <section class="photodir" id="experience">
-      <div class="photodir__head">
-        <span class="eyebrow">03 — The experience</span>
-        <h2 class="display reveal-up">Real nights.<br/>Real <span class="red">laughter.</span></h2>
-        <p class="lede reveal-up">Bold, raw and unforgettable — the night exactly as it happens.</p>
-      </div>
-      <div class="photodir__grid">
-        <figure class="pd pd--1 tall"><figcaption>Spotlight &amp; mic</figcaption></figure>
-        <figure class="pd pd--4"><figcaption>The room</figcaption></figure>
-        <figure class="pd pd--2"><figcaption>Centre stage</figcaption></figure>
-        <figure class="pd pd--3 wide"><figcaption>The city after dark</figcaption></figure>
-      </div>
-    </section>
-
-    <!-- ====================== TOUR DATES ====================== -->
-    <section class="cities" id="dates">
-      <div class="cities__pin">
-        <div class="cities__head">
-          <span class="eyebrow">04 — Tour dates</span>
-          <h2 class="display">Find your <span class="red">night.</span></h2>
-        </div>
-        <div class="cities__track" id="citiesTrack">
-          <article class="city-card">
-            <div class="city-card__media m1"><span class="city-card__ar">الرياض</span></div>
-            <div class="city-card__body">
-              <span class="city-card__date">Sat · 14 Mar 2026</span>
-              <h3>Riyadh</h3>
-              <span class="city-card__venue">King Fahd Cultural Centre</span>
-              <span class="city-card__act">★ Fahad Al Butairi</span>
-              <span class="city-card__tag live">Selling fast</span>
-              <div class="city-card__foot">
-                <span class="city-card__price">From <b>SAR 149</b></span>
-                <a class="btn btn--red hoverable" href="#tickets">Buy</a>
+      <div
+        class="absolute inset-0 flex items-center justify-center z-10"
+        style="perspective:1400px;"
+      >
+        <div
+          class="relative w-full max-w-5xl h-[62vh] flex items-center justify-center"
+        >
+          <article
+            id="card1"
+            class="absolute w-40 sm:w-48 md:w-56 -translate-x-[58%] sm:-translate-x-[112%] will-change-transform"
+            style="transform: rotateY(22deg) rotateZ(-8deg);"
+          >
+            <div class="profile-card soft-sheen relative overflow-hidden p-4">
+              <p class="display text-base leading-tight tracking-tight">
+                Fahad
+                <br />
+                Al Butairi
+              </p>
+              <p class="text-xs text-white/60 mt-1">🇸🇦 Riyadh · 14 Mar</p>
+              <img
+                src="assets/talent/fahad-al-butairi.jpg"
+                alt="Fahad Al Butairi"
+                class="w-full aspect-square object-cover mt-3 grayscale"
+              />
+              <button
+                class="mt-3 w-full text-xs font-medium bg-[#d4af88] text-black rounded-full py-1.5"
+              >
+                Get tickets
+              </button>
+              <div
+                class="mt-2 flex items-center justify-center gap-1.5 border border-white/30 rounded-md py-1.5"
+              >
+                <i
+                  data-lucide="ticket"
+                  class="w-3.5 h-3.5"
+                  stroke-width="1.5"
+                ></i>
+                <span class="text-xs">From SAR 149</span>
               </div>
             </div>
           </article>
-          <article class="city-card">
-            <div class="city-card__media m2"><span class="city-card__ar">جدة</span></div>
-            <div class="city-card__body">
-              <span class="city-card__date">Sat · 21 Mar 2026</span>
-              <h3>Jeddah</h3>
-              <span class="city-card__venue">Jeddah Superdome</span>
-              <span class="city-card__act">★ Mo Amer</span>
-              <span class="city-card__tag soon">On sale soon</span>
-              <div class="city-card__foot">
-                <span class="city-card__price">Register for presale</span>
-                <a class="btn btn--ghost hoverable" href="#tickets">Notify me</a>
+
+          <article
+            id="card2"
+            class="absolute w-44 sm:w-52 md:w-60 z-10 will-change-transform"
+            style="transform: rotateY(-4deg) rotateZ(2deg);"
+          >
+            <div
+              class="profile-card soft-sheen relative overflow-hidden p-4 shadow-[0_50px_80px_rgba(0,0,0,0.52)]"
+            >
+              <p class="display text-lg leading-tight tracking-tight">
+                Mo
+                <br />
+                Amer
+              </p>
+              <p class="text-xs text-white/60 mt-1">🇵🇸 Jeddah · 21 Mar</p>
+              <img
+                src="assets/talent/mo-amer.webp"
+                alt="Mo Amer"
+                class="w-full aspect-square object-cover mt-3 grayscale"
+              />
+              <button
+                class="mt-3 w-full text-xs font-medium bg-[#d4af88] text-black rounded-full py-1.5"
+              >
+                Get tickets
+              </button>
+              <div
+                class="mt-2 flex items-center justify-center gap-1.5 border border-white/30 rounded-md py-1.5"
+              >
+                <i
+                  data-lucide="ticket"
+                  class="w-3.5 h-3.5"
+                  stroke-width="1.5"
+                ></i>
+                <span class="text-xs">From SAR 179</span>
               </div>
             </div>
           </article>
-          <article class="city-card">
-            <div class="city-card__media m3"><span class="city-card__ar">دبي</span></div>
-            <div class="city-card__body">
-              <span class="city-card__date">Sat · 4 Apr 2026</span>
-              <h3>Dubai</h3>
-              <span class="city-card__venue">Coca-Cola Arena</span>
-              <span class="city-card__act">★ Nemr</span>
-              <span class="city-card__tag soon">On sale soon</span>
-              <div class="city-card__foot">
-                <span class="city-card__price">Register for presale</span>
-                <a class="btn btn--ghost hoverable" href="#tickets">Notify me</a>
+
+          <article
+            id="card3"
+            class="absolute w-40 sm:w-48 md:w-56 translate-x-[58%] sm:translate-x-[112%] will-change-transform"
+            style="transform: rotateY(-22deg) rotateZ(9deg);"
+          >
+            <div
+              class="profile-card soft-sheen relative overflow-hidden p-4 shadow-[-30px_40px_60px_rgba(0,0,0,0.45)]"
+            >
+              <p class="display text-base leading-tight tracking-tight">
+                Nemr
+                <br />
+                &nbsp;
+              </p>
+              <p class="text-xs text-white/60 mt-1">🇱🇧 Dubai · 4 Apr</p>
+              <img
+                src="assets/talent/nemr.png"
+                alt="Nemr"
+                class="w-full aspect-square object-cover mt-3 grayscale"
+              />
+              <button
+                class="mt-3 w-full text-xs font-medium bg-[#d4af88] text-black rounded-full py-1.5"
+              >
+                Get tickets
+              </button>
+              <div
+                class="mt-2 flex items-center justify-center gap-1.5 border border-white/30 rounded-md py-1.5"
+              >
+                <i
+                  data-lucide="ticket"
+                  class="w-3.5 h-3.5"
+                  stroke-width="1.5"
+                ></i>
+                <span class="text-xs">From AED 195</span>
               </div>
             </div>
           </article>
-          <article class="city-card">
-            <div class="city-card__media m4"><span class="city-card__ar">القاهرة</span></div>
-            <div class="city-card__body">
-              <span class="city-card__date">Sat · 18 Apr 2026</span>
-              <h3>Cairo</h3>
-              <span class="city-card__venue">New Cairo Arena</span>
-              <span class="city-card__act">★ Ramy Youssef</span>
-              <span class="city-card__tag soon">On sale soon</span>
-              <div class="city-card__foot">
-                <span class="city-card__price">Register for presale</span>
-                <a class="btn btn--ghost hoverable" href="#tickets">Notify me</a>
+        </div>
+      </div>
+
+      <div
+        id="heroCopy"
+        class="absolute bottom-0 left-0 right-0 border-t border-white/40 z-20"
+      >
+        <div
+          class="px-5 md:px-8 py-5 flex items-end justify-between text-white"
+        >
+          <p class="text-base md:text-lg font-medium leading-snug max-w-sm">
+            Five headliners. Five cities. Twelve nights — live and unrecorded.
+          </p>
+          <i
+            data-lucide="arrow-down"
+            class="w-5 h-5 mb-1 animate-bounce"
+            stroke-width="1.5"
+          ></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 2 · INTERLUDE ======================= -->
+    <section
+      id="interlude"
+      class="poster-section h-screen bg-[#d4af88] divider-grid dark-lines"
+    >
+      <div
+        id="interludeWipe"
+        class="absolute -top-[8vw] left-0 right-0 h-[18vw] -rotate-2 origin-left bg-[#d4af88] z-10"
+      ></div>
+      <div
+        id="brush1"
+        class="absolute top-[55%] left-[8%] w-[34vw] h-[14vw] rounded-[50%] border-[1.2vw] opacity-85 -rotate-6 border-[#e11822] z-10"
+      ></div>
+      <div
+        id="brush2"
+        class="absolute top-[30%] right-[10%] w-[18vw] h-[18vw] rounded-full blur-[2px] bg-[#b3121a]/80 z-10"
+      ></div>
+
+      <div class="absolute inset-0 flex items-center overflow-hidden z-20">
+        <h2
+          id="artistsWord"
+          class="display text-black text-[29vw] md:text-[24vw] leading-none tracking-[-0.06em] whitespace-nowrap select-none will-change-transform"
+        >
+          FIVE HEADLINERS &nbsp; FIVE CITIES
+        </h2>
+      </div>
+
+      <div
+        id="interludeCopy"
+        class="absolute bottom-0 left-0 right-0 border-t border-black/25 z-30"
+      >
+        <div
+          class="px-5 md:px-8 py-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-black"
+        >
+          <p class="text-base font-semibold">
+            Live &amp; unrecorded.
+          </p>
+          <p class="text-base text-black/70 md:col-span-2 max-w-md">
+            The Arab world's sharpest stand-ups, one unmissable tour. Twelve
+            nights across five cities. If you're not in the room, you're outside
+            the joke.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 3 · PRODUCT ======================= -->
+    <section
+      id="product"
+      class="poster-section h-screen bg-[#b3121a] divider-grid dark-lines"
+    >
+      <div
+        id="theCardWord"
+        class="absolute inset-0 flex items-center justify-center pointer-events-none will-change-transform z-0"
+      >
+        <h2
+          class="display text-black text-[34vw] md:text-[28vw] leading-none tracking-[-0.06em] whitespace-nowrap select-none"
+        >
+          LIVE
+        </h2>
+      </div>
+
+      <div
+        class="absolute inset-0 flex flex-col md:flex-row items-center justify-center gap-9 md:gap-[14vw] pt-12 z-10"
+        style="perspective:1600px;"
+      >
+        <article id="walletPass" class="w-56 md:w-64 will-change-transform">
+          <div
+            class="p-5 shadow-[20px_40px_70px_rgba(0,0,0,0.42)] relative overflow-hidden bg-[#e11822]"
+            style="transform: rotateY(14deg);"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-white/22 via-transparent to-black/20 pointer-events-none"
+            ></div>
+            <div class="relative flex items-center justify-between">
+              <p class="display text-xs text-white uppercase tracking-tight">
+                WAQEF LIVE
+              </p>
+              <span class="text-xs text-white/70">PASS</span>
+            </div>
+            <div class="relative mt-4 border-t border-white/20 pt-4">
+              <p
+                class="display text-xl text-white leading-tight tracking-tight"
+              >
+                Riyadh
+                <br />
+                14 Mar 2026
+              </p>
+              <p class="text-xs text-white/70 mt-1">★ Fahad Al Butairi</p>
+            </div>
+            <div
+              class="relative mt-5 bg-white p-3 flex items-center justify-center"
+            >
+              <img
+                src="assets/scenes/qr.svg"
+                alt="QR code"
+                class="w-32 h-32"
+              />
+            </div>
+            <div
+              class="relative mt-4 flex items-center justify-between text-xs text-white/80"
+            >
+              <span>waqef.live/riyadh</span>
+              <i data-lucide="scan-line" class="w-4 h-4" stroke-width="1.5"></i>
+            </div>
+          </div>
+        </article>
+
+        <article id="phoneMock" class="w-56 md:w-64 will-change-transform">
+          <div
+            class="bg-black p-2 shadow-[-20px_40px_70px_rgba(0,0,0,0.45)] rounded-md"
+            style="transform: rotateY(-12deg);"
+          >
+            <div class="bg-neutral-950 text-white overflow-hidden">
+              <img
+                src="assets/scenes/stage-1.svg"
+                alt="On stage"
+                class="w-full h-28 object-cover opacity-90"
+              />
+              <div class="p-4 -mt-8 relative">
+                <img
+                  src="assets/talent/fahad-al-butairi.jpg"
+                  alt="Portrait"
+                  class="w-14 h-14 object-cover border-2 border-black grayscale"
+                />
+                <p class="display text-base mt-3 tracking-tight">
+                  Fahad Al Butairi
+                </p>
+                <p class="text-xs text-white/60">
+                  Opening night — Riyadh
+                </p>
+                <button
+                  class="mt-4 w-full text-xs font-medium bg-[#d4af88] text-black rounded-full py-2"
+                >
+                  Buy tickets
+                </button>
+                <div
+                  class="mt-2 flex items-center justify-center gap-1.5 border border-white/30 rounded-md py-2"
+                >
+                  <i
+                    data-lucide="ticket"
+                    class="w-3.5 h-3.5"
+                    stroke-width="1.5"
+                  ></i>
+                  <span class="text-xs">From SAR 149</span>
+                </div>
+                <div class="mt-4 space-y-px">
+                  <button
+                    class="w-full flex items-center justify-between text-xs py-2.5 px-3 bg-white/5 hover:bg-white/10 transition-colors"
+                  >
+                    <span>Register for presale</span>
+                    <i
+                      data-lucide="arrow-right"
+                      class="w-3.5 h-3.5"
+                      stroke-width="1.5"
+                    ></i>
+                  </button>
+                  <button
+                    class="w-full flex items-center justify-between text-xs py-2.5 px-3 bg-white/5 hover:bg-white/10 transition-colors"
+                  >
+                    <span>See all dates</span>
+                    <i
+                      data-lucide="arrow-right"
+                      class="w-3.5 h-3.5"
+                      stroke-width="1.5"
+                    ></i>
+                  </button>
+                </div>
+                <div class="mt-4 grid grid-cols-3 gap-1">
+                  <img
+                    src="assets/scenes/stage-2.svg"
+                    class="aspect-square object-cover"
+                    alt=""
+                  />
+                  <img
+                    src="assets/scenes/stage-3.svg"
+                    class="aspect-square object-cover"
+                    alt=""
+                  />
+                  <img
+                    src="assets/scenes/stage-4.svg"
+                    class="aspect-square object-cover"
+                    alt=""
+                  />
+                </div>
               </div>
             </div>
-          </article>
-          <article class="city-card">
-            <div class="city-card__media m1"><span class="city-card__ar">الدوحة</span></div>
-            <div class="city-card__body">
-              <span class="city-card__date">Sat · 25 Apr 2026</span>
-              <h3>Doha</h3>
-              <span class="city-card__venue">Lusail Arena</span>
-              <span class="city-card__act">★ John Achkar</span>
-              <span class="city-card__tag soon">On sale soon</span>
-              <div class="city-card__foot">
-                <span class="city-card__price">Register for presale</span>
-                <a class="btn btn--ghost hoverable" href="#tickets">Notify me</a>
-              </div>
+          </div>
+        </article>
+      </div>
+
+      <div
+        class="absolute bottom-0 left-0 right-0 border-t border-black/25 z-20"
+      >
+        <div
+          class="px-5 md:px-8 py-5 flex items-end justify-between text-black"
+        >
+          <p class="text-base font-semibold max-w-xs leading-snug">
+            One ticket. One night. No cameras, no reruns.
+          </p>
+          <p class="text-xs text-black/60 hidden sm:block">
+            Book · Arrive · Laugh
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 4 · MANIFESTO ======================= -->
+    <section
+      id="manifesto"
+      class="poster-section h-screen bg-[#f2e9d6] divider-grid dark-lines flex items-center justify-center px-5"
+    >
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(109,40,217,0.24),transparent_32%),radial-gradient(circle_at_80%_72%,rgba(225,29,42,0.22),transparent_30%)]"
+      ></div>
+      <div class="relative z-10 manifesto-sentence text-black">
+        <span class="manifesto-word">If</span>
+        <span class="manifesto-word">you're</span>
+        <span class="manifesto-word">not</span>
+        <span class="manifesto-word">in</span>
+        <span class="manifesto-word">the</span>
+        <span class="manifesto-word">room,</span>
+        <span class="manifesto-word">you're</span>
+        <span class="manifesto-word">outside</span>
+        <span class="manifesto-word">the</span>
+        <span class="manifesto-word">joke.</span>
+      </div>
+      <span
+        id="finallyWord"
+        class="hand absolute z-20 text-[#b3121a] text-[18vw] md:text-[10vw] left-[18%] top-[55%] -rotate-12 select-none"
+      >
+        be there
+      </span>
+      <div
+        class="absolute top-[12%] left-[8%] display text-[9vw] leading-none text-black/5 rotate-[-8deg]"
+      >
+        RIYADH JEDDAH DUBAI CAIRO DOHA LIVE UNRECORDED ONE NIGHT NO RERUNS
+        OFFLINE
+      </div>
+      <p class="section-label text-black/60">05 / Before you book</p>
+    </section>
+
+    <!-- ======================= 5 · STAGE GRID ======================= -->
+    <section
+      id="experience"
+      class="poster-section h-screen bg-black divider-grid flex items-center justify-center px-5"
+    >
+      <h2
+        id="archiveWord"
+        class="huge-word absolute z-0 text-white/10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+      >
+        STAGE
+      </h2>
+      <div class="archive-grid">
+        <img class="archive-img" src="assets/scenes/stage-1.svg" alt="Stage 01" />
+        <img class="archive-img" src="assets/scenes/stage-2.svg" alt="Stage 02" />
+        <img class="archive-img" src="assets/scenes/stage-3.svg" alt="Stage 03" />
+        <img class="archive-img" src="assets/scenes/stage-4.svg" alt="Stage 04" />
+        <img class="archive-img" src="assets/scenes/stage-1.svg" alt="Stage 05" />
+        <img class="archive-img" src="assets/scenes/stage-2.svg" alt="Stage 06" />
+        <img class="archive-img" src="assets/scenes/stage-3.svg" alt="Stage 07" />
+        <img class="archive-img" src="assets/scenes/stage-4.svg" alt="Stage 08" />
+        <img class="archive-img" src="assets/scenes/stage-1.svg" alt="Stage 09" />
+        <img class="archive-img" src="assets/scenes/stage-2.svg" alt="Stage 10" />
+        <img class="archive-img" src="assets/scenes/stage-3.svg" alt="Stage 11" />
+        <img class="archive-img" src="assets/scenes/stage-4.svg" alt="Stage 12" />
+        <img class="archive-img" src="assets/scenes/stage-1.svg" alt="Stage 13" />
+        <img class="archive-img" src="assets/scenes/stage-2.svg" alt="Stage 14" />
+        <img class="archive-img" src="assets/scenes/stage-3.svg" alt="Stage 15" />
+      </div>
+      <div
+        class="absolute bottom-0 left-0 right-0 border-t border-white/25 z-10"
+      >
+        <div
+          class="px-5 md:px-8 py-5 flex items-end justify-between text-white"
+        >
+          <p class="text-base font-semibold max-w-sm leading-snug">
+            Spotlight, mic and a room that's half the show. Every seat is inside
+            the joke.
+          </p>
+          <p class="text-xs text-white/55 hidden sm:block">
+            Real nights · real laughter
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 6 · HEADLINERS / TICKET BUILDER ======================= -->
+    <section
+      id="headliners"
+      class="poster-section h-screen bg-[#f2e9d6] divider-grid dark-lines"
+    >
+      <h2
+        id="buildWord"
+        class="huge-word absolute left-[-4vw] top-1/2 -translate-y-1/2 z-0 text-black"
+      >
+        LINE-UP
+      </h2>
+      <div
+        class="relative z-10 min-h-screen grid grid-cols-1 lg:grid-cols-2 items-center gap-8 px-5 md:px-8 pt-24 pb-20"
+      >
+        <div class="hidden lg:block"></div>
+        <article id="builderCard" class="builder-shell ml-auto overflow-hidden">
+          <header
+            class="p-5 flex items-start justify-between border-b border-white/20"
+          >
+            <div>
+              <p class="display text-3xl tracking-tight leading-none">
+                THE LINE-UP
+              </p>
+              <p class="text-xs text-white/55 mt-2">Five headliners / one tour</p>
             </div>
-          </article>
-          <article class="city-card city-card--cta">
-            <div class="city-card__body">
-              <h3>Your city next?</h3>
-              <p>We go where the laughter is loudest. Tell us where to bring the mic.</p>
-              <a href="#tickets" class="btn btn--light hoverable">Request your city</a>
+            <i
+              data-lucide="mic-vocal"
+              class="w-5 h-5 text-white/60"
+              stroke-width="1.5"
+            ></i>
+          </header>
+
+          <div class="builder-module p-5" data-number="01">
+            <p class="text-xs uppercase tracking-[0.2em] text-white/40">Opening night</p>
+            <p class="mt-2 text-sm text-white/82 max-w-xs">
+              <span class="font-semibold text-white">Fahad Al Butairi</span> 🇸🇦 —
+              Saudi stand-up's pioneer, the voice that started it all.
+            </p>
+          </div>
+          <div class="builder-module p-5" data-number="02">
+            <p class="text-xs uppercase tracking-[0.2em] text-white/40">
+              Headliners
+            </p>
+            <div class="mt-3 grid grid-cols-4 gap-1.5">
+              <img src="assets/talent/mo-amer.webp" alt="Mo Amer" class="aspect-square object-cover grayscale" />
+              <img src="assets/talent/nemr.png" alt="Nemr" class="aspect-square object-cover grayscale" />
+              <img src="assets/talent/ramy-youssef.jpg" alt="Ramy Youssef" class="aspect-square object-cover grayscale" />
+              <img src="assets/talent/john-achkar.webp" alt="John Achkar" class="aspect-square object-cover grayscale" />
             </div>
-          </article>
+          </div>
+          <div class="builder-module grid grid-cols-2" data-number="03">
+            <button
+              class="p-5 text-left border-r border-white/15 bg-[#d4af88] text-black text-sm font-semibold"
+            >
+              Mo Amer 🇵🇸
+            </button>
+            <button class="p-5 text-left text-sm font-semibold">Nemr 🇱🇧</button>
+          </div>
+          <div class="builder-module grid grid-cols-2" data-number="04">
+            <button
+              class="p-5 text-left text-sm font-semibold border-r border-white/15"
+            >
+              Ramy Youssef 🇪🇬
+            </button>
+            <button class="p-5 text-left text-sm font-semibold">John Achkar 🇱🇧</button>
+          </div>
+          <div
+            class="builder-module p-5 flex items-center justify-between"
+            data-number="05"
+          >
+            <span class="text-sm font-semibold">Live &amp; unrecorded</span>
+            <span
+              class="flex items-center gap-2 text-xs border border-white/25 px-3 py-2 rounded-md"
+            >
+              <i data-lucide="ticket" class="w-3.5 h-3.5"></i>
+              Tickets
+            </span>
+          </div>
+        </article>
+      </div>
+      <div class="absolute left-5 md:left-8 top-[26%] z-20 hidden md:block">
+        <p
+          class="display text-[11vw] leading-none tracking-[-0.055em] text-[#e11822]"
+        >
+          05
+        </p>
+        <p class="text-xs uppercase tracking-[0.18em] max-w-[180px]">
+          Five of the Arab world's sharpest — one tour.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================= 7 · TOUR DATES BOARD ======================= -->
+    <section
+      id="dates"
+      class="poster-section min-h-screen bg-[#d4af88] divider-grid dark-lines px-5 md:px-8 pt-28 pb-16 flex items-center"
+    >
+      <h2
+        id="boardWord"
+        class="huge-word absolute z-0 text-black/18 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      >
+        DATES
+      </h2>
+      <div
+        class="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
+      >
+        <article class="op-card">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              14 Mar · Riyadh
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Fahad
+              <br />
+              Al Butairi
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs text-white/58">
+            <span>
+              King Fahd Centre
+              <br />
+              Selling fast · SAR 149
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </article>
+        <article class="op-card">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              21 Mar · Jeddah
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Mo
+              <br />
+              Amer
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs text-white/58">
+            <span>
+              Jeddah Superdome
+              <br />
+              Selling fast · SAR 179
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </article>
+        <article class="op-card">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              28 Mar · Riyadh
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Nemr
+              <br />
+              &nbsp;
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs text-white/58">
+            <span>
+              Kingdom Arena
+              <br />
+              On sale · SAR 159
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </article>
+        <article class="op-card">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              04 Apr · Dubai
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Nemr
+              <br />
+              &nbsp;
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs text-white/58">
+            <span>
+              Coca-Cola Arena
+              <br />
+              Selling fast · AED 195
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </article>
+        <article class="op-card lg:col-start-2">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              11 Apr · Dubai
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Mo
+              <br />
+              Amer
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs text-white/58">
+            <span>
+              Coca-Cola Arena
+              <br />
+              On sale · AED 220
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </article>
+        <article class="op-card">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              18 Apr · Cairo
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Ramy
+              <br />
+              Youssef
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs text-white/58">
+            <span>
+              New Cairo Arena
+              <br />
+              Sold out · Waitlist
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </article>
+        <article class="op-card bg-[#b3121a] text-white border-black/20">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/70">
+              25 Apr · Doha
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              John
+              <br />
+              Achkar
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs text-white/80">
+            <span>
+              Lusail Arena
+              <br />
+              Just added · QAR 160
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </article>
+      </div>
+      <svg
+        class="absolute inset-0 w-full h-full z-[2] opacity-40 pointer-events-none"
+        fill="none"
+        stroke="black"
+        stroke-width="1"
+      >
+        <path d="M90 220 C 360 110, 690 420, 1040 190" stroke-dasharray="6 10"></path>
+        <path d="M120 680 C 420 520, 760 740, 1160 480" stroke-dasharray="6 10"></path>
+      </svg>
+    </section>
+
+    <!-- ======================= 8 · THE NIGHT FLOW ======================= -->
+    <section
+      id="schedule"
+      class="poster-section h-screen bg-[#e11822] divider-grid px-5 md:px-8 flex items-center"
+    >
+      <h2
+        id="supportWord"
+        class="huge-word absolute z-0 text-black/35 left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2"
+      >
+        THE NIGHT
+      </h2>
+      <div
+        class="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3 pt-20 pb-20"
+      >
+        <article class="support-panel support-step">
+          <p class="text-xs uppercase tracking-[0.2em] text-white/45">
+            01 / Doors
+          </p>
+          <h3 class="display text-5xl md:text-6xl leading-none mt-6">
+            ARRIVE
+          </h3>
+          <p class="text-sm text-white/58 mt-6 max-w-[220px]">
+            Doors at 7:00 PM. The room fills, the lights drop, the night begins.
+          </p>
+        </article>
+        <article class="support-panel support-step bg-white text-black">
+          <p class="text-xs uppercase tracking-[0.2em] text-black/45">
+            02 / Show
+          </p>
+          <h3 class="display text-5xl md:text-6xl leading-none mt-6">
+            LAUGH
+          </h3>
+          <button
+            class="mt-8 w-full bg-black text-white text-sm font-semibold py-3 rounded-full"
+          >
+            Buy tickets
+          </button>
+        </article>
+        <article class="support-panel support-step">
+          <p class="text-xs uppercase tracking-[0.2em] text-white/45">
+            03 / After
+          </p>
+          <h3 class="display text-5xl md:text-6xl leading-none mt-6">REMEMBER</h3>
+          <p class="text-sm text-white/58 mt-6 max-w-[220px]">
+            No phones, no reruns. What happens at WAQEF stays offline — you had
+            to be there.
+          </p>
+        </article>
+      </div>
+      <div
+        id="notifyCard"
+        class="absolute z-20 right-5 md:right-[9vw] bottom-[16vh] w-72 bg-white text-black p-4 shadow-[20px_24px_70px_rgba(0,0,0,0.38)] border border-black/10"
+      >
+        <div class="flex items-center justify-between">
+          <p class="text-xs uppercase tracking-[0.18em] text-black/45">
+            On sale now
+          </p>
+          <i data-lucide="flame" class="w-4 h-4"></i>
+        </div>
+        <p class="display text-4xl leading-none mt-4">SAR 149</p>
+        <p class="text-sm font-semibold mt-1">Riyadh · 14 Mar 2026</p>
+        <p class="text-xs text-black/55 mt-2">Selling fast — last 3 shows sold out</p>
+      </div>
+    </section>
+
+    <!-- ======================= 9 · CTA BUILD-UP ======================= -->
+    <section id="cta-build" class="poster-section h-screen bg-black">
+      <div
+        id="wipeRose"
+        class="absolute inset-0 bg-[#b3121a] origin-bottom scale-y-0"
+      ></div>
+      <div
+        id="wipeEmerald"
+        class="absolute inset-0 bg-[#d4af88] origin-left scale-x-0"
+      ></div>
+      <div class="sweep-word text-white" id="seenWord">LIVE</div>
+      <div class="sweep-word text-black" id="savedWord">LOUD</div>
+      <div class="sweep-word text-black" id="supportedWord">OFFLINE</div>
+    </section>
+
+    <!-- ======================= COLOUR PALETTE ======================= -->
+    <section id="palette" class="w-full py-24 md:py-32 px-[6vw]" style="background:#f2e9d6;color:#0b0b0b">
+      <p class="text-xs uppercase opacity-60 mb-3" style="letter-spacing:.32em">The palette</p>
+      <h2 class="display text-5xl md:text-7xl leading-none mb-12">Our colours</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#e11822;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">WAQEF Red</p><p class="text-xs opacity-60">#E11822</p></div>
+        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#b3121a;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">Deep Red</p><p class="text-xs opacity-60">#B3121A</p></div>
+        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#d4af88;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">Gold</p><p class="text-xs opacity-60">#D4AF88</p></div>
+        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#f2e9d6;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">Beige</p><p class="text-xs opacity-60">#F2E9D6</p></div>
+        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#0b0b0b;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">Rich Black</p><p class="text-xs opacity-60">#0B0B0B</p></div>
+        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#ffffff;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">White</p><p class="text-xs opacity-60">#FFFFFF</p></div>
+      </div>
+      <p class="text-xs opacity-50 mt-10" style="letter-spacing:.05em">Bebas Neue / Montserrat / Cairo — Riyadh · Jeddah · Dubai · Cairo · Doha</p>
+    </section>
+
+    <!-- ======================= 10 · TICKETS / GET IN THE ROOM ======================= -->
+    <section
+      id="join"
+      class="poster-section min-h-screen w-full z-10 flex flex-col bg-[#e11822] divider-grid dark-lines"
+    >
+      <div class="relative flex-1 min-h-[88vh]">
+        <div
+          class="absolute inset-0 flex items-center justify-center md:justify-start md:pl-[4vw] overflow-hidden z-0"
+        >
+          <h2
+            id="joinWord"
+            class="display text-black text-[44vw] md:text-[32vw] leading-none tracking-[-0.07em] select-none will-change-transform"
+          >
+            TICKETS
+          </h2>
+        </div>
+
+        <span
+          id="yourCardWord"
+          class="hand absolute text-white text-[15vw] md:text-[8vw] left-[24%] md:left-[34%] top-[45%] -rotate-12 select-none drop-shadow-lg z-10"
+        >
+          be there
+        </span>
+
+        <img src="assets/talent/fahad-al-butairi.jpg" class="member absolute w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-white object-cover left-[14%] top-[28%] shadow-xl z-10" alt="" />
+        <img src="assets/talent/mo-amer.webp" class="member absolute w-10 h-10 md:w-14 md:h-14 rounded-full border-2 border-white object-cover left-[30%] top-[68%] shadow-xl z-10" alt="" />
+        <img src="assets/talent/nemr.png" class="member absolute w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-white object-cover left-[52%] top-[24%] shadow-xl z-10" alt="" />
+        <img src="assets/talent/ramy-youssef.jpg" class="member absolute w-10 h-10 md:w-14 md:h-14 rounded-full border-2 border-white object-cover left-[8%] top-[58%] shadow-xl z-10" alt="" />
+        <img src="assets/talent/john-achkar.webp" class="member absolute w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-white object-cover left-[44%] top-[78%] shadow-xl z-10" alt="" />
+        <img src="assets/talent/john-achkar.webp" class="member absolute w-10 h-10 md:w-14 md:h-14 rounded-full border-2 border-white object-cover left-[24%] top-[12%] shadow-xl z-10" alt="" />
+
+        <div
+          class="absolute right-5 md:right-[8vw] top-[23%] md:top-[31%] max-w-xs text-black z-20"
+        >
+          <p class="text-lg md:text-xl font-semibold leading-snug">
+            Get in the room. From SAR 149 · One night · No cameras · No reruns.
+          </p>
+          <svg
+            id="handArrow"
+            viewBox="0 0 120 90"
+            class="w-24 md:w-32 mt-6 ml-auto text-black"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+          >
+            <path d="M8 10 C 40 20, 70 40, 100 72"></path>
+            <path d="M86 68 L 102 74 L 96 56"></path>
+          </svg>
         </div>
       </div>
-    </section>
 
-    <!-- ====================== HOUSE RULES / FOMO ====================== -->
-    <section class="rules" id="rules">
-      <div class="rules__pin">
-        <span class="eyebrow eyebrow--light rules__eb">05 — Before you book</span>
-        <div class="rules__statements">
-          <h2 class="rule">What happens at WAQEF<br/><b>stays offline.</b></h2>
-          <h2 class="rule">There is no<br/><b>“watch later.”</b></h2>
-          <h2 class="rule">If you're not in the room,<br/><b>you're outside the joke.</b></h2>
+      <!-- FAQ STRIP -->
+      <div id="faq" class="relative border-t border-black/25 z-20 bg-[#e11822]">
+        <div class="px-5 md:px-8 py-8 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5 text-black max-w-6xl mx-auto">
+          <div class="border-b border-black/20 pb-3">
+            <p class="font-semibold">What time do doors open?</p>
+            <p class="text-sm text-black/70 mt-1">Doors at 7:00 PM, show starts 8:00 PM sharp. Come early — latecomers seated at a break.</p>
+          </div>
+          <div class="border-b border-black/20 pb-3">
+            <p class="font-semibold">Is there an age limit?</p>
+            <p class="text-sm text-black/70 mt-1">The show is 18+. Bring a valid photo ID — it may be checked at the door.</p>
+          </div>
+          <div class="border-b border-black/20 pb-3">
+            <p class="font-semibold">What language is the show in?</p>
+            <p class="text-sm text-black/70 mt-1">Bold and bilingual — Arabic and modern English, woven together.</p>
+          </div>
+          <div class="border-b border-black/20 pb-3">
+            <p class="font-semibold">Can I record the show?</p>
+            <p class="text-sm text-black/70 mt-1">No. Phones stay away. What happens at WAQEF stays offline — that's the whole point.</p>
+          </div>
+          <div class="border-b border-black/20 pb-3">
+            <p class="font-semibold">Refunds or transfers?</p>
+            <p class="text-sm text-black/70 mt-1">Tickets are non-refundable but fully transferable. Pass your seat through your confirmation email.</p>
+          </div>
+          <div class="border-b border-black/20 pb-3">
+            <p class="font-semibold">Is the venue accessible?</p>
+            <p class="text-sm text-black/70 mt-1">Yes — wheelchair accessible with dedicated seating. Email hello@waqef.live and we'll look after you.</p>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- ====================== HEADLINERS ====================== -->
-    <section class="lineup" id="lineup">
-      <span class="eyebrow">06 — The headliners</span>
-      <h2 class="display reveal-up">Five of the Arab world's<br/><span class="red">sharpest</span> — one tour.</h2>
-      <p class="lineup__demo">Sample line-up for demo — illustrated portraits shown until licensed photos are added.</p>
-      <div class="lineup__marquee">★ NOW PLAYING · LIVE ON STAGE ★</div>
-      <div class="lineup-grid">
-        <article class="artist hoverable">
-          <div class="artist__photo face--1"><img class="artist__img" src="assets/talent/fahad-al-butairi.jpg" alt="Fahad Al Butairi" loading="lazy" onerror="this.remove()"/><span class="artist__badge">Opening night</span></div>
-          <div class="artist__body"><h3>Fahad Al Butairi</h3><span class="artist__flag">🇸🇦 Saudi Arabia</span><p>Saudi stand-up's pioneer — the voice that started it all.</p><span class="artist__date">14 Mar · Riyadh</span></div>
-        </article>
-        <article class="artist hoverable">
-          <div class="artist__photo face--2"><img class="artist__img" src="assets/talent/mo-amer.webp" alt="Mo Amer" loading="lazy" onerror="this.remove()"/></div>
-          <div class="artist__body"><h3>Mo Amer</h3><span class="artist__flag">🇵🇸 Palestine</span><p>Netflix headliner and global touring force of nature.</p><span class="artist__date">21 Mar · Jeddah</span></div>
-        </article>
-        <article class="artist hoverable">
-          <div class="artist__photo face--3"><img class="artist__img" src="assets/talent/nemr.png" alt="Nemr" loading="lazy" onerror="this.remove()"/></div>
-          <div class="artist__body"><h3>Nemr</h3><span class="artist__flag">🇱🇧 Lebanon</span><p>The godfather of Middle East stand-up comedy.</p><span class="artist__date">4 Apr · Dubai</span></div>
-        </article>
-        <article class="artist hoverable">
-          <div class="artist__photo face--4"><img class="artist__img" src="assets/talent/ramy-youssef.jpg" alt="Ramy Youssef" loading="lazy" onerror="this.remove()"/></div>
-          <div class="artist__body"><h3>Ramy Youssef</h3><span class="artist__flag">🇪🇬 Egypt</span><p>Golden Globe winner with razor-sharp, fearless wit.</p><span class="artist__date">18 Apr · Cairo</span></div>
-        </article>
-        <article class="artist hoverable">
-          <div class="artist__photo face--5"><img class="artist__img" src="assets/talent/john-achkar.webp" alt="John Achkar" loading="lazy" onerror="this.remove()"/><span class="artist__badge">Just added</span></div>
-          <div class="artist__body"><h3>John Achkar</h3><span class="artist__flag">🇱🇧 Lebanon</span><p>Beirut's quick-witted favourite — sharp, warm and impossible to look away from.</p><span class="artist__date">25 Apr · Doha</span></div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ====================== FULL SCHEDULE ====================== -->
-    <section class="schedule" id="schedule">
-      <div class="schedule__head">
-        <span class="eyebrow">07 — Full tour schedule</span>
-        <h2 class="display reveal-up">Every night,<br/>every <span class="gold">city.</span></h2>
-        <p class="lede reveal-up">Twelve shows across five cities. Prices shown in local currency.</p>
-      </div>
-      <ul class="sched">
-        <li class="sched__row hoverable"><span class="sched__date"><b>14</b><i>Mar</i></span><span class="sched__where"><b>Riyadh</b><i>King Fahd Cultural Centre</i></span><span class="sched__act">Fahad Al Butairi</span><span class="sched__status live">Selling fast</span><span class="sched__price">SAR 149</span><a class="btn btn--red hoverable" href="#tickets">Buy</a></li>
-        <li class="sched__row hoverable"><span class="sched__date"><b>21</b><i>Mar</i></span><span class="sched__where"><b>Jeddah</b><i>Jeddah Superdome</i></span><span class="sched__act">Mo Amer</span><span class="sched__status live">Selling fast</span><span class="sched__price">SAR 179</span><a class="btn btn--red hoverable" href="#tickets">Buy</a></li>
-        <li class="sched__row hoverable"><span class="sched__date"><b>28</b><i>Mar</i></span><span class="sched__where"><b>Riyadh</b><i>Kingdom Arena</i></span><span class="sched__act">Nemr</span><span class="sched__status open">On sale</span><span class="sched__price">SAR 159</span><a class="btn btn--red hoverable" href="#tickets">Buy</a></li>
-        <li class="sched__row hoverable"><span class="sched__date"><b>04</b><i>Apr</i></span><span class="sched__where"><b>Dubai</b><i>Coca-Cola Arena</i></span><span class="sched__act">Nemr</span><span class="sched__status live">Selling fast</span><span class="sched__price">AED 195</span><a class="btn btn--red hoverable" href="#tickets">Buy</a></li>
-        <li class="sched__row hoverable"><span class="sched__date"><b>11</b><i>Apr</i></span><span class="sched__where"><b>Dubai</b><i>Coca-Cola Arena</i></span><span class="sched__act">Mo Amer</span><span class="sched__status open">On sale</span><span class="sched__price">AED 220</span><a class="btn btn--red hoverable" href="#tickets">Buy</a></li>
-        <li class="sched__row hoverable"><span class="sched__date"><b>18</b><i>Apr</i></span><span class="sched__where"><b>Cairo</b><i>New Cairo Arena</i></span><span class="sched__act">Ramy Youssef</span><span class="sched__status soldout">Sold out</span><span class="sched__price">EGP 1500</span><a class="btn btn--ghost hoverable" href="#tickets">Waitlist</a></li>
-        <li class="sched__row hoverable"><span class="sched__date"><b>25</b><i>Apr</i></span><span class="sched__where"><b>Doha</b><i>Lusail Arena</i></span><span class="sched__act">John Achkar</span><span class="sched__status open">On sale</span><span class="sched__price">QAR 160</span><a class="btn btn--red hoverable" href="#tickets">Buy</a></li>
-        <li class="sched__row hoverable"><span class="sched__date"><b>02</b><i>May</i></span><span class="sched__where"><b>Jeddah</b><i>Jeddah Superdome</i></span><span class="sched__act">Fahad Al Butairi</span><span class="sched__status open">On sale</span><span class="sched__price">SAR 149</span><a class="btn btn--red hoverable" href="#tickets">Buy</a></li>
-        <li class="sched__row hoverable"><span class="sched__date"><b>09</b><i>May</i></span><span class="sched__where"><b>Cairo</b><i>New Cairo Arena</i></span><span class="sched__act">Ramy Youssef</span><span class="sched__status open">On sale</span><span class="sched__price">EGP 1500</span><a class="btn btn--red hoverable" href="#tickets">Buy</a></li>
-      </ul>
-    </section>
-
-    <!-- ====================== TICKET TIERS ====================== -->
-    <section class="tiers" id="tickets">
-      <div class="tiers__head">
-        <span class="eyebrow">08 — Tickets</span>
-        <h2 class="display reveal-up">Pick your <span class="red">seat.</span></h2>
-        <p class="lede reveal-up">All tiers include entry to the full show. Prices rise as we sell — book early.</p>
-      </div>
-      <div class="tiers__grid">
-        <article class="tier reveal-up">
-          <span class="tier__name">General</span>
-          <span class="tier__price"><i>SAR</i> 149</span>
-          <ul class="tier__list">
-            <li>General admission seating</li>
-            <li>Access to the full show</li>
-            <li>Doors at 7:00 PM</li>
-          </ul>
-          <a class="btn btn--ghost hoverable" href="#">Select</a>
-        </article>
-        <article class="tier reveal-up">
-          <span class="tier__name">Premium</span>
-          <span class="tier__price"><i>SAR</i> 249</span>
-          <ul class="tier__list">
-            <li>Reserved seat, closer to stage</li>
-            <li>Priority entry lane</li>
-            <li>Commemorative ticket</li>
-          </ul>
-          <a class="btn btn--ghost hoverable" href="#">Select</a>
-        </article>
-        <article class="tier tier--featured reveal-up">
-          <span class="tier__flag">Most popular</span>
-          <span class="tier__name">VIP</span>
-          <span class="tier__price"><i>SAR</i> 449</span>
-          <ul class="tier__list">
-            <li>Front-section reserved seat</li>
-            <li>Fast-track entry + welcome drink</li>
-            <li>WAQEF goodie bag</li>
-          </ul>
-          <a class="btn btn--red hoverable" href="#">Select VIP</a>
-        </article>
-        <article class="tier reveal-up">
-          <span class="tier__flag tier__flag--gold">The Pause</span>
-          <span class="tier__name">Front Row</span>
-          <span class="tier__price"><i>SAR</i> 699</span>
-          <ul class="tier__list">
-            <li>First two rows — closest seats</li>
-            <li>Backstage meet &amp; greet</li>
-            <li>Signed poster + goodie bag</li>
-          </ul>
-          <a class="btn btn--light hoverable" href="#">Select</a>
-        </article>
-      </div>
-      <p class="tiers__note">Group of 6+? <a href="#" class="hoverable">Ask about group rates →</a> · Secure checkout · Tickets are transferable.</p>
-    </section>
-
-    <!-- ====================== WIN FRONT ROW (game) ====================== -->
-    <section class="game" id="game">
-      <span class="eyebrow">09 — Win front row</span>
-      <h2 class="display reveal-up">Wipe the card.<br/><span class="red">Win the night.</span></h2>
-      <p class="lede reveal-up">Every week we give away two front-row seats. Reveal tonight's prize, then drop your email to enter.</p>
-      <div class="game__card hoverable" id="gameCard">
-        <div class="game__prize">
-          <span class="game__prize-label">This week's prize</span>
-          <span class="game__prize-big wordmark">2× Front row<br/>+ backstage</span>
-          <span class="game__prize-sub">meet the headliner before the show</span>
+      <footer class="relative border-t border-black/25 z-20">
+        <div
+          class="px-5 md:px-8 py-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-black"
+        >
+          <div>
+            <p class="text-sm font-semibold">© 2026 WAQEF — <span class="arabic">وقف</span></p>
+            <a
+              href="mailto:hello@waqef.live"
+              class="text-sm underline underline-offset-2 hover:opacity-60 transition-opacity"
+            >
+              hello@waqef.live
+            </a>
+            <div class="flex items-center gap-3 mt-3">
+              <a href="#" class="hover:opacity-60 transition-opacity" aria-label="Instagram">
+                <i data-lucide="instagram" class="w-4 h-4" stroke-width="1.5"></i>
+              </a>
+              <a href="#" class="hover:opacity-60 transition-opacity" aria-label="TikTok">
+                <i data-lucide="music" class="w-4 h-4" stroke-width="1.5"></i>
+              </a>
+              <a href="#" class="hover:opacity-60 transition-opacity" aria-label="X">
+                <i data-lucide="twitter" class="w-4 h-4" stroke-width="1.5"></i>
+              </a>
+              <a href="mailto:hello@waqef.live" class="hover:opacity-60 transition-opacity" aria-label="Email">
+                <i data-lucide="at-sign" class="w-4 h-4" stroke-width="1.5"></i>
+              </a>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1.5 text-sm">
+            <p class="font-semibold">The show</p>
+            <p class="text-black/70">WAQEF LIVE — stand-up comedy. Live &amp; unrecorded.</p>
+            <p class="text-black/70 mt-1">Riyadh · Jeddah · Dubai · Cairo · Doha</p>
+          </div>
+          <div class="flex flex-col gap-1.5 text-sm">
+            <a href="#join" class="hover:opacity-60 transition-opacity">Buy tickets</a>
+            <a href="#faq" class="hover:opacity-60 transition-opacity">FAQ</a>
+            <a href="#" class="hover:opacity-60 transition-opacity">Request your city</a>
+            <a href="#" class="hover:opacity-60 transition-opacity">Group rates (6+)</a>
+          </div>
         </div>
-        <div class="game__static" id="gameStatic"><span>Hover / touch to wipe ✨</span></div>
-      </div>
+        <p class="px-5 md:px-8 pb-6 text-xs text-black/55">What happens at WAQEF stays offline.</p>
+      </footer>
     </section>
 
-    <!-- ====================== FAQ ====================== -->
-    <section class="faq" id="faq">
-      <div class="faq__head">
-        <span class="eyebrow">10 — Good to know</span>
-        <h2 class="display reveal-up">Before the <span class="gold">lights go down.</span></h2>
-      </div>
-      <ul class="faq__list">
-        <li class="faq__item">
-          <button class="faq__q hoverable">What time do doors open?<i aria-hidden="true">+</i></button>
-          <div class="faq__a"><p>Doors open at 7:00 PM and the show starts at 8:00 PM sharp. Latecomers may be seated at a break to avoid disrupting the show — come early.</p></div>
-        </li>
-        <li class="faq__item">
-          <button class="faq__q hoverable">Is there an age limit?<i aria-hidden="true">+</i></button>
-          <div class="faq__a"><p>The show is 18+. Please bring a valid photo ID — it may be checked at the door.</p></div>
-        </li>
-        <li class="faq__item">
-          <button class="faq__q hoverable">What language is the show in?<i aria-hidden="true">+</i></button>
-          <div class="faq__a"><p>Bold and bilingual — Arabic and modern English. Expect the best of both, woven together.</p></div>
-        </li>
-        <li class="faq__item">
-          <button class="faq__q hoverable">Can I record the show?<i aria-hidden="true">+</i></button>
-          <div class="faq__a"><p>No. Phones stay away during the performance. What happens at WAQEF stays offline — that's the whole point.</p></div>
-        </li>
-        <li class="faq__item">
-          <button class="faq__q hoverable">Can I get a refund or transfer my ticket?<i aria-hidden="true">+</i></button>
-          <div class="faq__a"><p>Tickets are non-refundable but fully transferable. Can't make it? Pass your seat to a friend through your confirmation email.</p></div>
-        </li>
-        <li class="faq__item">
-          <button class="faq__q hoverable">Is the venue accessible?<i aria-hidden="true">+</i></button>
-          <div class="faq__a"><p>Yes. The venue is wheelchair accessible with dedicated seating. Email <b>hello@waqef.live</b> and we'll make sure you're looked after.</p></div>
-        </li>
-      </ul>
-    </section>
+    <script>
+      lucide.createIcons();
+      gsap.registerPlugin(ScrollTrigger);
 
-    <!-- ====================== FINAL CTA ====================== -->
-    <section class="tickets" id="buy">
-      <span class="eyebrow">11 — Last call</span>
-      <div class="ticket hoverable" id="ticketCta">
-        <div class="ticket__main">
-          <span class="ticket__small">WAQEF LIVE · Riyadh · 14 March 2026</span>
-          <span class="ticket__big wordmark">Get in the room</span>
-          <span class="ticket__sub">From SAR 149 · One night · No cameras · No reruns</span>
-        </div>
-        <div class="ticket__stub">
-          <span class="ticket__admit">ADMIT<br/>ONE</span>
-          <span class="glyph glyph--mic"><svg viewBox="0 0 100 100"><rect x="38" y="12" width="24" height="42" rx="12"/><path d="M26 44 q0 24 24 24 q24 0 24-24" fill="none" stroke-width="7" class="stroke"/><line x1="50" y1="68" x2="50" y2="84" stroke-width="7" class="stroke"/><line x1="34" y1="86" x2="66" y2="86" stroke-width="7" class="stroke"/></svg></span>
-        </div>
-      </div>
-      <p class="tickets__fomo reveal-up">🔥 Selling fast. When Riyadh sells out, that's it — no reruns, no replays. Be in the room.</p>
-    </section>
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const noemaLoader = document.querySelector('#noemaLoader');
 
-    <!-- ====================== FOOTER ====================== -->
-    <footer class="footer">
-      <div class="footer__mark">
-        <span class="footer__word wordmark" aria-hidden="true">WAQEF</span>
-        <svg class="smile smile--footer" viewBox="0 0 200 40" aria-hidden="true"><path d="M8 8 Q100 54 192 14" fill="none" stroke-width="6" stroke-linecap="round"/></svg>
-      </div>
-      <div class="footer__row">
-        <div class="footer__col"><span class="footer__label">The show</span><p>WAQEF LIVE — stand-up comedy.<br/>Live &amp; unrecorded.</p></div>
-        <div class="footer__col"><span class="footer__label">Tour</span><p>Riyadh · Jeddah · Dubai · Cairo</p></div>
-        <div class="footer__col"><span class="footer__label">Tickets &amp; help</span><p><a class="hoverable" href="#tickets">Buy tickets</a> · <a class="hoverable" href="#faq">FAQ</a><br/>hello@waqef.live</p></div>
-        <div class="footer__col"><span class="footer__label">Follow</span><p><a class="hoverable" href="#">Instagram</a> / <a class="hoverable" href="#">TikTok</a> / <a class="hoverable" href="#">X</a></p></div>
-      </div>
-      <div class="footer__bottom"><span>© 2026 WAQEF — وقف</span><span>What happens at WAQEF stays offline</span></div>
-    </footer>
+      if (reducedMotion && noemaLoader) {
+        document.body.classList.remove('is-loading');
+        noemaLoader.remove();
+      }
 
-  </main>
+      if (!reducedMotion) {
+        /* ---------- 0 · on load intro ---------- */
+        const loader = document.querySelector('#noemaLoader');
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
-  <script src="js/main.js"></script>
+        gsap.set(['nav', '#createcta', '#heroWord', '#heroCopy'], { autoAlpha: 0 });
+        gsap.set(['#card1', '#card2', '#card3'], { autoAlpha: 0 });
+        gsap.set('.loader-letter', { yPercent: 115, autoAlpha: 0 });
+        gsap.set(['.loader-tag', '.loader-meta'], { y: 14, autoAlpha: 0 });
+        gsap.set('.loader-mark svg path', { strokeDasharray: 80, strokeDashoffset: 80 });
+        gsap.set('.loader-scanline', { scaleX: 0 });
+
+        const onLoadTimeline = gsap.timeline({
+          defaults: { ease: 'power3.out' },
+          onComplete: () => {
+            document.body.classList.remove('is-loading');
+            if (loader) loader.remove();
+            ScrollTrigger.refresh();
+          }
+        });
+
+        onLoadTimeline
+          .to('.loader-mark svg path', { strokeDashoffset: 0, duration: 0.62, stagger: 0.08, ease: 'power2.out' }, 0)
+          .to('.loader-letter', { yPercent: 0, autoAlpha: 1, duration: 0.64, stagger: 0.035, ease: 'expo.out' }, 0.14)
+          .to('.loader-tag', { y: 0, autoAlpha: 1, duration: 0.44 }, 0.54)
+          .to('.loader-meta', { y: 0, autoAlpha: 1, duration: 0.42 }, 0.66)
+          .to('.loader-brand', { y: -22, scale: 0.94, duration: 0.52, ease: 'power2.inOut' }, 1.05)
+          .to('.loader-scanline', { scaleX: 1, duration: 0.46, ease: 'power2.inOut' }, 1.08)
+          .to('.loader-strip', { scaleY: 1, duration: 0.72, stagger: { each: 0.065, from: 'start' }, ease: 'expo.inOut' }, 1.16)
+          .to('#noemaLoader', { yPercent: -100, duration: 0.76, ease: 'expo.inOut' }, 1.82)
+          .to(['nav', '#createcta'], { autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.045, ease: 'power2.out' }, 1.96)
+          .fromTo('#heroWord', { autoAlpha: 0, y: 36, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.84, ease: 'expo.out' }, 1.94)
+          .fromTo(['#card1', '#card2', '#card3'], { y: 95, autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.1, duration: 0.82, ease: 'power3.out' }, 2.16)
+          .fromTo('#heroCopy', { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.62, ease: 'power2.out' }, 2.38);
+
+        /* ---------- 1 · hero pinned ---------- */
+        const heroTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#hero', start: 'top top', end: '+=130%', scrub: 1, pin: true }
+        });
+        heroTimeline
+          .to('#card1', { x: '-16vw', y: '6vh', rotate: -16, ease: 'none' }, 0)
+          .to('#card3', { x: '16vw', y: '-5vh', rotate: 16, ease: 'none' }, 0)
+          .to('#card2', { y: '-9vh', rotate: 4, scale: 1.05, ease: 'none' }, 0)
+          .to('#heroWord', { scale: 1.12, y: '-6vh', ease: 'none' }, 0)
+          .to('#heroCopy', { autoAlpha: 0, y: 40, ease: 'none' }, 0.3);
+
+        /* ---------- 2 · interlude ---------- */
+        const interludeTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#interlude', start: 'top top', end: '+=130%', scrub: 1, pin: true }
+        });
+        interludeTimeline
+          .fromTo('#artistsWord', { x: '24vw', rotate: 5 }, { x: '-78vw', rotate: -3, ease: 'none' }, 0)
+          .fromTo('#brush1', { x: '-8vw', scale: 0.6, rotate: -20 }, { x: '6vw', scale: 1.15, rotate: 4, ease: 'none' }, 0)
+          .fromTo('#brush2', { y: '14vh', scale: 0.5 }, { y: '-8vh', scale: 1.1, ease: 'none' }, 0)
+          .from('#interludeCopy', { autoAlpha: 0, y: 40, ease: 'none' }, 0.2);
+
+        /* ---------- 3 · product ---------- */
+        const productTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#product', start: 'top top', end: '+=170%', scrub: 1, pin: true }
+        });
+        productTimeline
+          .fromTo('#walletPass', { x: '-65vw', y: '24vh', rotate: -32 }, { x: 0, y: 0, rotate: -7, ease: 'none' }, 0)
+          .fromTo('#phoneMock', { x: '65vw', y: '32vh', rotate: 28 }, { x: 0, y: 0, rotate: 7, ease: 'none' }, 0.08)
+          .fromTo('#theCardWord', { y: '8vh', scale: 1.05 }, { y: '-8vh', scale: 1, ease: 'none' }, 0)
+          .to('#walletPass', { y: '-4vh', rotate: -9, ease: 'none' }, 0.7)
+          .to('#phoneMock', { y: '4vh', rotate: 9, ease: 'none' }, 0.7);
+
+        /* ---------- 4 · manifesto ---------- */
+        const messyStarts = [
+          { x: '-36vw', y: '-28vh', rotate: -18, scale: 0.78 },
+          { x: '26vw', y: '-34vh', rotate: 14, scale: 0.6 },
+          { x: '-12vw', y: '32vh', rotate: 24, scale: 0.72 },
+          { x: '36vw', y: '26vh', rotate: -22, scale: 0.68 },
+          { x: '-42vw', y: '8vh', rotate: 10, scale: 0.58 },
+          { x: '18vw', y: '-10vh', rotate: -12, scale: 0.78 },
+          { x: '-22vw', y: '-3vh', rotate: 28, scale: 0.62 },
+          { x: '42vw', y: '-4vh', rotate: -8, scale: 0.72 },
+          { x: '-30vw', y: '24vh', rotate: -16, scale: 0.64 },
+          { x: '30vw', y: '30vh', rotate: 18, scale: 0.7 }
+        ];
+
+        gsap.set('.manifesto-word', {
+          x: (i) => messyStarts[i].x,
+          y: (i) => messyStarts[i].y,
+          rotate: (i) => messyStarts[i].rotate,
+          scale: (i) => messyStarts[i].scale
+        });
+
+        const manifestoTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#manifesto', start: 'top top', end: '+=170%', scrub: 1, pin: true }
+        });
+        manifestoTimeline
+          .to('.manifesto-word', { x: 0, y: 0, rotate: 0, scale: 1, stagger: 0.025, ease: 'none' }, 0)
+          .fromTo('#finallyWord', { autoAlpha: 0, x: '-20vw', rotate: -30, scale: 0.5 }, { autoAlpha: 1, x: 0, rotate: -12, scale: 1, ease: 'none' }, 0.55);
+
+        /* ---------- 5 · stage grid ---------- */
+        const archiveTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: '#experience',
+            start: 'top top',
+            end: '+=190%',
+            scrub: 1,
+            pin: true,
+            invalidateOnRefresh: true
+          }
+        });
+        archiveTimeline
+          .fromTo('.archive-img', {
+            x: (i, el) => {
+              const parent = el.parentElement.getBoundingClientRect();
+              const rect = el.getBoundingClientRect();
+              return parent.left + parent.width / 2 - (rect.left + rect.width / 2);
+            },
+            y: (i, el) => {
+              const parent = el.parentElement.getBoundingClientRect();
+              const rect = el.getBoundingClientRect();
+              return parent.top + parent.height / 2 - (rect.top + rect.height / 2);
+            },
+            scale: (i) => i === 7 ? 1.9 : 0.24,
+            autoAlpha: (i) => i === 7 ? 1 : 0,
+            rotate: (i) => (i - 7) * 3,
+            zIndex: (i) => i === 7 ? 5 : 1
+          }, {
+            x: 0,
+            y: 0,
+            scale: 1,
+            autoAlpha: 1,
+            rotate: 0,
+            stagger: { each: 0.025, from: 'center' },
+            ease: 'none'
+          }, 0)
+          .fromTo('#archiveWord', { y: '8vh', scale: 1.08 }, { y: '-8vh', scale: 0.98, ease: 'none' }, 0);
+
+        /* ---------- 6 · headliners ---------- */
+        const builderTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#headliners', start: 'top top', end: '+=180%', scrub: 1, pin: true }
+        });
+        builderTimeline
+          .fromTo('#builderCard', { x: '38vw', rotate: 8, scale: 0.9 }, { x: 0, rotate: 0, scale: 1, ease: 'none' }, 0)
+          .fromTo('#buildWord', { x: '-8vw', y: '7vh' }, { x: '3vw', y: '-5vh', ease: 'none' }, 0)
+          .from('.builder-module', {
+            x: (i) => [140, -120, 90, -70, 110][i] || 80,
+            y: (i) => [-40, 50, 20, -20, 40][i] || 20,
+            autoAlpha: 0,
+            scale: 0.92,
+            stagger: 0.12,
+            ease: 'none'
+          }, 0.18);
+
+        /* ---------- 7 · dates ---------- */
+        const boardTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#dates', start: 'top top', end: '+=170%', scrub: 1, pin: true }
+        });
+        boardTimeline
+          .fromTo('.op-card', {
+            x: (i) => [-260, 80, 240, -120, 180, -200, 130][i] || 0,
+            y: (i) => [-120, 180, -80, 150, -150, 110, 200][i] || 0,
+            rotate: (i) => [-16, 12, -9, 18, -14, 8, 15][i] || 0,
+            scale: 0.86,
+            autoAlpha: 0.35
+          }, {
+            x: 0,
+            y: 0,
+            rotate: 0,
+            scale: 1,
+            autoAlpha: 1,
+            stagger: 0.035,
+            ease: 'none'
+          }, 0)
+          .fromTo('#boardWord', { xPercent: -58, yPercent: -50, rotate: -4 }, { xPercent: -48, yPercent: -50, rotate: 3, ease: 'none' }, 0);
+
+        /* ---------- 8 · the night flow ---------- */
+        const supportTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#schedule', start: 'top top', end: '+=170%', scrub: 1, pin: true }
+        });
+        supportTimeline
+          .fromTo('.support-step:nth-child(1)', { x: '-50vw', y: '8vh', rotate: -9, autoAlpha: 0 }, { x: 0, y: 0, rotate: 0, autoAlpha: 1, ease: 'none' }, 0)
+          .fromTo('.support-step:nth-child(2)', { scale: 0.62, y: '18vh', autoAlpha: 0 }, { scale: 1, y: 0, autoAlpha: 1, ease: 'none' }, 0.18)
+          .fromTo('.support-step:nth-child(3)', { x: '50vw', y: '-8vh', rotate: 9, autoAlpha: 0 }, { x: 0, y: 0, rotate: 0, autoAlpha: 1, ease: 'none' }, 0.36)
+          .fromTo('#notifyCard', { x: '34vw', y: '10vh', rotate: 8, scale: 0.82, autoAlpha: 0 }, { x: 0, y: 0, rotate: -2, scale: 1, autoAlpha: 1, ease: 'none' }, 0.62)
+          .fromTo('#supportWord', { y: '8vh', scale: 1.1 }, { y: '-7vh', scale: 0.98, ease: 'none' }, 0);
+
+        /* ---------- 9 · CTA build-up ---------- */
+        const ctaBuildTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#cta-build', start: 'top top', end: '+=160%', scrub: 1, pin: true }
+        });
+        ctaBuildTimeline
+          .fromTo('#seenWord', { x: '-110vw', autoAlpha: 1 }, { x: 0, autoAlpha: 1, ease: 'none' }, 0)
+          .to('#seenWord', { x: '110vw', autoAlpha: 0, ease: 'none' }, 0.32)
+          .to('#wipeRose', { scaleY: 1, ease: 'none' }, 0.24)
+          .fromTo('#savedWord', { y: '110vh', autoAlpha: 1 }, { y: 0, autoAlpha: 1, ease: 'none' }, 0.34)
+          .to('#savedWord', { y: '-110vh', autoAlpha: 0, ease: 'none' }, 0.64)
+          .to('#wipeEmerald', { scaleX: 1, ease: 'none' }, 0.58)
+          .fromTo('#supportedWord', { x: '120vw', autoAlpha: 1 }, { x: 0, autoAlpha: 1, ease: 'none' }, 0.68)
+          .to('#supportedWord', { scale: 1.12, autoAlpha: 0, ease: 'none' }, 0.96);
+
+        /* ---------- 10 · final ---------- */
+        const finalTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#join', start: 'top 85%', end: 'top 10%', scrub: 1 }
+        });
+        finalTimeline
+          .fromTo('#joinWord', { y: '14vh' }, { y: 0, ease: 'none' }, 0)
+          .from('.member', { scale: 0, rotate: -20, stagger: 0.06, ease: 'none' }, 0.1)
+          .from('#yourCardWord', { autoAlpha: 0, scale: 0.4, rotate: -40, ease: 'none' }, 0.4)
+          .from('#handArrow path', { strokeDasharray: 200, strokeDashoffset: 200, ease: 'none' }, 0.5);
+
+        gsap.to('#card2', { y: '+=10', repeat: -1, yoyo: true, duration: 2.4, ease: 'sine.inOut' });
+        ScrollTrigger.refresh();
+      }
+    </script>
+    <script>
+    window.addEventListener('load', function () {
+      if (window.gsap && window.ScrollTrigger) {
+        gsap.from('#palette .palette-chip', { opacity: 0, y: 40, stagger: 0.08, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: '#palette', start: 'top 78%' } });
+      }
+    });
+  </script>
 </body>
 </html>
