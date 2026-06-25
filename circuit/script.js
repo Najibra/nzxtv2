@@ -1,3 +1,4 @@
+/* global document, requestAnimationFrame, window, setInterval, clearInterval, URLSearchParams, Node */
 /*
   NZXT "Circuit" Kraken Elite web integration.
 
@@ -47,7 +48,7 @@
 
   function buildModules() {
     const g = $('modules');
-    for (const [key, p] of Object.entries(PANELS)) {
+    for (const p of Object.values(PANELS)) {
       const outer = svgEl('rect', {
         x: p.x - 6, y: p.y - 6, width: p.w + 12, height: p.h + 12,
         rx: p.rx + 7, class: 'glass-outer',
@@ -89,7 +90,7 @@
       y += dy * step;
       d += ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
       len += step;
-      // turn 90° left or right
+      // turn 90 degrees left or right
       [dx, dy] = rnd() > 0.5 ? [-dy, dx] : [dy, -dx];
     }
     return { d, len, endX: x, endY: y };
@@ -227,13 +228,13 @@
       s.el.setAttribute('opacity', (0.7 + 0.3 * Math.sin(t * s.flicker)).toFixed(2));
     }
 
-    // rim breathing — gentle golden pulse at different phases per module
+    // rim breathing - gentle golden pulse at different phases per module
     for (const r of rimEls) {
       const v = 0.75 + 0.25 * Math.sin(t * r.rate + r.phase);
       r.el.setAttribute('opacity', v.toFixed(3));
     }
 
-    // trace shimmer — subtle brightness oscillation on a subset of traces
+    // trace shimmer - subtle brightness oscillation on a subset of traces
     for (let i = 0; i < traceEls.length; i += 3) {
       const tr = traceEls[i];
       const v = tr.baseOpacity * (0.8 + 0.2 * Math.sin(t * tr.rate + tr.phase));
@@ -241,7 +242,7 @@
     }
 
     // value counter interpolation + glow pulses
-    tickCounters(t);
+    tickCounters();
     tickGlows(t);
 
     requestAnimationFrame(animate);
@@ -251,16 +252,16 @@
 
   // Each metric: current displayed value, target value, last-update time
   const counters = {
-    'liquid-value': { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}°` },
-    'cpu-value':    { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}°` },
-    'gpu-value':    { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}°` },
+    'liquid-value': { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}\u00b0` },
+    'cpu-value':    { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}\u00b0` },
+    'gpu-value':    { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}\u00b0` },
     'ram-value':    { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}` },
     'power-value':  { cur: null, tgt: null, fmt: (v) => `${Math.round(v)}` },
   };
 
-  const COUNTER_SPEED = 6; // units per second scaling factor (reaches target in ~0.4 s for ±20°)
+  const COUNTER_SPEED = 6; // units per second scaling factor (reaches target in ~0.4 s for +/-20 degrees)
 
-  function tickCounters(t) {
+  function tickCounters() {
     for (const [id, c] of Object.entries(counters)) {
       if (c.cur === null || c.tgt === null) continue;
       const diff = c.tgt - c.cur;
@@ -302,7 +303,7 @@
         activeGlows.delete(id);
         continue;
       }
-      // sharp flash then fade: peaks at age≈0.1 s
+      // sharp flash then fade: peaks at age approx 0.1 s
       const intensity = Math.max(0, Math.sin(Math.PI * age / 0.35) * (1 - age / 0.7));
       if (intensity > 0.05) {
         g.el.setAttribute('filter', 'url(#val-glow)');
@@ -346,11 +347,73 @@
   const normLoad = (l) => (typeof l === 'number' ? (l > 1 ? l / 100 : l) : 0);
   const num = (...candidates) => candidates.find((c) => typeof c === 'number' && isFinite(c));
 
+  const discreteGpuMatchers = [
+    /nvidia/i,
+    /geforce/i,
+    /\brtx\b/i,
+    /\bgtx\b/i,
+    /\bquadro\b/i,
+    /\bradeon\s+rx\b/i,
+    /\bradeon\s+pro\b/i,
+    /\brx\s*\d/i,
+    /\barc\b/i,
+  ];
+  const integratedGpuMatchers = [
+    /integrated/i,
+    /\bintel\b/i,
+    /\buhd\b/i,
+    /\biris\b/i,
+    /\bxe\b/i,
+    /\bvega\b/i,
+    /\bradeon\(tm\)\s+graphics\b/i,
+    /\bradeon\s+graphics\b/i,
+    /microsoft basic display/i,
+    /virtual display/i,
+  ];
+
+  function gpuName(gpu) {
+    return String(gpu.name || gpu.model || gpu.deviceName || gpu.displayName || gpu.adapter || '');
+  }
+
+  function gpuScore(gpu) {
+    const name = gpuName(gpu);
+    const load = normLoad(num(gpu.load, gpu.usage, gpu.utilization, gpu.loadPercent, 0)) * 100;
+    const temperature = num(gpu.temperature, gpu.temp, 0) || 0;
+    const power = num(gpu.power, gpu.powerDraw, gpu.watts, 0) || 0;
+    let score = 0;
+
+    if (discreteGpuMatchers.some((matcher) => matcher.test(name))) score += 1000;
+    if (integratedGpuMatchers.some((matcher) => matcher.test(name))) score -= 1000;
+    if (temperature > 0) score += 80;
+    if (power > 0) score += 80 + Math.min(power, 350);
+    if (load > 0) score += Math.min(load, 100);
+
+    return score;
+  }
+
+  function pickGpu(gpus) {
+    if (!Array.isArray(gpus) || gpus.length === 0) return {};
+    const scored = [...gpus].sort((a, b) => gpuScore(b) - gpuScore(a));
+    return scored[0] || {};
+  }
+
   function mapMonitoring(data) {
     const cpu = (data.cpus && data.cpus[0]) || {};
-    const gpu = (data.gpus && data.gpus[0]) || {};
+    const gpu = pickGpu(data.gpus);
     const kraken = data.kraken || {};
     const ram = data.ram || {};
+    window.__nzxtCircuitGpuSelection = {
+      selected: gpuName(gpu),
+      candidates: Array.isArray(data.gpus)
+        ? data.gpus.map((candidate) => ({
+            name: gpuName(candidate),
+            score: gpuScore(candidate),
+            temperature: num(candidate.temperature, candidate.temp, 0) || 0,
+            power: num(candidate.power, candidate.powerDraw, candidate.watts, 0) || 0,
+            load: normLoad(num(candidate.load, candidate.usage, candidate.utilization, candidate.loadPercent, 0)) * 100,
+          }))
+        : [],
+    };
 
     const cpuTemp = num(cpu.temperature, 0);
     const gpuTemp = num(gpu.temperature, 0);
