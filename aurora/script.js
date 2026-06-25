@@ -1,5 +1,6 @@
+/* global document, requestAnimationFrame, Node, window, setInterval, clearInterval, URLSearchParams */
 /*
-  NZXT "Fluid Dynamics — Aurora" Kraken Elite web integration.
+  NZXT "Fluid Dynamics - Aurora" Kraken Elite web integration.
 
   Same telemetry wiring as the original Fluid Dynamics face: inside NZXT CAM
   the page is loaded with ?kraken=1 and CAM calls
@@ -15,9 +16,6 @@
   const $ = (id) => document.getElementById(id);
   const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
 
-  const CYAN = '#67e8f9';
-  const MAGENTA = '#e879f9';
-
   function svgEl(tag, attrs, parent) {
     const el = document.createElementNS(SVG_NS, tag);
     for (const [k, v] of Object.entries(attrs || {})) el.setAttribute(k, v);
@@ -25,10 +23,11 @@
     return el;
   }
 
-  /* ---------- geometry helpers (angles in degrees, y axis down, 0° = east) ---------- */
+  /* ---------- geometry helpers (angles in degrees, y axis down, 0 degrees = east) ---------- */
 
   const CX = 320;
   const CY = 320;
+  const DEGREE = '\u00b0';
 
   function pt(r, a) {
     const rad = (a * Math.PI) / 180;
@@ -158,13 +157,13 @@
   }
 
   function update(v) {
-    setText('liquid-value', `${Math.round(v.liquid)}°`);
+    setText('liquid-value', `${Math.round(v.liquid)}${DEGREE}`);
     setArc('liquid-arc', v.liquid / 60, 72);
 
-    setText('cpu-value', `${Math.round(v.cpuTemp)}°`);
+    setText('cpu-value', `${Math.round(v.cpuTemp)}${DEGREE}`);
     setArc('cpu-arc', v.cpuTemp / 100, 78);
 
-    setText('gpu-value', `${Math.round(v.gpuTemp)}°`);
+    setText('gpu-value', `${Math.round(v.gpuTemp)}${DEGREE}`);
     setArc('gpu-arc', v.gpuTemp / 100, 72);
 
     setText('ram-value', `${Math.round(v.ramPct)}%`);
@@ -180,11 +179,72 @@
   const normLoad = (l) => (typeof l === 'number' ? (l > 1 ? l / 100 : l) : 0);
   const num = (...candidates) => candidates.find((c) => typeof c === 'number' && isFinite(c));
 
+  const discreteGpuMatchers = [
+    /nvidia/i,
+    /geforce/i,
+    /\brtx\b/i,
+    /\bgtx\b/i,
+    /\bquadro\b/i,
+    /\bradeon\s+rx\b/i,
+    /\bradeon\s+pro\b/i,
+    /\brx\s*\d/i,
+    /\barc\b/i,
+  ];
+  const integratedGpuMatchers = [
+    /integrated/i,
+    /\bintel\b/i,
+    /\buhd\b/i,
+    /\biris\b/i,
+    /\bxe\b/i,
+    /\bvega\b/i,
+    /\bradeon\(tm\)\s+graphics\b/i,
+    /\bradeon\s+graphics\b/i,
+    /microsoft basic display/i,
+    /virtual display/i,
+  ];
+
+  function gpuName(gpu) {
+    return String(gpu.name || gpu.model || gpu.deviceName || gpu.displayName || gpu.adapter || '');
+  }
+
+  function gpuScore(gpu) {
+    const name = gpuName(gpu);
+    const load = normLoad(num(gpu.load, gpu.usage, gpu.utilization, gpu.loadPercent, 0)) * 100;
+    const temperature = num(gpu.temperature, gpu.temp, 0) || 0;
+    const power = num(gpu.power, gpu.powerDraw, gpu.watts, 0) || 0;
+    let score = 0;
+
+    if (discreteGpuMatchers.some((matcher) => matcher.test(name))) score += 1000;
+    if (integratedGpuMatchers.some((matcher) => matcher.test(name))) score -= 1000;
+    if (temperature > 0) score += 80;
+    if (power > 0) score += 80 + Math.min(power, 350);
+    if (load > 0) score += Math.min(load, 100);
+
+    return score;
+  }
+
+  function pickGpu(gpus) {
+    if (!Array.isArray(gpus) || gpus.length === 0) return {};
+    const scored = [...gpus].sort((a, b) => gpuScore(b) - gpuScore(a));
+    return scored[0] || {};
+  }
+
   function mapMonitoring(data) {
     const cpu = (data.cpus && data.cpus[0]) || {};
-    const gpu = (data.gpus && data.gpus[0]) || {};
+    const gpu = pickGpu(data.gpus);
     const kraken = data.kraken || {};
     const ram = data.ram || {};
+
+    window.__nzxtAuroraGpuSelection = {
+      selected: gpuName(gpu),
+      candidates: Array.isArray(data.gpus) ? data.gpus.map((candidate) => ({
+        name: gpuName(candidate),
+        score: gpuScore(candidate),
+        temperature: num(candidate.temperature, candidate.temp, 0) || 0,
+        power: num(candidate.power, candidate.powerDraw, candidate.watts, 0) || 0,
+        load: normLoad(num(candidate.load, candidate.usage, candidate.utilization, candidate.loadPercent, 0)) * 100,
+      })) : [],
+    };
 
     const cpuTemp = num(cpu.temperature, 0);
     const gpuTemp = num(gpu.temperature, 0);
