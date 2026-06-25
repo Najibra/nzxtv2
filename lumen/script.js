@@ -1,3 +1,4 @@
+/* global document, requestAnimationFrame, window, setInterval, clearInterval, URLSearchParams, Node */
 /*
   NZXT "Lumen" Kraken Elite web integration.
 
@@ -12,10 +13,8 @@
 */
 
 (() => {
-  const SVG_NS = 'http://www.w3.org/2000/svg';
   const $ = (id) => document.getElementById(id);
   const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
-  const lerp = (a, b, t) => a + (b - a) * t;
 
   const CX = 320, CY = 320, R = 300;
 
@@ -107,11 +106,73 @@
   const normLoad = (l) => (typeof l === 'number' ? (l > 1 ? l / 100 : l) : 0);
   const num = (...c) => c.find((x) => typeof x === 'number' && isFinite(x));
 
+  const discreteGpuMatchers = [
+    /nvidia/i,
+    /geforce/i,
+    /\brtx\b/i,
+    /\bgtx\b/i,
+    /\bquadro\b/i,
+    /\bradeon\s+rx\b/i,
+    /\bradeon\s+pro\b/i,
+    /\brx\s*\d/i,
+    /\barc\b/i,
+  ];
+  const integratedGpuMatchers = [
+    /integrated/i,
+    /\bintel\b/i,
+    /\buhd\b/i,
+    /\biris\b/i,
+    /\bxe\b/i,
+    /\bvega\b/i,
+    /\bradeon\(tm\)\s+graphics\b/i,
+    /\bradeon\s+graphics\b/i,
+    /microsoft basic display/i,
+    /virtual display/i,
+  ];
+
+  function gpuName(gpu) {
+    return String(gpu.name || gpu.model || gpu.deviceName || gpu.displayName || gpu.adapter || '');
+  }
+
+  function gpuScore(gpu) {
+    const name = gpuName(gpu);
+    const load = normLoad(num(gpu.load, gpu.usage, gpu.utilization, gpu.loadPercent, 0)) * 100;
+    const temperature = num(gpu.temperature, gpu.temp, 0) || 0;
+    const power = num(gpu.power, gpu.powerDraw, gpu.watts, 0) || 0;
+    let score = 0;
+
+    if (discreteGpuMatchers.some((matcher) => matcher.test(name))) score += 1000;
+    if (integratedGpuMatchers.some((matcher) => matcher.test(name))) score -= 1000;
+    if (temperature > 0) score += 80;
+    if (power > 0) score += 80 + Math.min(power, 350);
+    if (load > 0) score += Math.min(load, 100);
+
+    return score;
+  }
+
+  function pickGpu(gpus) {
+    if (!Array.isArray(gpus) || gpus.length === 0) return {};
+    const scored = [...gpus].sort((a, b) => gpuScore(b) - gpuScore(a));
+    return scored[0] || {};
+  }
+
   function mapMonitoring(data) {
     const cpu = (data.cpus && data.cpus[0]) || {};
-    const gpu = (data.gpus && data.gpus[0]) || {};
+    const gpu = pickGpu(data.gpus);
     const kraken = data.kraken || {};
     const ram = data.ram || {};
+    window.__nzxtLumenGpuSelection = {
+      selected: gpuName(gpu),
+      candidates: Array.isArray(data.gpus)
+        ? data.gpus.map((candidate) => ({
+            name: gpuName(candidate),
+            score: gpuScore(candidate),
+            temperature: num(candidate.temperature, candidate.temp, 0) || 0,
+            power: num(candidate.power, candidate.powerDraw, candidate.watts, 0) || 0,
+            load: normLoad(num(candidate.load, candidate.usage, candidate.utilization, candidate.loadPercent, 0)) * 100,
+          }))
+        : [],
+    };
 
     const cpuTemp = num(cpu.temperature, 0);
     const gpuTemp = num(gpu.temperature, 0);
