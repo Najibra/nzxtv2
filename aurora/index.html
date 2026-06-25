@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NZXT Fluid Dynamics Aurora — Kraken Elite Monitor</title>
+  <title>NZXT Fluid Dynamics Aurora - Kraken Elite Monitor</title>
   <!--
-    NZXT "Fluid Dynamics — Aurora" web integration for the Kraken Elite LCD.
+    NZXT "Fluid Dynamics - Aurora" web integration for the Kraken Elite LCD.
     Clone of the Fluid Dynamics layout with a cyan/magenta colour scheme and
     animated energy beams flowing along the left and right edges.
     Loaded inside NZXT CAM (?kraken=1) it renders the dashboard fed by
@@ -19,17 +19,17 @@
 </head>
 <body>
   <div id="config" class="config" hidden>
-    <h1>NZXT <span>Fluid Dynamics — Aurora</span></h1>
+    <h1>NZXT <span>Fluid Dynamics - Aurora</span></h1>
     <p>
       A circular dashboard for the NZXT Kraken Elite LCD with animated aurora
       beams, showing liquid, CPU and GPU temperatures, RAM usage, pump &amp; fan
       speeds, power draw and more. Requires NZXT CAM with Web Integrations enabled.
     </p>
-    <label for="share-url"><strong>Shareable link</strong> — open it in a browser and choose “Open NZXT CAM”:</label>
+    <label for="share-url"><strong>Shareable link</strong> - open it in a browser and choose "Open NZXT CAM":</label>
     <input id="share-url" type="text" readonly />
     <p class="hint">
       If the protocol link doesn't open, use
-      <code>https://cam-redirect.nzxt.com/action/load-web-integration?url=…</code>
+      <code>https://cam-redirect.nzxt.com/action/load-web-integration?url=...</code>
       with this page's URL.
     </p>
     <p class="hint">Live preview (simulated data):</p>
@@ -130,7 +130,7 @@
         <circle id="liquid-arc" class="arc arc-cyan" cx="320" cy="152" r="61" pathLength="100"
                 transform="rotate(-130 320 152)" filter="url(#soft-glow)" />
         <text x="320" y="128" class="small-label">LIQUID</text>
-        <text id="liquid-value" x="320" y="170" class="mid-value">--°</text>
+        <text id="liquid-value" x="320" y="170" class="mid-value">--&#176;</text>
         <text x="320" y="192" class="tiny-label">COOLANT TEMP</text>
       </g>
 
@@ -143,7 +143,7 @@
         <circle id="cpu-arc" class="arc arc-big arc-cpu" cx="320" cy="320" r="118" pathLength="100"
                 transform="rotate(110 320 320)" filter="url(#soft-glow)" />
         <text x="320" y="262" class="cpu-title">CPU</text>
-        <text id="cpu-value" x="320" y="358" class="big-value">--°</text>
+        <text id="cpu-value" x="320" y="358" class="big-value">--&#176;</text>
         <text x="320" y="396" class="cpu-sub">T E M P E R A T U R E</text>
       </g>
 
@@ -154,7 +154,7 @@
         <circle id="gpu-arc" class="arc arc-cyan" cx="126" cy="320" r="76" pathLength="100"
                 transform="rotate(-150 126 320)" filter="url(#soft-glow)" />
         <text x="126" y="294" class="small-label">GPU</text>
-        <text id="gpu-value" x="126" y="338" class="mid-value">--°</text>
+        <text id="gpu-value" x="126" y="338" class="mid-value">--&#176;</text>
         <text x="126" y="362" class="tiny-label">TEMPERATURE</text>
       </g>
 
@@ -183,7 +183,7 @@
       <!-- clock -->
       <g text-anchor="middle">
         <text id="clock-time" x="320" y="572" class="clock">--:--:--</text>
-        <text id="clock-date" x="320" y="594" class="clock-date">—</text>
+        <text id="clock-date" x="320" y="594" class="clock-date">-</text>
       </g>
 
       <!-- pagination dots -->
@@ -197,6 +197,6 @@
     </svg>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=20260625-gpu"></script>
 </body>
 </html>
