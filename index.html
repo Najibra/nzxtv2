@@ -602,12 +602,26 @@
         class="absolute top-[30%] right-[10%] w-[18vw] h-[18vw] rounded-full blur-[2px] bg-[#b3121a]/80 z-10"
       ></div>
 
-      <div class="absolute inset-0 flex items-center overflow-hidden z-20">
-        <h2
-          id="artistsWord"
-          class="display text-black text-[29vw] md:text-[24vw] leading-none tracking-[-0.06em] whitespace-nowrap select-none will-change-transform"
+      <div
+        class="absolute inset-0 flex flex-col items-center justify-center overflow-hidden z-20 text-center px-5"
+      >
+        <p
+          id="interludeEyebrow"
+          class="text-xs md:text-sm uppercase tracking-[0.3em] text-black/60 font-semibold"
         >
-          FIVE HEADLINERS &nbsp; FIVE CITIES
+          The 2026 Arabic comedy tour
+        </p>
+        <h2
+          id="lineA"
+          class="display text-black text-[13.5vw] md:text-[11vw] leading-[0.9] tracking-[-0.045em] whitespace-nowrap select-none will-change-transform mt-4"
+        >
+          FIVE HEADLINERS
+        </h2>
+        <h2
+          id="lineB"
+          class="display text-[#b3121a] text-[13.5vw] md:text-[11vw] leading-[0.9] tracking-[-0.045em] whitespace-nowrap select-none will-change-transform"
+        >
+          FIVE CITIES
         </h2>
       </div>
 
@@ -1364,7 +1378,9 @@
           scrollTrigger: { trigger: '#interlude', start: 'top top', end: '+=90%', scrub: 1, pin: true }
         });
         interludeTimeline
-          .fromTo('#artistsWord', { x: '24vw', rotate: 5 }, { x: '-78vw', rotate: -3, ease: 'none' }, 0)
+          .fromTo('#lineA', { x: '28vw', autoAlpha: 0 }, { x: 0, autoAlpha: 1, ease: 'none' }, 0)
+          .fromTo('#lineB', { x: '-28vw', autoAlpha: 0 }, { x: 0, autoAlpha: 1, ease: 'none' }, 0)
+          .fromTo('#interludeEyebrow', { y: -20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, ease: 'none' }, 0.15)
           .fromTo('#brush1', { x: '-8vw', scale: 0.6, rotate: -20 }, { x: '6vw', scale: 1.15, rotate: 4, ease: 'none' }, 0)
           .fromTo('#brush2', { y: '14vh', scale: 0.5 }, { y: '-8vh', scale: 1.1, ease: 'none' }, 0)
           .from('#interludeCopy', { autoAlpha: 0, y: 40, ease: 'none' }, 0.2);
