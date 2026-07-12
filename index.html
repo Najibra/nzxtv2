@@ -105,34 +105,17 @@
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-        gap: 0.18em 0.28em;
         text-align: center;
       }
       .manifesto-word {
         display: inline-block;
+        margin: 0.09em 0.14em;
         will-change: transform, opacity;
         font-family: 'Anton', sans-serif;
         font-size: clamp(2.4rem, 7.8vw, 7.4rem);
         line-height: 0.9;
         letter-spacing: -0.045em;
         text-transform: uppercase;
-      }
-      .archive-grid {
-        position: relative;
-        z-index: 5;
-        width: min(88vw, 1120px);
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 10px;
-        will-change: transform;
-      }
-      .archive-img {
-        width: 100%;
-        aspect-ratio: 4 / 5;
-        object-fit: cover;
-        filter: grayscale(1) contrast(1.12) saturate(0.4);
-        transform-origin: center center;
-        will-change: transform, opacity;
       }
       .builder-shell {
         width: min(470px, 88vw);
@@ -186,20 +169,6 @@
         color: white;
         min-height: 310px;
         padding: 1.75rem;
-        will-change: transform, opacity;
-      }
-      .sweep-word {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Anton', sans-serif;
-        font-size: clamp(6.8rem, 26vw, 25rem);
-        line-height: 0.78;
-        letter-spacing: -0.055em;
-        white-space: nowrap;
-        opacity: 0;
         will-change: transform, opacity;
       }
       /* ======================= ON LOAD INTRO ======================= */
@@ -338,11 +307,6 @@
         .huge-word {
           font-size: clamp(5.5rem, 37vw, 14rem);
           letter-spacing: -0.065em;
-        }
-        .archive-grid {
-          width: 92vw;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 6px;
         }
         .builder-shell { min-height: auto; }
         .section-label { left: 1rem; bottom: 1rem; }
@@ -673,14 +637,43 @@
     >
       <h2
         id="buildWord"
-        class="huge-word absolute left-[-4vw] top-1/2 -translate-y-1/2 z-0 text-black"
+        class="huge-word absolute left-[-4vw] top-1/2 -translate-y-1/2 z-0 text-black/10"
       >
         LINE-UP
       </h2>
       <div
         class="relative z-10 min-h-screen grid grid-cols-1 lg:grid-cols-2 items-center gap-8 px-5 md:px-8 pt-24 pb-20"
       >
-        <div class="hidden lg:block"></div>
+        <div class="hidden lg:flex flex-col justify-center text-black max-w-xl">
+          <p class="text-xs uppercase tracking-[0.2em] text-black/50">
+            Five headliners / one tour
+          </p>
+          <ul class="mt-6 flex flex-col">
+            <li class="border-b border-black/15 py-4 flex items-baseline justify-between gap-6">
+              <a href="#dates" class="display text-4xl xl:text-5xl leading-none tracking-tight hover:text-[#b3121a] transition-colors">Fahad Al Butairi</a>
+              <span class="text-sm text-black/60 whitespace-nowrap">Riyadh · 14 Mar</span>
+            </li>
+            <li class="border-b border-black/15 py-4 flex items-baseline justify-between gap-6">
+              <a href="#dates" class="display text-4xl xl:text-5xl leading-none tracking-tight hover:text-[#b3121a] transition-colors">Mo Amer</a>
+              <span class="text-sm text-black/60 whitespace-nowrap">Jeddah · 21 Mar &nbsp;/&nbsp; Dubai · 11 Apr</span>
+            </li>
+            <li class="border-b border-black/15 py-4 flex items-baseline justify-between gap-6">
+              <a href="#dates" class="display text-4xl xl:text-5xl leading-none tracking-tight hover:text-[#b3121a] transition-colors">Nemr</a>
+              <span class="text-sm text-black/60 whitespace-nowrap">Riyadh · 28 Mar &nbsp;/&nbsp; Dubai · 04 Apr</span>
+            </li>
+            <li class="border-b border-black/15 py-4 flex items-baseline justify-between gap-6">
+              <a href="#dates" class="display text-4xl xl:text-5xl leading-none tracking-tight hover:text-[#b3121a] transition-colors">Ramy Youssef</a>
+              <span class="text-sm text-black/60 whitespace-nowrap">Cairo · 18 Apr</span>
+            </li>
+            <li class="py-4 flex items-baseline justify-between gap-6">
+              <a href="#dates" class="display text-4xl xl:text-5xl leading-none tracking-tight hover:text-[#b3121a] transition-colors">John Achkar</a>
+              <span class="text-sm text-black/60 whitespace-nowrap">Doha · 25 Apr</span>
+            </li>
+          </ul>
+          <p class="mt-6 text-sm text-black/60">
+            Every set written for the room it's told in — live &amp; unrecorded.
+          </p>
+        </div>
         <article id="builderCard" class="builder-shell ml-auto overflow-hidden">
           <header
             class="p-5 flex items-start justify-between border-b border-white/20"
@@ -746,16 +739,6 @@
             </a>
           </div>
         </article>
-      </div>
-      <div class="absolute left-5 md:left-8 top-[26%] z-20 hidden md:block">
-        <p
-          class="display text-[11vw] leading-none tracking-[-0.055em] text-[#e11822]"
-        >
-          05
-        </p>
-        <p class="text-xs uppercase tracking-[0.18em] max-w-[180px]">
-          Five of the Arab world's sharpest — one tour.
-        </p>
       </div>
     </section>
 
@@ -1194,67 +1177,7 @@
       <p class="section-label text-black/60">07 / Before you book</p>
     </section>
 
-    <!-- ======================= 8 · STAGE GRID ======================= -->
-    <section
-      id="experience"
-      class="poster-section h-screen bg-black divider-grid flex items-center justify-center px-5"
-    >
-      <h2
-        id="archiveWord"
-        class="huge-word absolute z-0 text-white/10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-      >
-        STAGE
-      </h2>
-      <div class="archive-grid">
-        <img class="archive-img" src="assets/scenes/stage-1.svg" alt="Stage 01" />
-        <img class="archive-img" src="assets/scenes/stage-2.svg" alt="Stage 02" />
-        <img class="archive-img" src="assets/scenes/stage-3.svg" alt="Stage 03" />
-        <img class="archive-img" src="assets/scenes/stage-4.svg" alt="Stage 04" />
-        <img class="archive-img" src="assets/scenes/stage-1.svg" alt="Stage 05" />
-        <img class="archive-img" src="assets/scenes/stage-2.svg" alt="Stage 06" />
-        <img class="archive-img" src="assets/scenes/stage-3.svg" alt="Stage 07" />
-        <img class="archive-img" src="assets/scenes/stage-4.svg" alt="Stage 08" />
-        <img class="archive-img" src="assets/scenes/stage-1.svg" alt="Stage 09" />
-        <img class="archive-img" src="assets/scenes/stage-2.svg" alt="Stage 10" />
-        <img class="archive-img" src="assets/scenes/stage-3.svg" alt="Stage 11" />
-        <img class="archive-img" src="assets/scenes/stage-4.svg" alt="Stage 12" />
-        <img class="archive-img" src="assets/scenes/stage-1.svg" alt="Stage 13" />
-        <img class="archive-img" src="assets/scenes/stage-2.svg" alt="Stage 14" />
-        <img class="archive-img" src="assets/scenes/stage-3.svg" alt="Stage 15" />
-      </div>
-      <div
-        class="absolute bottom-0 left-0 right-0 border-t border-white/25 z-10"
-      >
-        <div
-          class="px-5 md:px-8 py-5 flex items-end justify-between text-white"
-        >
-          <p class="text-base font-semibold max-w-sm leading-snug">
-            Spotlight, mic and a room that's half the show. Every seat is inside
-            the joke.
-          </p>
-          <p class="text-xs text-white/55 hidden sm:block">
-            Real nights · real laughter
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================= 9 · CTA BUILD-UP ======================= -->
-    <section id="cta-build" class="poster-section h-screen bg-black">
-      <div
-        id="wipeRose"
-        class="absolute inset-0 bg-[#b3121a] origin-bottom scale-y-0"
-      ></div>
-      <div
-        id="wipeEmerald"
-        class="absolute inset-0 bg-[#d4af88] origin-left scale-x-0"
-      ></div>
-      <div class="sweep-word text-white" id="seenWord">LIVE</div>
-      <div class="sweep-word text-black" id="savedWord">LOUD</div>
-      <div class="sweep-word text-black" id="supportedWord">OFFLINE</div>
-    </section>
-
-    <!-- ======================= 10 · TICKETS / GET IN THE ROOM ======================= -->
+    <!-- ======================= 8 · TICKETS / GET IN THE ROOM ======================= -->
     <section
       id="join"
       class="poster-section min-h-screen w-full z-10 flex flex-col bg-[#e11822] divider-grid dark-lines"
@@ -1427,7 +1350,7 @@
 
         /* ---------- 1 · hero pinned ---------- */
         const heroTimeline = gsap.timeline({
-          scrollTrigger: { trigger: '#hero', start: 'top top', end: '+=130%', scrub: 1, pin: true }
+          scrollTrigger: { trigger: '#hero', start: 'top top', end: '+=90%', scrub: 1, pin: true }
         });
         heroTimeline
           .to('#card1', { x: '-16vw', y: '6vh', rotate: -16, ease: 'none' }, 0)
@@ -1438,7 +1361,7 @@
 
         /* ---------- 2 · interlude ---------- */
         const interludeTimeline = gsap.timeline({
-          scrollTrigger: { trigger: '#interlude', start: 'top top', end: '+=130%', scrub: 1, pin: true }
+          scrollTrigger: { trigger: '#interlude', start: 'top top', end: '+=90%', scrub: 1, pin: true }
         });
         interludeTimeline
           .fromTo('#artistsWord', { x: '24vw', rotate: 5 }, { x: '-78vw', rotate: -3, ease: 'none' }, 0)
@@ -1446,9 +1369,58 @@
           .fromTo('#brush2', { y: '14vh', scale: 0.5 }, { y: '-8vh', scale: 1.1, ease: 'none' }, 0)
           .from('#interludeCopy', { autoAlpha: 0, y: 40, ease: 'none' }, 0.2);
 
-        /* ---------- 3 · product ---------- */
+        /* ---------- 3 · line-up ---------- */
+        const builderTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#headliners', start: 'top top', end: '+=120%', scrub: 1, pin: true }
+        });
+        builderTimeline
+          .fromTo('#builderCard', { x: '38vw', rotate: 8, scale: 0.9 }, { x: 0, rotate: 0, scale: 1, ease: 'none' }, 0)
+          .fromTo('#buildWord', { x: '-8vw', y: '7vh' }, { x: '3vw', y: '-5vh', ease: 'none' }, 0)
+          .from('.builder-module', {
+            x: (i) => [140, -120, 90, -70, 110][i] || 80,
+            y: (i) => [-40, 50, 20, -20, 40][i] || 20,
+            autoAlpha: 0,
+            scale: 0.92,
+            stagger: 0.12,
+            ease: 'none'
+          }, 0.18);
+
+        /* ---------- 4 · dates ---------- */
+        const boardTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#dates', start: 'top top', end: '+=110%', scrub: 1, pin: true }
+        });
+        boardTimeline
+          .fromTo('.op-card', {
+            x: (i) => [-260, 80, 240, -120, 180, -200, 130][i] || 0,
+            y: (i) => [-120, 180, -80, 150, -150, 110, 200][i] || 0,
+            rotate: (i) => [-16, 12, -9, 18, -14, 8, 15][i] || 0,
+            scale: 0.86,
+            autoAlpha: 0.35
+          }, {
+            x: 0,
+            y: 0,
+            rotate: 0,
+            scale: 1,
+            autoAlpha: 1,
+            stagger: 0.035,
+            ease: 'none'
+          }, 0)
+          .fromTo('#boardWord', { xPercent: -58, yPercent: -50, rotate: -4 }, { xPercent: -48, yPercent: -50, rotate: 3, ease: 'none' }, 0);
+
+        /* ---------- 5 · the night flow ---------- */
+        const supportTimeline = gsap.timeline({
+          scrollTrigger: { trigger: '#schedule', start: 'top top', end: '+=110%', scrub: 1, pin: true }
+        });
+        supportTimeline
+          .fromTo('.support-step:nth-child(1)', { x: '-50vw', y: '8vh', rotate: -9, autoAlpha: 0 }, { x: 0, y: 0, rotate: 0, autoAlpha: 1, ease: 'none' }, 0)
+          .fromTo('.support-step:nth-child(2)', { scale: 0.62, y: '18vh', autoAlpha: 0 }, { scale: 1, y: 0, autoAlpha: 1, ease: 'none' }, 0.18)
+          .fromTo('.support-step:nth-child(3)', { x: '50vw', y: '-8vh', rotate: 9, autoAlpha: 0 }, { x: 0, y: 0, rotate: 0, autoAlpha: 1, ease: 'none' }, 0.36)
+          .fromTo('#notifyCard', { x: '34vw', y: '10vh', rotate: 8, scale: 0.82, autoAlpha: 0 }, { x: 0, y: 0, rotate: -2, scale: 1, autoAlpha: 1, ease: 'none' }, 0.62)
+          .fromTo('#supportWord', { y: '8vh', scale: 1.1 }, { y: '-7vh', scale: 0.98, ease: 'none' }, 0);
+
+        /* ---------- 6 · your pass ---------- */
         const productTimeline = gsap.timeline({
-          scrollTrigger: { trigger: '#product', start: 'top top', end: '+=170%', scrub: 1, pin: true }
+          scrollTrigger: { trigger: '#product', start: 'top top', end: '+=110%', scrub: 1, pin: true }
         });
         productTimeline
           .fromTo('#walletPass', { x: '-65vw', y: '24vh', rotate: -32 }, { x: 0, y: 0, rotate: -7, ease: 'none' }, 0)
@@ -1457,7 +1429,7 @@
           .to('#walletPass', { y: '-4vh', rotate: -9, ease: 'none' }, 0.7)
           .to('#phoneMock', { y: '4vh', rotate: 9, ease: 'none' }, 0.7);
 
-        /* ---------- 4 · manifesto ---------- */
+        /* ---------- 7 · manifesto ---------- */
         const messyStarts = [
           { x: '-36vw', y: '-28vh', rotate: -18, scale: 0.78 },
           { x: '26vw', y: '-34vh', rotate: 14, scale: 0.6 },
@@ -1479,114 +1451,13 @@
         });
 
         const manifestoTimeline = gsap.timeline({
-          scrollTrigger: { trigger: '#manifesto', start: 'top top', end: '+=170%', scrub: 1, pin: true }
+          scrollTrigger: { trigger: '#manifesto', start: 'top top', end: '+=110%', scrub: 1, pin: true }
         });
         manifestoTimeline
           .to('.manifesto-word', { x: 0, y: 0, rotate: 0, scale: 1, stagger: 0.025, ease: 'none' }, 0)
           .fromTo('#finallyWord', { autoAlpha: 0, x: '-20vw', rotate: -30, scale: 0.5 }, { autoAlpha: 1, x: 0, rotate: -12, scale: 1, ease: 'none' }, 0.55);
 
-        /* ---------- 5 · stage grid ---------- */
-        const archiveTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: '#experience',
-            start: 'top top',
-            end: '+=190%',
-            scrub: 1,
-            pin: true,
-            invalidateOnRefresh: true
-          }
-        });
-        archiveTimeline
-          .fromTo('.archive-img', {
-            x: (i, el) => {
-              const parent = el.parentElement.getBoundingClientRect();
-              const rect = el.getBoundingClientRect();
-              return parent.left + parent.width / 2 - (rect.left + rect.width / 2);
-            },
-            y: (i, el) => {
-              const parent = el.parentElement.getBoundingClientRect();
-              const rect = el.getBoundingClientRect();
-              return parent.top + parent.height / 2 - (rect.top + rect.height / 2);
-            },
-            scale: (i) => i === 7 ? 1.9 : 0.24,
-            autoAlpha: (i) => i === 7 ? 1 : 0,
-            rotate: (i) => (i - 7) * 3,
-            zIndex: (i) => i === 7 ? 5 : 1
-          }, {
-            x: 0,
-            y: 0,
-            scale: 1,
-            autoAlpha: 1,
-            rotate: 0,
-            stagger: { each: 0.025, from: 'center' },
-            ease: 'none'
-          }, 0)
-          .fromTo('#archiveWord', { y: '8vh', scale: 1.08 }, { y: '-8vh', scale: 0.98, ease: 'none' }, 0);
-
-        /* ---------- 6 · headliners ---------- */
-        const builderTimeline = gsap.timeline({
-          scrollTrigger: { trigger: '#headliners', start: 'top top', end: '+=180%', scrub: 1, pin: true }
-        });
-        builderTimeline
-          .fromTo('#builderCard', { x: '38vw', rotate: 8, scale: 0.9 }, { x: 0, rotate: 0, scale: 1, ease: 'none' }, 0)
-          .fromTo('#buildWord', { x: '-8vw', y: '7vh' }, { x: '3vw', y: '-5vh', ease: 'none' }, 0)
-          .from('.builder-module', {
-            x: (i) => [140, -120, 90, -70, 110][i] || 80,
-            y: (i) => [-40, 50, 20, -20, 40][i] || 20,
-            autoAlpha: 0,
-            scale: 0.92,
-            stagger: 0.12,
-            ease: 'none'
-          }, 0.18);
-
-        /* ---------- 7 · dates ---------- */
-        const boardTimeline = gsap.timeline({
-          scrollTrigger: { trigger: '#dates', start: 'top top', end: '+=170%', scrub: 1, pin: true }
-        });
-        boardTimeline
-          .fromTo('.op-card', {
-            x: (i) => [-260, 80, 240, -120, 180, -200, 130][i] || 0,
-            y: (i) => [-120, 180, -80, 150, -150, 110, 200][i] || 0,
-            rotate: (i) => [-16, 12, -9, 18, -14, 8, 15][i] || 0,
-            scale: 0.86,
-            autoAlpha: 0.35
-          }, {
-            x: 0,
-            y: 0,
-            rotate: 0,
-            scale: 1,
-            autoAlpha: 1,
-            stagger: 0.035,
-            ease: 'none'
-          }, 0)
-          .fromTo('#boardWord', { xPercent: -58, yPercent: -50, rotate: -4 }, { xPercent: -48, yPercent: -50, rotate: 3, ease: 'none' }, 0);
-
-        /* ---------- 8 · the night flow ---------- */
-        const supportTimeline = gsap.timeline({
-          scrollTrigger: { trigger: '#schedule', start: 'top top', end: '+=170%', scrub: 1, pin: true }
-        });
-        supportTimeline
-          .fromTo('.support-step:nth-child(1)', { x: '-50vw', y: '8vh', rotate: -9, autoAlpha: 0 }, { x: 0, y: 0, rotate: 0, autoAlpha: 1, ease: 'none' }, 0)
-          .fromTo('.support-step:nth-child(2)', { scale: 0.62, y: '18vh', autoAlpha: 0 }, { scale: 1, y: 0, autoAlpha: 1, ease: 'none' }, 0.18)
-          .fromTo('.support-step:nth-child(3)', { x: '50vw', y: '-8vh', rotate: 9, autoAlpha: 0 }, { x: 0, y: 0, rotate: 0, autoAlpha: 1, ease: 'none' }, 0.36)
-          .fromTo('#notifyCard', { x: '34vw', y: '10vh', rotate: 8, scale: 0.82, autoAlpha: 0 }, { x: 0, y: 0, rotate: -2, scale: 1, autoAlpha: 1, ease: 'none' }, 0.62)
-          .fromTo('#supportWord', { y: '8vh', scale: 1.1 }, { y: '-7vh', scale: 0.98, ease: 'none' }, 0);
-
-        /* ---------- 9 · CTA build-up ---------- */
-        const ctaBuildTimeline = gsap.timeline({
-          scrollTrigger: { trigger: '#cta-build', start: 'top top', end: '+=160%', scrub: 1, pin: true }
-        });
-        ctaBuildTimeline
-          .fromTo('#seenWord', { x: '-110vw', autoAlpha: 1 }, { x: 0, autoAlpha: 1, ease: 'none' }, 0)
-          .to('#seenWord', { x: '110vw', autoAlpha: 0, ease: 'none' }, 0.32)
-          .to('#wipeRose', { scaleY: 1, ease: 'none' }, 0.24)
-          .fromTo('#savedWord', { y: '110vh', autoAlpha: 1 }, { y: 0, autoAlpha: 1, ease: 'none' }, 0.34)
-          .to('#savedWord', { y: '-110vh', autoAlpha: 0, ease: 'none' }, 0.64)
-          .to('#wipeEmerald', { scaleX: 1, ease: 'none' }, 0.58)
-          .fromTo('#supportedWord', { x: '120vw', autoAlpha: 1 }, { x: 0, autoAlpha: 1, ease: 'none' }, 0.68)
-          .to('#supportedWord', { scale: 1.12, autoAlpha: 0, ease: 'none' }, 0.96);
-
-        /* ---------- 10 · final ---------- */
+        /* ---------- 8 · final ---------- */
         const finalTimeline = gsap.timeline({
           scrollTrigger: { trigger: '#join', start: 'top 85%', end: 'top 10%', scrub: 1 }
         });
