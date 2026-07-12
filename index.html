@@ -168,6 +168,17 @@
         justify-content: space-between;
         box-shadow: 18px 22px 42px rgba(0,0,0,0.28);
         will-change: transform, opacity;
+        text-decoration: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      .op-card:hover {
+        border-color: rgba(255,255,255,0.6);
+        box-shadow: 18px 22px 52px rgba(0,0,0,0.45);
+      }
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
       }
       .support-panel {
         border: 1px solid rgba(255,255,255,0.28);
@@ -411,25 +422,22 @@
       <div
         class="hidden lg:flex items-center gap-7 text-sm font-medium pt-1 pointer-events-auto"
       >
-        <a href="#interlude" class="hover:opacity-60 transition-opacity">
-          The night
-        </a>
         <a href="#headliners" class="hover:opacity-60 transition-opacity">
-          Headliners
+          Line-up
         </a>
-        <a href="#schedule" class="hover:opacity-60 transition-opacity">
-          Schedule
-        </a>
-        <a href="#tickets" class="hover:opacity-60 transition-opacity">Tickets</a>
         <a href="#dates" class="hover:opacity-60 transition-opacity">
           Dates
         </a>
+        <a href="#schedule" class="hover:opacity-60 transition-opacity">
+          The night
+        </a>
+        <a href="#join" class="hover:opacity-60 transition-opacity">Tickets</a>
         <a href="#faq" class="hover:opacity-60 transition-opacity">FAQ</a>
       </div>
       <div
         class="flex items-center gap-5 text-sm font-medium pt-1 pointer-events-auto"
       >
-        <a href="#" class="hover:opacity-60 transition-opacity">Presale</a>
+        <a href="#join" class="hover:opacity-60 transition-opacity">Presale</a>
         <a
           href="#join"
           class="hover:opacity-60 transition-opacity hidden sm:block"
@@ -496,11 +504,12 @@
                 alt="Fahad Al Butairi"
                 class="w-full aspect-square object-cover mt-3 grayscale"
               />
-              <button
-                class="mt-3 w-full text-xs font-medium bg-[#d4af88] text-black rounded-full py-1.5"
+              <a
+                href="#dates"
+                class="mt-3 block w-full text-center text-xs font-medium bg-[#d4af88] text-black rounded-full py-1.5 hover:bg-[#c79b6f] transition-colors"
               >
                 Get tickets
-              </button>
+              </a>
               <div
                 class="mt-2 flex items-center justify-center gap-1.5 border border-white/30 rounded-md py-1.5"
               >
@@ -533,11 +542,12 @@
                 alt="Mo Amer"
                 class="w-full aspect-square object-cover mt-3 grayscale"
               />
-              <button
-                class="mt-3 w-full text-xs font-medium bg-[#d4af88] text-black rounded-full py-1.5"
+              <a
+                href="#dates"
+                class="mt-3 block w-full text-center text-xs font-medium bg-[#d4af88] text-black rounded-full py-1.5 hover:bg-[#c79b6f] transition-colors"
               >
                 Get tickets
-              </button>
+              </a>
               <div
                 class="mt-2 flex items-center justify-center gap-1.5 border border-white/30 rounded-md py-1.5"
               >
@@ -570,11 +580,12 @@
                 alt="Nemr"
                 class="w-full aspect-square object-cover mt-3 grayscale"
               />
-              <button
-                class="mt-3 w-full text-xs font-medium bg-[#d4af88] text-black rounded-full py-1.5"
+              <a
+                href="#dates"
+                class="mt-3 block w-full text-center text-xs font-medium bg-[#d4af88] text-black rounded-full py-1.5 hover:bg-[#c79b6f] transition-colors"
               >
                 Get tickets
-              </button>
+              </a>
               <div
                 class="mt-2 flex items-center justify-center gap-1.5 border border-white/30 rounded-md py-1.5"
               >
@@ -655,7 +666,338 @@
       </div>
     </section>
 
-    <!-- ======================= 3 · PRODUCT ======================= -->
+    <!-- ======================= 3 · THE LINE-UP ======================= -->
+    <section
+      id="headliners"
+      class="poster-section h-screen bg-[#f2e9d6] divider-grid dark-lines"
+    >
+      <h2
+        id="buildWord"
+        class="huge-word absolute left-[-4vw] top-1/2 -translate-y-1/2 z-0 text-black"
+      >
+        LINE-UP
+      </h2>
+      <div
+        class="relative z-10 min-h-screen grid grid-cols-1 lg:grid-cols-2 items-center gap-8 px-5 md:px-8 pt-24 pb-20"
+      >
+        <div class="hidden lg:block"></div>
+        <article id="builderCard" class="builder-shell ml-auto overflow-hidden">
+          <header
+            class="p-5 flex items-start justify-between border-b border-white/20"
+          >
+            <div>
+              <p class="display text-3xl tracking-tight leading-none">
+                THE LINE-UP
+              </p>
+              <p class="text-xs text-white/55 mt-2">Five headliners / one tour</p>
+            </div>
+            <i
+              data-lucide="mic-vocal"
+              class="w-5 h-5 text-white/60"
+              stroke-width="1.5"
+            ></i>
+          </header>
+
+          <div class="builder-module p-5" data-number="01">
+            <p class="text-xs uppercase tracking-[0.2em] text-white/40">Opening night</p>
+            <p class="mt-3 text-sm leading-relaxed text-white/82 max-w-xs">
+              <span class="font-semibold text-white">Fahad Al Butairi</span> 🇸🇦 —
+              Saudi stand-up's pioneer, the voice that started it all.
+            </p>
+          </div>
+          <div class="builder-module p-5" data-number="02">
+            <p class="text-xs uppercase tracking-[0.2em] text-white/40">
+              Headliners
+            </p>
+            <div class="mt-3 grid grid-cols-4 gap-1.5">
+              <img src="assets/talent/mo-amer.webp" alt="Mo Amer" class="aspect-square object-cover grayscale" />
+              <img src="assets/talent/nemr.png" alt="Nemr" class="aspect-square object-cover grayscale" />
+              <img src="assets/talent/ramy-youssef.jpg" alt="Ramy Youssef" class="aspect-square object-cover grayscale" />
+              <img src="assets/talent/john-achkar.webp" alt="John Achkar" class="aspect-square object-cover grayscale" />
+            </div>
+          </div>
+          <div class="builder-module grid grid-cols-2" data-number="03">
+            <button
+              class="p-5 text-left border-r border-white/15 bg-[#d4af88] text-black text-sm font-semibold"
+            >
+              Mo Amer 🇵🇸
+            </button>
+            <button class="p-5 text-left text-sm font-semibold">Nemr 🇱🇧</button>
+          </div>
+          <div class="builder-module grid grid-cols-2" data-number="04">
+            <button
+              class="p-5 text-left text-sm font-semibold border-r border-white/15"
+            >
+              Ramy Youssef 🇪🇬
+            </button>
+            <button class="p-5 text-left text-sm font-semibold">John Achkar 🇱🇧</button>
+          </div>
+          <div
+            class="builder-module p-5 flex items-center justify-between"
+            data-number="05"
+          >
+            <span class="text-sm font-semibold">Live &amp; unrecorded</span>
+            <a
+              href="#dates"
+              class="flex items-center gap-2 text-xs border border-white/25 px-3 py-2 rounded-md hover:bg-white/10 transition-colors"
+            >
+              <i data-lucide="ticket" class="w-3.5 h-3.5"></i>
+              Tickets
+            </a>
+          </div>
+        </article>
+      </div>
+      <div class="absolute left-5 md:left-8 top-[26%] z-20 hidden md:block">
+        <p
+          class="display text-[11vw] leading-none tracking-[-0.055em] text-[#e11822]"
+        >
+          05
+        </p>
+        <p class="text-xs uppercase tracking-[0.18em] max-w-[180px]">
+          Five of the Arab world's sharpest — one tour.
+        </p>
+      </div>
+    </section>
+
+    <!-- ======================= 4 · TOUR DATES ======================= -->
+    <section
+      id="dates"
+      class="poster-section min-h-screen bg-[#d4af88] divider-grid dark-lines px-5 md:px-8 pt-28 pb-16 flex items-center"
+    >
+      <h2
+        id="boardWord"
+        class="huge-word absolute z-0 text-black/18 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      >
+        DATES
+      </h2>
+      <div
+        class="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
+      >
+        <a class="op-card" href="#join">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              14 Mar · Riyadh
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Fahad
+              <br />
+              Al Butairi
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
+            <span>
+              King Fahd Centre
+              <br />
+              Selling fast · SAR 149
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+        <a class="op-card" href="#join">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              21 Mar · Jeddah
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Mo
+              <br />
+              Amer
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
+            <span>
+              Jeddah Superdome
+              <br />
+              Selling fast · SAR 179
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+        <a class="op-card" href="#join">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              28 Mar · Riyadh
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Nemr
+              <br />
+              &nbsp;
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
+            <span>
+              Kingdom Arena
+              <br />
+              On sale · SAR 159
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+        <a class="op-card" href="#join">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              04 Apr · Dubai
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Nemr
+              <br />
+              &nbsp;
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
+            <span>
+              Coca-Cola Arena
+              <br />
+              Selling fast · AED 195
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+        <a class="op-card lg:col-start-2" href="#join">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              11 Apr · Dubai
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Mo
+              <br />
+              Amer
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
+            <span>
+              Coca-Cola Arena
+              <br />
+              On sale · AED 220
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+        <a class="op-card" href="#join">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+              18 Apr · Cairo
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              Ramy
+              <br />
+              Youssef
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
+            <span>
+              New Cairo Arena
+              <br />
+              Sold out · Waitlist
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+        <a class="op-card bg-[#b3121a] text-white border-black/20" href="#join">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-white/70">
+              25 Apr · Doha
+            </p>
+            <h3 class="display text-3xl leading-none mt-3">
+              John
+              <br />
+              Achkar
+            </h3>
+          </div>
+          <div class="flex items-end justify-between text-xs leading-relaxed text-white/80">
+            <span>
+              Lusail Arena
+              <br />
+              Just added · QAR 160
+            </span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </a>
+      </div>
+      <svg
+        class="absolute inset-0 w-full h-full z-[2] opacity-40 pointer-events-none"
+        fill="none"
+        stroke="black"
+        stroke-width="1"
+      >
+        <path d="M90 220 C 360 110, 690 420, 1040 190" stroke-dasharray="6 10"></path>
+        <path d="M120 680 C 420 520, 760 740, 1160 480" stroke-dasharray="6 10"></path>
+      </svg>
+    </section>
+
+    <!-- ======================= 5 · THE NIGHT FLOW ======================= -->
+    <section
+      id="schedule"
+      class="poster-section h-screen bg-[#e11822] divider-grid px-5 md:px-8 flex items-center"
+    >
+      <h2
+        id="supportWord"
+        class="huge-word absolute z-0 text-black/35 left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2"
+      >
+        THE NIGHT
+      </h2>
+      <div
+        class="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3 pt-20 pb-20"
+      >
+        <article class="support-panel support-step">
+          <p class="text-xs uppercase tracking-[0.2em] text-white/45">
+            01 / Doors
+          </p>
+          <h3 class="display text-5xl md:text-6xl leading-none mt-6">
+            ARRIVE
+          </h3>
+          <p class="text-sm leading-relaxed text-white/70 mt-6 max-w-[240px]">
+            Doors at 7:00 PM. The room fills, the lights drop, the night begins.
+          </p>
+        </article>
+        <article class="support-panel support-step bg-white text-black">
+          <p class="text-xs uppercase tracking-[0.2em] text-black/45">
+            02 / Show
+          </p>
+          <h3 class="display text-5xl md:text-6xl leading-none mt-6">
+            LAUGH
+          </h3>
+          <a
+            href="#join"
+            class="mt-8 block w-full text-center bg-black text-white text-sm font-semibold py-3 rounded-full hover:bg-neutral-800 transition-colors"
+          >
+            Buy tickets
+          </a>
+        </article>
+        <article class="support-panel support-step">
+          <p class="text-xs uppercase tracking-[0.2em] text-white/45">
+            03 / After
+          </p>
+          <h3 class="display text-5xl md:text-6xl leading-none mt-6">REMEMBER</h3>
+          <p class="text-sm leading-relaxed text-white/70 mt-6 max-w-[240px]">
+            No phones, no reruns. What happens at WAQEF stays offline — you had
+            to be there.
+          </p>
+        </article>
+      </div>
+      <div
+        id="notifyCard"
+        class="absolute z-20 right-5 md:right-[9vw] bottom-[16vh] w-72 bg-white text-black p-4 shadow-[20px_24px_70px_rgba(0,0,0,0.38)] border border-black/10"
+      >
+        <div class="flex items-center justify-between">
+          <p class="text-xs uppercase tracking-[0.18em] text-black/45">
+            On sale now
+          </p>
+          <i data-lucide="flame" class="w-4 h-4"></i>
+        </div>
+        <p class="display text-4xl leading-none mt-4">SAR 149</p>
+        <p class="text-sm font-semibold mt-1">Riyadh · 14 Mar 2026</p>
+        <p class="text-xs text-black/55 mt-2">Selling fast — last 3 shows sold out</p>
+        <a
+          href="#join"
+          class="mt-4 block w-full text-center text-sm font-semibold bg-[#e11822] text-white rounded-full py-2.5 hover:bg-[#b3121a] transition-colors"
+        >
+          Get Riyadh tickets
+        </a>
+      </div>
+    </section>
+
+    <!-- ======================= 6 · YOUR PASS ======================= -->
     <section
       id="product"
       class="poster-section h-screen bg-[#b3121a] divider-grid dark-lines"
@@ -667,7 +1009,7 @@
         <h2
           class="display text-black text-[34vw] md:text-[28vw] leading-none tracking-[-0.06em] whitespace-nowrap select-none"
         >
-          LIVE
+          PASS
         </h2>
       </div>
 
@@ -740,11 +1082,12 @@
                 <p class="text-xs text-white/60">
                   Opening night — Riyadh
                 </p>
-                <button
-                  class="mt-4 w-full text-xs font-medium bg-[#d4af88] text-black rounded-full py-2"
+                <a
+                  href="#join"
+                  class="mt-4 block w-full text-center text-xs font-medium bg-[#d4af88] text-black rounded-full py-2 hover:bg-[#c79b6f] transition-colors"
                 >
                   Buy tickets
-                </button>
+                </a>
                 <div
                   class="mt-2 flex items-center justify-center gap-1.5 border border-white/30 rounded-md py-2"
                 >
@@ -816,7 +1159,7 @@
       </div>
     </section>
 
-    <!-- ======================= 4 · MANIFESTO ======================= -->
+    <!-- ======================= 7 · MANIFESTO ======================= -->
     <section
       id="manifesto"
       class="poster-section h-screen bg-[#f2e9d6] divider-grid dark-lines flex items-center justify-center px-5"
@@ -848,10 +1191,10 @@
         RIYADH JEDDAH DUBAI CAIRO DOHA LIVE UNRECORDED ONE NIGHT NO RERUNS
         OFFLINE
       </div>
-      <p class="section-label text-black/60">05 / Before you book</p>
+      <p class="section-label text-black/60">07 / Before you book</p>
     </section>
 
-    <!-- ======================= 5 · STAGE GRID ======================= -->
+    <!-- ======================= 8 · STAGE GRID ======================= -->
     <section
       id="experience"
       class="poster-section h-screen bg-black divider-grid flex items-center justify-center px-5"
@@ -896,329 +1239,6 @@
       </div>
     </section>
 
-    <!-- ======================= 6 · HEADLINERS / TICKET BUILDER ======================= -->
-    <section
-      id="headliners"
-      class="poster-section h-screen bg-[#f2e9d6] divider-grid dark-lines"
-    >
-      <h2
-        id="buildWord"
-        class="huge-word absolute left-[-4vw] top-1/2 -translate-y-1/2 z-0 text-black"
-      >
-        LINE-UP
-      </h2>
-      <div
-        class="relative z-10 min-h-screen grid grid-cols-1 lg:grid-cols-2 items-center gap-8 px-5 md:px-8 pt-24 pb-20"
-      >
-        <div class="hidden lg:block"></div>
-        <article id="builderCard" class="builder-shell ml-auto overflow-hidden">
-          <header
-            class="p-5 flex items-start justify-between border-b border-white/20"
-          >
-            <div>
-              <p class="display text-3xl tracking-tight leading-none">
-                THE LINE-UP
-              </p>
-              <p class="text-xs text-white/55 mt-2">Five headliners / one tour</p>
-            </div>
-            <i
-              data-lucide="mic-vocal"
-              class="w-5 h-5 text-white/60"
-              stroke-width="1.5"
-            ></i>
-          </header>
-
-          <div class="builder-module p-5" data-number="01">
-            <p class="text-xs uppercase tracking-[0.2em] text-white/40">Opening night</p>
-            <p class="mt-3 text-sm leading-relaxed text-white/82 max-w-xs">
-              <span class="font-semibold text-white">Fahad Al Butairi</span> 🇸🇦 —
-              Saudi stand-up's pioneer, the voice that started it all.
-            </p>
-          </div>
-          <div class="builder-module p-5" data-number="02">
-            <p class="text-xs uppercase tracking-[0.2em] text-white/40">
-              Headliners
-            </p>
-            <div class="mt-3 grid grid-cols-4 gap-1.5">
-              <img src="assets/talent/mo-amer.webp" alt="Mo Amer" class="aspect-square object-cover grayscale" />
-              <img src="assets/talent/nemr.png" alt="Nemr" class="aspect-square object-cover grayscale" />
-              <img src="assets/talent/ramy-youssef.jpg" alt="Ramy Youssef" class="aspect-square object-cover grayscale" />
-              <img src="assets/talent/john-achkar.webp" alt="John Achkar" class="aspect-square object-cover grayscale" />
-            </div>
-          </div>
-          <div class="builder-module grid grid-cols-2" data-number="03">
-            <button
-              class="p-5 text-left border-r border-white/15 bg-[#d4af88] text-black text-sm font-semibold"
-            >
-              Mo Amer 🇵🇸
-            </button>
-            <button class="p-5 text-left text-sm font-semibold">Nemr 🇱🇧</button>
-          </div>
-          <div class="builder-module grid grid-cols-2" data-number="04">
-            <button
-              class="p-5 text-left text-sm font-semibold border-r border-white/15"
-            >
-              Ramy Youssef 🇪🇬
-            </button>
-            <button class="p-5 text-left text-sm font-semibold">John Achkar 🇱🇧</button>
-          </div>
-          <div
-            class="builder-module p-5 flex items-center justify-between"
-            data-number="05"
-          >
-            <span class="text-sm font-semibold">Live &amp; unrecorded</span>
-            <span
-              class="flex items-center gap-2 text-xs border border-white/25 px-3 py-2 rounded-md"
-            >
-              <i data-lucide="ticket" class="w-3.5 h-3.5"></i>
-              Tickets
-            </span>
-          </div>
-        </article>
-      </div>
-      <div class="absolute left-5 md:left-8 top-[26%] z-20 hidden md:block">
-        <p
-          class="display text-[11vw] leading-none tracking-[-0.055em] text-[#e11822]"
-        >
-          05
-        </p>
-        <p class="text-xs uppercase tracking-[0.18em] max-w-[180px]">
-          Five of the Arab world's sharpest — one tour.
-        </p>
-      </div>
-    </section>
-
-    <!-- ======================= 7 · TOUR DATES BOARD ======================= -->
-    <section
-      id="dates"
-      class="poster-section min-h-screen bg-[#d4af88] divider-grid dark-lines px-5 md:px-8 pt-28 pb-16 flex items-center"
-    >
-      <h2
-        id="boardWord"
-        class="huge-word absolute z-0 text-black/18 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-      >
-        DATES
-      </h2>
-      <div
-        class="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
-      >
-        <article class="op-card">
-          <div>
-            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
-              14 Mar · Riyadh
-            </p>
-            <h3 class="display text-3xl leading-none mt-3">
-              Fahad
-              <br />
-              Al Butairi
-            </h3>
-          </div>
-          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
-            <span>
-              King Fahd Centre
-              <br />
-              Selling fast · SAR 149
-            </span>
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-          </div>
-        </article>
-        <article class="op-card">
-          <div>
-            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
-              21 Mar · Jeddah
-            </p>
-            <h3 class="display text-3xl leading-none mt-3">
-              Mo
-              <br />
-              Amer
-            </h3>
-          </div>
-          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
-            <span>
-              Jeddah Superdome
-              <br />
-              Selling fast · SAR 179
-            </span>
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-          </div>
-        </article>
-        <article class="op-card">
-          <div>
-            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
-              28 Mar · Riyadh
-            </p>
-            <h3 class="display text-3xl leading-none mt-3">
-              Nemr
-              <br />
-              &nbsp;
-            </h3>
-          </div>
-          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
-            <span>
-              Kingdom Arena
-              <br />
-              On sale · SAR 159
-            </span>
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-          </div>
-        </article>
-        <article class="op-card">
-          <div>
-            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
-              04 Apr · Dubai
-            </p>
-            <h3 class="display text-3xl leading-none mt-3">
-              Nemr
-              <br />
-              &nbsp;
-            </h3>
-          </div>
-          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
-            <span>
-              Coca-Cola Arena
-              <br />
-              Selling fast · AED 195
-            </span>
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-          </div>
-        </article>
-        <article class="op-card lg:col-start-2">
-          <div>
-            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
-              11 Apr · Dubai
-            </p>
-            <h3 class="display text-3xl leading-none mt-3">
-              Mo
-              <br />
-              Amer
-            </h3>
-          </div>
-          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
-            <span>
-              Coca-Cola Arena
-              <br />
-              On sale · AED 220
-            </span>
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-          </div>
-        </article>
-        <article class="op-card">
-          <div>
-            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
-              18 Apr · Cairo
-            </p>
-            <h3 class="display text-3xl leading-none mt-3">
-              Ramy
-              <br />
-              Youssef
-            </h3>
-          </div>
-          <div class="flex items-end justify-between text-xs leading-relaxed text-white/58">
-            <span>
-              New Cairo Arena
-              <br />
-              Sold out · Waitlist
-            </span>
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-          </div>
-        </article>
-        <article class="op-card bg-[#b3121a] text-white border-black/20">
-          <div>
-            <p class="text-xs uppercase tracking-[0.18em] text-white/70">
-              25 Apr · Doha
-            </p>
-            <h3 class="display text-3xl leading-none mt-3">
-              John
-              <br />
-              Achkar
-            </h3>
-          </div>
-          <div class="flex items-end justify-between text-xs leading-relaxed text-white/80">
-            <span>
-              Lusail Arena
-              <br />
-              Just added · QAR 160
-            </span>
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-          </div>
-        </article>
-      </div>
-      <svg
-        class="absolute inset-0 w-full h-full z-[2] opacity-40 pointer-events-none"
-        fill="none"
-        stroke="black"
-        stroke-width="1"
-      >
-        <path d="M90 220 C 360 110, 690 420, 1040 190" stroke-dasharray="6 10"></path>
-        <path d="M120 680 C 420 520, 760 740, 1160 480" stroke-dasharray="6 10"></path>
-      </svg>
-    </section>
-
-    <!-- ======================= 8 · THE NIGHT FLOW ======================= -->
-    <section
-      id="schedule"
-      class="poster-section h-screen bg-[#e11822] divider-grid px-5 md:px-8 flex items-center"
-    >
-      <h2
-        id="supportWord"
-        class="huge-word absolute z-0 text-black/35 left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2"
-      >
-        THE NIGHT
-      </h2>
-      <div
-        class="relative z-10 w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3 pt-20 pb-20"
-      >
-        <article class="support-panel support-step">
-          <p class="text-xs uppercase tracking-[0.2em] text-white/45">
-            01 / Doors
-          </p>
-          <h3 class="display text-5xl md:text-6xl leading-none mt-6">
-            ARRIVE
-          </h3>
-          <p class="text-sm leading-relaxed text-white/70 mt-6 max-w-[240px]">
-            Doors at 7:00 PM. The room fills, the lights drop, the night begins.
-          </p>
-        </article>
-        <article class="support-panel support-step bg-white text-black">
-          <p class="text-xs uppercase tracking-[0.2em] text-black/45">
-            02 / Show
-          </p>
-          <h3 class="display text-5xl md:text-6xl leading-none mt-6">
-            LAUGH
-          </h3>
-          <button
-            class="mt-8 w-full bg-black text-white text-sm font-semibold py-3 rounded-full"
-          >
-            Buy tickets
-          </button>
-        </article>
-        <article class="support-panel support-step">
-          <p class="text-xs uppercase tracking-[0.2em] text-white/45">
-            03 / After
-          </p>
-          <h3 class="display text-5xl md:text-6xl leading-none mt-6">REMEMBER</h3>
-          <p class="text-sm leading-relaxed text-white/70 mt-6 max-w-[240px]">
-            No phones, no reruns. What happens at WAQEF stays offline — you had
-            to be there.
-          </p>
-        </article>
-      </div>
-      <div
-        id="notifyCard"
-        class="absolute z-20 right-5 md:right-[9vw] bottom-[16vh] w-72 bg-white text-black p-4 shadow-[20px_24px_70px_rgba(0,0,0,0.38)] border border-black/10"
-      >
-        <div class="flex items-center justify-between">
-          <p class="text-xs uppercase tracking-[0.18em] text-black/45">
-            On sale now
-          </p>
-          <i data-lucide="flame" class="w-4 h-4"></i>
-        </div>
-        <p class="display text-4xl leading-none mt-4">SAR 149</p>
-        <p class="text-sm font-semibold mt-1">Riyadh · 14 Mar 2026</p>
-        <p class="text-xs text-black/55 mt-2">Selling fast — last 3 shows sold out</p>
-      </div>
-    </section>
-
     <!-- ======================= 9 · CTA BUILD-UP ======================= -->
     <section id="cta-build" class="poster-section h-screen bg-black">
       <div
@@ -1232,21 +1252,6 @@
       <div class="sweep-word text-white" id="seenWord">LIVE</div>
       <div class="sweep-word text-black" id="savedWord">LOUD</div>
       <div class="sweep-word text-black" id="supportedWord">OFFLINE</div>
-    </section>
-
-    <!-- ======================= COLOUR PALETTE ======================= -->
-    <section id="palette" class="w-full py-24 md:py-32 px-[6vw]" style="background:#f2e9d6;color:#0b0b0b">
-      <p class="text-xs uppercase opacity-60 mb-3" style="letter-spacing:.32em">The palette</p>
-      <h2 class="display text-5xl md:text-7xl leading-none mb-12">Our colours</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#e11822;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">WAQEF Red</p><p class="text-xs opacity-60">#E11822</p></div>
-        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#b3121a;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">Deep Red</p><p class="text-xs opacity-60">#B3121A</p></div>
-        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#d4af88;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">Gold</p><p class="text-xs opacity-60">#D4AF88</p></div>
-        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#f2e9d6;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">Beige</p><p class="text-xs opacity-60">#F2E9D6</p></div>
-        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#0b0b0b;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">Rich Black</p><p class="text-xs opacity-60">#0B0B0B</p></div>
-        <div class="palette-chip"><div class="h-32 md:h-40 w-full rounded-lg" style="background:#ffffff;border:1px solid rgba(0,0,0,.12)"></div><p class="mt-3 font-semibold text-sm">White</p><p class="text-xs opacity-60">#FFFFFF</p></div>
-      </div>
-      <p class="text-xs opacity-50 mt-10" style="letter-spacing:.05em">Bebas Neue / Montserrat / Cairo — Riyadh · Jeddah · Dubai · Cairo · Doha</p>
     </section>
 
     <!-- ======================= 10 · TICKETS / GET IN THE ROOM ======================= -->
@@ -1281,15 +1286,15 @@
         <img src="assets/talent/john-achkar.webp" class="member absolute w-10 h-10 md:w-14 md:h-14 rounded-full border-2 border-white object-cover left-[24%] top-[12%] shadow-xl z-10" alt="" />
 
         <div
-          class="absolute right-5 md:right-[8vw] top-[23%] md:top-[31%] max-w-xs text-black z-20"
+          class="absolute right-5 md:right-[8vw] top-[23%] md:top-[31%] max-w-xs text-white z-20"
         >
-          <p class="text-lg md:text-xl font-semibold leading-snug">
+          <p class="text-lg md:text-xl font-semibold leading-snug drop-shadow-md">
             Get in the room. From SAR 149 · One night · No cameras · No reruns.
           </p>
           <svg
             id="handArrow"
             viewBox="0 0 120 90"
-            class="w-24 md:w-32 mt-6 ml-auto text-black"
+            class="w-24 md:w-32 mt-6 ml-auto text-white"
             fill="none"
             stroke="currentColor"
             stroke-width="2.5"
@@ -1595,12 +1600,5 @@
         ScrollTrigger.refresh();
       }
     </script>
-    <script>
-    window.addEventListener('load', function () {
-      if (window.gsap && window.ScrollTrigger) {
-        gsap.from('#palette .palette-chip', { opacity: 0, y: 40, stagger: 0.08, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: '#palette', start: 'top 78%' } });
-      }
-    });
-  </script>
 </body>
 </html>
