@@ -16,6 +16,7 @@ no build step, no dependencies.
 | **Aurora** | Cyan/magenta energy beams down the sides | https://najibra.github.io/nzxtv2/aurora/ | [NZXT CAM](https://cam-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/aurora/) · [Beta](https://cam-beta-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/aurora/) |
 | **Circuit** | Gold PCB with electric sparks running the traces | https://najibra.github.io/nzxtv2/circuit/ | [NZXT CAM](https://cam-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/circuit/) · [Beta](https://cam-beta-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/circuit/) |
 | **Lumen** | Minimal luxury — one big number, hairline ring | https://najibra.github.io/nzxtv2/lumen/ | [NZXT CAM](https://cam-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/lumen/) · [Beta](https://cam-beta-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/lumen/) |
+| **Spectra** | Live rainbow equalizer bars behind the readouts | https://najibra.github.io/nzxtv2/spectra/ | [NZXT CAM](https://cam-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/spectra/) · [Beta](https://cam-beta-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/spectra/) |
 
 ## Installation
 
