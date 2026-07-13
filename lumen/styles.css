@@ -105,7 +105,7 @@ body:not(.kraken) .face-wrap {
 .stat-value .stat-unit {
   font-size: 26px;
   font-weight: 400;
-  fill: var(--muted);
+  fill: var(--accent);
 }
 
 /* ---- configuration card (browser only) ---- */
