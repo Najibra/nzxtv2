@@ -7,7 +7,7 @@
 :root {
   --bg: #050610;
   --text: #f4f6ff;
-  --muted: #8b93a7;
+  --muted: #c7d0ef;   /* brighter so labels/sub read clearly over the bars */
   --accent: #9fb2ff;
 }
 
@@ -46,55 +46,55 @@ body:not(.kraken) .face-wrap {
 /* ---- typography ---- */
 
 .micro-label {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 5px;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 4px;
   fill: var(--muted);
 }
 
 .cpu-label {
-  font-size: 20px;
+  font-size: 23px;
   font-weight: 600;
   letter-spacing: 12px;
   fill: var(--accent);
 }
 
 .cpu-value {
-  font-size: 150px;
+  font-size: 176px;
   font-weight: 700;
   letter-spacing: -3px;
   fill: var(--text);
 }
 
 .cpu-value .cpu-unit {
-  font-size: 64px;
+  font-size: 74px;
   font-weight: 400;
   fill: var(--accent);
 }
 
 .cpu-sub {
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 600;
-  letter-spacing: 7px;
+  letter-spacing: 6px;
   fill: var(--muted);
 }
 
 .top-value {
-  font-size: 40px;
-  font-weight: 600;
-  fill: var(--text);
-}
-
-.stat-value {
   font-size: 46px;
   font-weight: 600;
   fill: var(--text);
 }
 
+.stat-value {
+  font-size: 60px;
+  font-weight: 700;
+  fill: var(--text);
+}
+
 .top-value .unit,
 .stat-value .unit {
-  font-size: 24px;
-  font-weight: 400;
+  font-size: 30px;
+  font-weight: 500;
   fill: var(--muted);
 }
 
