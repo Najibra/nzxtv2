@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZXT Spectra — Kraken Elite Monitor</title>
+  <!--
+    NZXT "Spectra" web integration for the Kraken Elite LCD.
+
+    A music-visualizer face: a full-width mirrored equalizer of rainbow color
+    bars rises and falls behind the readouts with a natural, randomized motion
+    (fast attack, gentle decay, per-bar random cadence — never a uniform sine).
+    A gentle valley in the bar envelope plus a soft center vignette keep the
+    numbers readable. Loaded inside NZXT CAM (?kraken=1) it renders live data via
+    window.nzxt.v1.onMonitoringDataUpdate; in a normal browser it shows a
+    configuration card plus a simulated preview.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=20260713-a" />
+</head>
+<body>
+  <div id="config" class="config" hidden>
+    <h1>NZXT <span>Spectra</span></h1>
+    <p>
+      A live equalizer dashboard for the NZXT Kraken Elite LCD: rainbow color
+      bars that rise and fall behind large CPU, GPU, memory, power and liquid
+      readouts. Requires NZXT CAM with Web Integrations enabled.
+    </p>
+    <label for="share-url"><strong>Shareable link</strong> — open it in a browser and choose “Open NZXT CAM”:</label>
+    <input id="share-url" type="text" readonly />
+    <p class="hint">
+      If the protocol link doesn't open, use
+      <code>https://cam-redirect.nzxt.com/action/load-web-integration?url=…</code>
+      with this page's URL.
+    </p>
+    <p class="hint">Live preview (simulated data):</p>
+  </div>
+
+  <div id="face-wrap" class="face-wrap">
+    <svg id="face" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" font-family="Inter, 'Segoe UI', sans-serif">
+      <defs>
+        <radialGradient id="bg-grad" cx="50%" cy="50%" r="72%">
+          <stop offset="0%" stop-color="#0b0c16" />
+          <stop offset="65%" stop-color="#070810" />
+          <stop offset="100%" stop-color="#030309" />
+        </radialGradient>
+        <!-- soft bloom for the bars -->
+        <filter id="bar-glow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="4" result="b" />
+          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <!-- center vignette to keep the readouts legible over the bars -->
+        <radialGradient id="vignette" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#05060d" stop-opacity="0.86" />
+          <stop offset="52%"  stop-color="#05060d" stop-opacity="0.66" />
+          <stop offset="100%" stop-color="#05060d" stop-opacity="0" />
+        </radialGradient>
+        <clipPath id="face-clip"><circle cx="320" cy="320" r="318" /></clipPath>
+      </defs>
+
+      <!-- background -->
+      <circle cx="320" cy="320" r="320" fill="url(#bg-grad)" />
+
+      <!-- equalizer + vignette (bars built by script) -->
+      <g clip-path="url(#face-clip)">
+        <g id="bars" filter="url(#bar-glow)"></g>
+        <line id="mid-line" x1="26" y1="320" x2="614" y2="320" stroke="#ffffff" stroke-width="1" opacity="0.05" />
+        <circle cx="320" cy="320" r="250" fill="url(#vignette)" />
+      </g>
+
+      <!-- bezel -->
+      <circle cx="320" cy="320" r="312" fill="none" stroke="#171a2b" stroke-width="2" />
+
+      <!-- top: liquid -->
+      <g text-anchor="middle">
+        <text x="320" y="86" class="micro-label">LIQUID</text>
+        <text id="liquid-value" x="320" y="120" class="top-value">--<tspan class="unit">°</tspan></text>
+      </g>
+
+      <!-- center: CPU hero -->
+      <g text-anchor="middle">
+        <text x="320" y="266" class="cpu-label">CPU</text>
+        <text id="cpu-value" x="326" y="372" class="cpu-value">--<tspan class="cpu-unit">°</tspan></text>
+        <text x="320" y="404" class="cpu-sub">CORE TEMPERATURE</text>
+      </g>
+
+      <!-- bottom: three readouts -->
+      <g text-anchor="middle">
+        <text x="150" y="512" class="micro-label">GPU</text>
+        <text id="gpu-value" x="150" y="556" class="stat-value">--<tspan class="unit">°</tspan></text>
+
+        <text x="320" y="512" class="micro-label">MEMORY</text>
+        <text id="ram-value" x="320" y="556" class="stat-value">--<tspan class="unit">%</tspan></text>
+
+        <text x="490" y="512" class="micro-label">POWER</text>
+        <text id="power-value" x="490" y="556" class="stat-value">--<tspan class="unit">W</tspan></text>
+      </g>
+    </svg>
+  </div>
+
+  <script src="script.js?v=20260713-a"></script>
+</body>
+</html>

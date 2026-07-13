@@ -1,0 +1,153 @@
+/*
+  NZXT "Spectra" theme — a live equalizer face for the 640×640 round Kraken
+  Elite LCD. Rainbow color bars (built and animated by script) rise and fall
+  behind large white readouts on a near-black canvas.
+*/
+
+:root {
+  --bg: #050610;
+  --text: #f4f6ff;
+  --muted: #8b93a7;
+  --accent: #9fb2ff;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+body.kraken { gap: 0; }
+
+.face-wrap {
+  width: min(100vw, 100vh);
+  height: min(100vw, 100vh);
+  flex: none;
+}
+
+body:not(.kraken) .face-wrap {
+  width: min(90vw, 560px);
+  height: min(90vw, 560px);
+}
+
+#face { width: 100%; height: 100%; display: block; }
+
+/* ---- typography ---- */
+
+.micro-label {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  fill: var(--muted);
+}
+
+.cpu-label {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 12px;
+  fill: var(--accent);
+}
+
+.cpu-value {
+  font-size: 150px;
+  font-weight: 700;
+  letter-spacing: -3px;
+  fill: var(--text);
+}
+
+.cpu-value .cpu-unit {
+  font-size: 64px;
+  font-weight: 400;
+  fill: var(--accent);
+}
+
+.cpu-sub {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 7px;
+  fill: var(--muted);
+}
+
+.top-value {
+  font-size: 40px;
+  font-weight: 600;
+  fill: var(--text);
+}
+
+.stat-value {
+  font-size: 46px;
+  font-weight: 600;
+  fill: var(--text);
+}
+
+.top-value .unit,
+.stat-value .unit {
+  font-size: 24px;
+  font-weight: 400;
+  fill: var(--muted);
+}
+
+/* readouts sit above the bars — a soft shadow keeps them crisp */
+.cpu-value, .stat-value, .top-value {
+  paint-order: stroke;
+}
+
+/* ---- configuration card (browser only) ---- */
+
+.config {
+  width: 90%;
+  max-width: 540px;
+  background: #0b0d18;
+  border: 1px solid #1a1e30;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  margin-top: 1.5rem;
+}
+
+.config h1 {
+  margin: 0 0 0.6rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.config h1 span { color: var(--accent); font-weight: 600; }
+
+.config p,
+.config label {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0.4rem 0;
+  display: block;
+}
+
+.config .hint { font-size: 0.8rem; }
+
+.config code { color: var(--accent); word-break: break-all; }
+
+.config input[type='text'] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.55rem 0.7rem;
+  margin: 0.3rem 0 0.5rem;
+  border: 1px solid #1a1e30;
+  border-radius: 8px;
+  background: #10131f;
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.config input[type='text']:focus { outline: none; border-color: var(--accent); }
