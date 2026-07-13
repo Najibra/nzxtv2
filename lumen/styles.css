@@ -53,6 +53,9 @@ body:not(.kraken) .face-wrap {
   fill: var(--muted);
 }
 
+/* gold label variant (GPU / MEMORY / POWER) */
+.label-gold { fill: var(--accent); }
+
 /* CPU hero — large, light, confident */
 .hero-label {
   font-size: 21px;
