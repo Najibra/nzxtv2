@@ -18,6 +18,7 @@ no build step, no dependencies.
 | **Lumen** | Minimal luxury — one big number, hairline ring | https://najibra.github.io/nzxtv2/lumen/ | [NZXT CAM](https://cam-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/lumen/) · [Beta](https://cam-beta-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/lumen/) |
 | **Spectra** | Live rainbow equalizer bars behind the readouts | https://najibra.github.io/nzxtv2/spectra/ | [NZXT CAM](https://cam-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/spectra/) · [Beta](https://cam-beta-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/spectra/) |
 | **Web Hero** | Comic red/blue web split with mask eyes that blink | https://najibra.github.io/nzxtv2/webhero/ | [NZXT CAM](https://cam-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/webhero/) · [Beta](https://cam-beta-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/webhero/) |
+| **Porcelain** | Soft neumorphic white panels with pastel arcs | https://najibra.github.io/nzxtv2/porcelain/ | [NZXT CAM](https://cam-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/porcelain/) · [Beta](https://cam-beta-redirect.nzxt.com/action/load-web-integration?url=https://najibra.github.io/nzxtv2/porcelain/) |
 
 ## Installation
 
