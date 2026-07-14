@@ -1,23 +1,23 @@
 /*
-  NZXT "Web Hero" theme — comic red/blue web-split face for the 640×640 round
-  Kraken Elite LCD. Cream comic-print numerals, red and blue accent rings,
-  mask eyes with a subtle blink.
+  NZXT "Web Hero" theme — comic spider-suit face for the 640×640 round Kraken
+  Elite LCD. Near-black canvas, red/blue web line art, hexagon mask lenses,
+  condensed comic numerals.
 */
 
 :root {
-  --bg: #050505;
-  --cream: #f3ecdc;
+  --bg: #030101;
+  --cream: #efe7d3;
   --red: #e11d2e;
   --red-bright: #ff2d3f;
   --blue: #2f7cff;
-  --muted: #b9b09a;
+  --muted: #a99e86;
 }
 
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: var(--bg);
+  background: #000;
   color: var(--cream);
   font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
 }
@@ -45,61 +45,103 @@ body:not(.kraken) .face-wrap {
 
 #face { width: 100%; height: 100%; display: block; }
 
-/* ---- typography ---- */
+/* ---- typography (condensed comic look) ---- */
 
 .banner {
+  font-family: 'Oswald', 'Inter', sans-serif;
   font-size: 30px;
-  font-weight: 900;
-  letter-spacing: 4px;
-  fill: #ffffff;
+  font-weight: 700;
+  letter-spacing: 3px;
+  fill: var(--cream);
 }
 
-.pod-label {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: 2px;
+.chip-text {
+  font-family: 'Oswald', 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
 }
 
 .lbl-red   { fill: #ff8d96; }
 .lbl-blue  { fill: #8fb8ff; }
-.lbl-cream { fill: var(--cream); }
 
 .pod-value {
-  font-size: 62px;
-  font-weight: 800;
+  font-family: 'Oswald', 'Inter', sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  fill: var(--cream);
+}
+
+.cpu-label {
+  font-family: 'Oswald', 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 4px;
   fill: var(--cream);
 }
 
 .cpu-value {
-  font-size: 96px;
-  font-weight: 800;
+  font-family: 'Oswald', 'Inter', sans-serif;
+  font-size: 104px;
+  font-weight: 700;
   fill: var(--cream);
 }
 
 .pod-unit {
+  font-family: 'Oswald', 'Inter', sans-serif;
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 600;
   fill: var(--muted);
 }
 
 .tagline {
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 5px;
+  font-family: 'Oswald', 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 6px;
   fill: var(--cream);
-  opacity: 0.85;
+  opacity: 0.8;
+}
+
+/* label chips */
+.chip rect {
+  fill: rgba(6, 6, 8, 0.85);
+  stroke: #4a4a4a;
+  stroke-width: 1.5;
 }
 
 /* pods */
 .pod-bg {
-  fill: rgba(4, 4, 6, 0.82);
-  stroke: #16161a;
+  fill: rgba(3, 2, 3, 0.9);
+  stroke: #14100c;
   stroke-width: 2;
 }
 
-/* web line work */
+/* mask lenses */
+.eye-outline {
+  fill: none;
+  stroke: #050505;
+  stroke-width: 9;
+  stroke-linejoin: round;
+}
+
+.eye-rim { fill: none; stroke-width: 5; opacity: 0.85; }
+.rim-red  { stroke: #e11d2e; }
+.rim-blue { stroke: #2f7cff; }
+
+/* honeycomb cells (built by script) */
+#hex-left path, #hex-right path {
+  fill: #e7dcc4;
+  stroke: #14100a;
+  stroke-width: 2;
+}
+
+/* web line art */
 #web-left path, #web-left circle { stroke: #e11d2e; fill: none; }
 #web-right path, #web-right circle { stroke: #2f7cff; fill: none; }
+
+/* cpu tick marks */
+#cpu-ticks line { stroke: var(--cream); }
 
 /* ---- configuration card (browser only) ---- */
 

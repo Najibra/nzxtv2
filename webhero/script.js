@@ -2,22 +2,20 @@
 /*
   NZXT "Web Hero" Kraken Elite web integration.
 
-  Comic web-hero face. Telemetry wiring matches the other faces: CAM loads the
-  page with ?kraken=1 and calls window.nzxt.v1.onMonitoringDataUpdate; a normal
+  Comic spider-suit face. Telemetry wiring matches the other faces: CAM loads
+  the page with ?kraken=1 and calls window.nzxt.v1.onMonitoringDataUpdate; a
   browser shows a config card + simulated preview.
 
-  Signature animation: the mask eyes are alive but SUBTLE — they blink at a
-  natural randomized cadence (quick close, tiny hold, slower reopen, with an
-  occasional double-blink), squint a little when the CPU runs hot, and their
-  glow breathes slowly. The web line work shimmers very gently so the halves
-  don't feel static.
+  Signature animation: the two hexagon mask lenses are alive but SUBTLE — they
+  blink at a natural randomized cadence (quick close, brief hold, slower reopen,
+  with an occasional double-blink), squint a little when the CPU runs hot, and
+  their rim glow breathes. The web line art shimmers very gently.
 */
 
 (() => {
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const $ = (id) => document.getElementById(id);
   const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
-  const lerp = (a, b, t) => a + (b - a) * t;
 
   const CX = 320, CY = 320;
 
@@ -28,31 +26,66 @@
     return el;
   }
 
-  /* ---------- web line work ---------- */
+  /* ---------- honeycomb lens fill ---------- */
+
+  function buildHex(groupId, x0, y0, x1, y1) {
+    const g = $(groupId);
+    const r = 11;                       // hex radius (flat-top)
+    const hstep = r * 1.5;              // column spacing
+    const vstep = r * Math.sqrt(3);     // row spacing
+    let col = 0;
+    for (let cx = x0; cx <= x1 + r; cx += hstep, col++) {
+      const yoff = (col % 2) * (vstep / 2);
+      for (let cy = y0 + yoff; cy <= y1 + r; cy += vstep) {
+        let d = '';
+        for (let k = 0; k < 6; k++) {
+          const a = (Math.PI / 3) * k;   // flat-top hexagon
+          const px = cx + r * Math.cos(a);
+          const py = cy + r * Math.sin(a);
+          d += (k ? ' L' : 'M') + ` ${px.toFixed(1)} ${py.toFixed(1)}`;
+        }
+        svgEl('path', { d: d + ' Z' }, g);
+      }
+    }
+  }
+
+  /* ---------- web line art ---------- */
 
   const webStrands = [];
-
   function buildWeb() {
     for (const side of ['web-left', 'web-right']) {
       const g = $(side);
-      // radial spokes from the face centre
-      for (let i = 0; i < 28; i++) {
-        const a = (i / 28) * Math.PI * 2;
-        const x1 = CX + 60 * Math.cos(a), y1 = CY + 60 * Math.sin(a);
-        const x2 = CX + 330 * Math.cos(a), y2 = CY + 330 * Math.sin(a);
+      for (let i = 0; i < 30; i++) {
+        const a = (i / 30) * Math.PI * 2;
+        const x1 = CX + 40 * Math.cos(a), y1 = CY + 40 * Math.sin(a);
+        const x2 = CX + 336 * Math.cos(a), y2 = CY + 336 * Math.sin(a);
         const el = svgEl('path', {
           d: `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x2.toFixed(1)} ${y2.toFixed(1)}`,
-          'stroke-width': 1.3, opacity: 0.28,
+          'stroke-width': 1.2, opacity: 0.34,
         }, g);
-        webStrands.push({ el, base: 0.28, phase: Math.random() * Math.PI * 2, rate: 0.3 + Math.random() * 0.5 });
+        webStrands.push({ el, base: 0.34, phase: Math.random() * 6.28, rate: 0.3 + Math.random() * 0.5 });
       }
-      // concentric web rings (slightly sagging arcs approximated by circles)
-      for (let r = 90; r <= 330; r += 48) {
-        const el = svgEl('circle', {
-          cx: CX, cy: CY, r, 'stroke-width': 1.2, opacity: 0.22,
-        }, g);
-        webStrands.push({ el, base: 0.22, phase: Math.random() * Math.PI * 2, rate: 0.2 + Math.random() * 0.4 });
+      for (let r = 78; r <= 336; r += 40) {
+        const el = svgEl('circle', { cx: CX, cy: CY, r, 'stroke-width': 1.1, opacity: 0.26 }, g);
+        webStrands.push({ el, base: 0.26, phase: Math.random() * 6.28, rate: 0.2 + Math.random() * 0.4 });
       }
+    }
+  }
+
+  /* ---------- CPU tick ring (upper-right arc, like a speedo) ---------- */
+
+  function buildCpuTicks() {
+    const g = $('cpu-ticks');
+    const cx = 320, cy = 330;
+    for (let i = 0; i <= 26; i++) {
+      const a = (-100 + (i / 26) * 190) * Math.PI / 180;  // top -> right -> bottom sweep
+      const long = i % 4 === 0;
+      const r1 = 95, r2 = long ? 82 : 88;
+      svgEl('line', {
+        x1: (cx + r1 * Math.cos(a)).toFixed(1), y1: (cy + r1 * Math.sin(a)).toFixed(1),
+        x2: (cx + r2 * Math.cos(a)).toFixed(1), y2: (cy + r2 * Math.sin(a)).toFixed(1),
+        'stroke-width': long ? 2.2 : 1.2, opacity: long ? 0.85 : 0.5,
+      }, g);
     }
   }
 
@@ -60,8 +93,7 @@
 
   function buildSpider() {
     const g = $('spider');
-    const body = svgEl('g', { fill: 'none', stroke: '#e11d2e', 'stroke-width': 3.4, 'stroke-linecap': 'round', opacity: 0.95 }, g);
-    // legs: four per side, sweeping curves
+    const body = svgEl('g', { fill: 'none', stroke: '#e11d2e', 'stroke-width': 3.2, 'stroke-linecap': 'round', opacity: 0.95 }, g);
     const legs = [
       'M -7 -8 C -22 -20, -34 -26, -44 -24', 'M -8 -3 C -26 -8, -40 -6, -50 2',
       'M -8 3 C -26 6, -38 14, -46 26',      'M -7 8 C -20 18, -28 28, -32 40',
@@ -69,27 +101,21 @@
       'M 8 3 C 26 6, 38 14, 46 26',          'M 7 8 C 20 18, 28 28, 32 40',
     ];
     for (const d of legs) svgEl('path', { d }, body);
-    // head + abdomen
-    svgEl('ellipse', { cx: 0, cy: -10, rx: 6.5, ry: 8, fill: '#e11d2e', stroke: 'none' }, g);
-    svgEl('path', { d: 'M 0 -3 C 9 0, 11 14, 0 30 C -11 14, -9 0, 0 -3 Z', fill: '#e11d2e', stroke: 'none' }, g);
+    svgEl('ellipse', { cx: 0, cy: -10, rx: 6.5, ry: 8, fill: '#e11d2e' }, g);
+    svgEl('path', { d: 'M 0 -3 C 9 0, 11 14, 0 30 C -11 14, -9 0, 0 -3 Z', fill: '#e11d2e' }, g);
   }
 
-  /* ---------- eye blink animation ---------- */
+  /* ---------- eye blink state machine ---------- */
 
-  // Blink state machine: idle -> closing (90ms) -> closed (70ms) -> opening (180ms)
-  // Next blink scheduled 3.2–7.5s out; ~20% of blinks are double-blinks.
-  const EYE_CY = 328;                       // vertical centre the lids close toward
+  const EYE_CY = 342;
   let blinkPhase = 'idle';
   let phaseStart = 0;
-  let nextBlink = 1.6 + Math.random() * 2;  // first blink comes fairly soon
+  let nextBlink = 1.6 + Math.random() * 2;
   let doublePending = false;
-  let squint = 0;                            // 0..1, eases toward heat-based target
-  let squintTarget = 0;
-
+  let squint = 0, squintTarget = 0;
   const CLOSE_T = 0.09, HOLD_T = 0.07, OPEN_T = 0.18;
 
   function eyeScale(t) {
-    // returns vertical scale factor 0.06..1 from the blink state machine
     let s = 1;
     if (blinkPhase === 'closing') {
       const k = clamp((t - phaseStart) / CLOSE_T, 0, 1);
@@ -103,17 +129,11 @@
       s = 0.06 + 0.94 * (1 - (1 - k) * (1 - k));
       if (k >= 1) {
         blinkPhase = 'idle';
-        if (doublePending) {
-          doublePending = false;
-          nextBlink = t + 0.18;             // quick second blink
-        } else {
-          nextBlink = t + 3.2 + Math.random() * 4.3;
-        }
+        if (doublePending) { doublePending = false; nextBlink = t + 0.18; }
+        else { nextBlink = t + 3.2 + Math.random() * 4.3; }
       }
     } else if (t >= nextBlink) {
-      blinkPhase = 'closing';
-      phaseStart = t;
-      doublePending = Math.random() < 0.2;
+      blinkPhase = 'closing'; phaseStart = t; doublePending = Math.random() < 0.2;
     }
     return s;
   }
@@ -124,18 +144,15 @@
     const dt = Math.min(t - lastT || 0.016, 0.05);
     lastT = t;
 
-    // eyes: blink * squint * a barely-there breathing narrowing
     squint += (squintTarget - squint) * (1 - Math.exp(-2 * dt));
     const breathe = 0.985 + 0.015 * Math.sin(t * 0.7);
-    const sy = eyeScale(t) * (1 - 0.22 * squint) * breathe;
+    const sy = eyeScale(t) * (1 - 0.2 * squint) * breathe;
     const eyes = $('eyes');
     eyes.setAttribute('transform', `translate(0 ${(EYE_CY * (1 - sy)).toFixed(2)}) scale(1 ${sy.toFixed(4)})`);
-    eyes.setAttribute('opacity', (0.92 + 0.08 * Math.sin(t * 0.9)).toFixed(3));
 
-    // web shimmer — very gentle opacity waves along the strands
     for (let i = 0; i < webStrands.length; i += 2) {
       const w = webStrands[i];
-      w.el.setAttribute('opacity', (w.base * (0.75 + 0.25 * Math.sin(t * w.rate + w.phase))).toFixed(3));
+      w.el.setAttribute('opacity', (w.base * (0.7 + 0.3 * Math.sin(t * w.rate + w.phase))).toFixed(3));
     }
 
     tickValues();
@@ -240,13 +257,15 @@
     setTarget('gpu-value', v.gpuTemp);       setArc('gpu-arc', v.gpuTemp / 100);
     setTarget('ram-value', v.ramPct);        setArc('ram-arc', v.ramPct / 100);
     setTarget('power-value', v.power);       setArc('power-arc', v.power / 500);
-    // hot CPU -> the eyes narrow a touch (focused / determined)
     squintTarget = clamp((v.cpuTemp - 60) / 30, 0, 1);
   }
 
   /* ---------- bootstrap ---------- */
 
   buildWeb();
+  buildHex('hex-left', 44, 256, 216, 420);
+  buildHex('hex-right', 424, 256, 596, 420);
+  buildCpuTicks();
   buildSpider();
   requestAnimationFrame(animate);
 
@@ -272,14 +291,13 @@
     input.addEventListener('click', () => input.select());
   }
 
-  // simulated telemetry until the first real CAM update
   let t = 0;
   const demo = setInterval(() => {
     if (gotRealData) { clearInterval(demo); return; }
     t += 1;
     update(mapMonitoring({
       cpus: [{ temperature: 52 + 8 * Math.sin(t / 6), load: 0.4 + 0.3 * Math.sin(t / 4) }],
-      gpus: [{ name: 'GeForce RTX', temperature: 40 + 6 * Math.cos(t / 7), load: 0.35 + 0.3 * Math.cos(t / 5) }],
+      gpus: [{ name: 'GeForce RTX', temperature: 38 + 6 * Math.cos(t / 7), load: 0.35 + 0.3 * Math.cos(t / 5) }],
       ram: { totalSize: 32768, inUse: 32768 * (0.18 + 0.06 * Math.sin(t / 8)) },
       kraken: { liquidTemperature: 32 + 2 * Math.sin(t / 9) },
     }));
