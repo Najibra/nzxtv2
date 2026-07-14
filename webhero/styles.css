@@ -1,0 +1,151 @@
+/*
+  NZXT "Web Hero" theme — comic red/blue web-split face for the 640×640 round
+  Kraken Elite LCD. Cream comic-print numerals, red and blue accent rings,
+  mask eyes with a subtle blink.
+*/
+
+:root {
+  --bg: #050505;
+  --cream: #f3ecdc;
+  --red: #e11d2e;
+  --red-bright: #ff2d3f;
+  --blue: #2f7cff;
+  --muted: #b9b09a;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+body.kraken { gap: 0; }
+
+.face-wrap {
+  width: min(100vw, 100vh);
+  height: min(100vw, 100vh);
+  flex: none;
+}
+
+body:not(.kraken) .face-wrap {
+  width: min(90vw, 560px);
+  height: min(90vw, 560px);
+}
+
+#face { width: 100%; height: 100%; display: block; }
+
+/* ---- typography ---- */
+
+.banner {
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  fill: #ffffff;
+}
+
+.pod-label {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.lbl-red   { fill: #ff8d96; }
+.lbl-blue  { fill: #8fb8ff; }
+.lbl-cream { fill: var(--cream); }
+
+.pod-value {
+  font-size: 62px;
+  font-weight: 800;
+  fill: var(--cream);
+}
+
+.cpu-value {
+  font-size: 96px;
+  font-weight: 800;
+  fill: var(--cream);
+}
+
+.pod-unit {
+  font-size: 22px;
+  font-weight: 700;
+  fill: var(--muted);
+}
+
+.tagline {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  fill: var(--cream);
+  opacity: 0.85;
+}
+
+/* pods */
+.pod-bg {
+  fill: rgba(4, 4, 6, 0.82);
+  stroke: #16161a;
+  stroke-width: 2;
+}
+
+/* web line work */
+#web-left path, #web-left circle { stroke: #e11d2e; fill: none; }
+#web-right path, #web-right circle { stroke: #2f7cff; fill: none; }
+
+/* ---- configuration card (browser only) ---- */
+
+.config {
+  width: 90%;
+  max-width: 540px;
+  background: #0d0d10;
+  border: 1px solid #232329;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  margin-top: 1.5rem;
+}
+
+.config h1 {
+  margin: 0 0 0.6rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.config h1 span { color: var(--red-bright); font-weight: 700; }
+
+.config p,
+.config label {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0.4rem 0;
+  display: block;
+}
+
+.config .hint { font-size: 0.8rem; }
+
+.config code { color: var(--blue); word-break: break-all; }
+
+.config input[type='text'] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.55rem 0.7rem;
+  margin: 0.3rem 0 0.5rem;
+  border: 1px solid #232329;
+  border-radius: 8px;
+  background: #131318;
+  color: var(--cream);
+  font-size: 0.85rem;
+}
+
+.config input[type='text']:focus { outline: none; border-color: var(--red-bright); }
